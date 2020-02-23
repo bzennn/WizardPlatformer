@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WizardPlatformer.GameObject" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Core\GameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.InputManager" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAgAAAAAAAAAAAAAEAABADAAAAAACAAQAAACAA=</HashCode>
+      <FileName>Logic\Core\InputManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.ScreenResolution" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAgAAAAAEQAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Core\ScreenResolution.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.LevelLoader" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Level\LevelLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.Tile" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="WizardPlatformer.Tile.TileType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Logic\Level\Tile.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAACAIAAiAgAAAgAAAAAAABAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Level\Tile.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WizardPlatformer.Screen" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAEAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAIAAAAAQ=</HashCode>
+      <FileName>Logic\Screen\Screen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.ScreenGameplay" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAgAAAAAAAwAAAgAAAAAQAgkAAQAAAQAAAAAAAgQ=</HashCode>
+      <FileName>Logic\Screen\ScreenGameplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.ScreenMainMenu" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Logic\Screen\ScreenMainMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.ScreenManager">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAAAAAgwAAAAAAAAAABABAAAAAAAAgIAAAAAQ=</HashCode>
+      <FileName>Logic\Screen\ScreenManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.ScreenPause" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAIAw=</HashCode>
+      <FileName>Logic\Screen\ScreenPause.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.Program" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.WizardPlatformer" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEEAAAAAAAwAAAAAAAAAAAAAAAAgAAAAAAAAAAAQ=</HashCode>
+      <FileName>WizardPlatformer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WizardPlatformer.Logic.Level.Level" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAABAAAAAAAAAAAAQAAAAAIAA=</HashCode>
+      <FileName>Logic\Level\Level.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="WizardPlatformer.IDrawable" Collapsed="true">
+    <Position X="7.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Core\IDrawable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
