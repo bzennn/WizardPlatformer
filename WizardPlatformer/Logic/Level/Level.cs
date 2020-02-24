@@ -62,6 +62,8 @@ namespace WizardPlatformer {
 			player.Update(gameTime);
 
 			UpdateLayer(gameTime, decoLayer, roomSizeId);
+
+			UpdateScrollPosition();
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
@@ -136,6 +138,28 @@ namespace WizardPlatformer {
 			if (layerCoords.X >= 0 && layerCoords.X < roomWidth &&
 				layerCoords.Y >= 0 && layerCoords.Y < roomHeigth) {
 				baseLayer[layerCoords.X, layerCoords.Y] = null;
+			}
+		}
+
+		public void UpdateScrollPosition() {
+			int roomWidthPixels = roomWidth * Display.TileSideSize;
+			int halfScreenWidth = (int)Display.BaseResolution.X / 2;
+
+			if (roomWidthPixels > Display.BaseResolution.X) {
+				if (player.Position.X >= halfScreenWidth &&
+					player.Position.X <= roomWidthPixels - halfScreenWidth) {
+					Display.GameMatrix = Matrix.CreateTranslation(-player.Position.X + halfScreenWidth, 0, 0) * Display.ScreenScale;
+				} else {
+					if (player.Position.X >= halfScreenWidth) {
+						Display.GameMatrix = Matrix.CreateTranslation(- roomWidthPixels + halfScreenWidth * 2, 0, 0) * Display.ScreenScale;
+						
+					}
+
+					if (player.Position.X <= roomWidthPixels - Display.BaseResolution.X) {
+						Display.GameMatrix = Display.ScreenScale;
+					}
+					
+				}
 			}
 		}
 

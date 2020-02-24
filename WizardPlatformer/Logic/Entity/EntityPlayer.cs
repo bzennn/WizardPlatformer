@@ -12,7 +12,7 @@ namespace WizardPlatformer {
 
 			this.coins = coins;
 			this.spriteSize = new Point(6, 6);
-			this.drawDebugInfo = true;
+			this.drawDebugInfo = false;
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
@@ -43,7 +43,8 @@ namespace WizardPlatformer {
 			base.DrawDebugInfo(spriteBatch, gameTime);
 
 			if (drawDebugInfo) {
-				spriteBatch.DrawString(debugFont, "Coins = " + coins, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
+				spriteBatch.DrawString(debugFont, "Coins = " + coins +
+					"\nPosition = " + Position, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
 			}
 		}
 
@@ -98,6 +99,10 @@ namespace WizardPlatformer {
 					currentFrame.X = 0;
 				}
 			}
+		}
+
+		public Vector2 Position {
+			get { return this.heatBox.Center.ToVector2(); }
 		}
 	}
 }

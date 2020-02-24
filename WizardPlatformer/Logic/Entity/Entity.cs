@@ -16,7 +16,7 @@ namespace WizardPlatformer {
 		protected Tile[] surroundingTiles;
 
 		protected Rectangle heatBox;
-		private Vector2 entityPosition;
+		protected Vector2 entityPosition;
 		private float previousEntityBottom;
 
 		protected Vector2 maxVelocity;
@@ -305,7 +305,7 @@ namespace WizardPlatformer {
 			}
 
 			if (EntityPosition.X + heatBox.Width > level.RoomWidth * Display.TileSideSize) {
-				EntityPosition = new Vector2(level.RoomWidth * Display.TileSideSize, EntityPosition.Y);
+				EntityPosition = new Vector2(level.RoomWidth * Display.TileSideSize - heatBox.Width, EntityPosition.Y);
 			}
 
 			for (int i = 0; i < 10; i++) {

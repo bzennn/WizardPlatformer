@@ -14,7 +14,7 @@ namespace WizardPlatformer {
 
 		protected override void Initialize() {
 			Display.InitScaleMatrix(graphics, 1280, 720);
-			//ScreenResolution.InitScaleMatrix(graphics, 1920, 1080);
+			//Display.InitScaleMatrix(graphics, 1920, 1080);
 
 			IsMouseVisible = true;
 			graphics.IsFullScreen = false;
