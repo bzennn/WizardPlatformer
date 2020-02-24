@@ -51,7 +51,8 @@ namespace WizardPlatformer {
 			//TODO Background load;
 			background[0] = contentManager.Load<Texture2D>("background/test_back");
 
-			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, 130, 630, roomSizeId, this);
+			// Pos 100 4000 for vert level
+			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, 100, 300, roomSizeId, this);
 			player.LoadContent(contentManager);
 		}
 
@@ -121,12 +122,21 @@ namespace WizardPlatformer {
 			return new Point(x, y);
 		}
 
-		public Tile GetTile(float posX, float posY) {
+		public Tile GetTile(float posX, float posY, string layer = "base") {
 			int x = (int)Math.Floor(posX / TileSideSize);
 			int y = (int)Math.Floor(posY / TileSideSize);
 
 			if (x >= 0 && x < roomWidth && y >= 0 && y < roomHeigth) {
-				return baseLayer[x, y];
+				switch (layer) {
+					default:
+						return null;
+					case "base":
+						return baseLayer[x, y];
+					case "back":
+						return backLayer[x, y];
+					case "deco":
+						return decoLayer[x, y];
+				}
 			}
 
 			return null;
@@ -143,7 +153,9 @@ namespace WizardPlatformer {
 
 		public void UpdateScrollPosition() {
 			int roomWidthPixels = roomWidth * Display.TileSideSize;
+			int roomHeigthPixels = roomHeigth * Display.TileSideSize;
 			int halfScreenWidth = (int)Display.BaseResolution.X / 2;
+			int halfScreenHeigth = (int)Display.BaseResolution.Y / 2;
 
 			if (roomWidthPixels > Display.BaseResolution.X) {
 				if (player.Position.X >= halfScreenWidth &&
@@ -159,6 +171,23 @@ namespace WizardPlatformer {
 						Display.GameMatrix = Display.ScreenScale;
 					}
 					
+				}
+			}
+
+			if (roomHeigthPixels > Display.BaseResolution.Y) {
+				if (player.Position.Y >= halfScreenHeigth &&
+					player.Position.Y <= roomHeigthPixels - halfScreenHeigth) {
+					Display.GameMatrix = Matrix.CreateTranslation(0, -player.Position.Y + halfScreenHeigth, 0) * Display.ScreenScale;
+				} else {
+					if (player.Position.Y >= halfScreenHeigth) {
+						Display.GameMatrix = Matrix.CreateTranslation(0, -roomHeigthPixels + halfScreenHeigth * 2, 0) * Display.ScreenScale;
+
+					}
+
+					if (player.Position.Y <= roomHeigthPixels - Display.BaseResolution.Y) {
+						Display.GameMatrix = Display.ScreenScale;
+					}
+
 				}
 			}
 		}
