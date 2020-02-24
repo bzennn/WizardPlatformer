@@ -28,5 +28,15 @@ namespace WizardPlatformer {
 		public static Vector2 GetMouseCoordinates(MouseState mouseState) {
 			return new Vector2(mouseState.X / TargetResolution.X, mouseState.Y / TargetResolution.Y);
 		}
+
+		public static Vector2 ScreenToLevelPosition(Vector2 position) {
+			Matrix invertedGameMatrix = Matrix.Invert(GameMatrix);
+
+			return Vector2.Transform(position, invertedGameMatrix);
+		}
+
+		public static Vector2 GetZeroScreenPositionOnLevel() {
+			return ScreenToLevelPosition(Vector2.Zero);
+		}
 	}
 }

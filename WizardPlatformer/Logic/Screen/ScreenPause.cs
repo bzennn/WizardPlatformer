@@ -41,7 +41,7 @@ namespace WizardPlatformer {
 			previousScreen.Draw(spriteBatch, gameTime);
 			spriteBatch.Draw(
 				background,
-				Vector2.Zero,
+				Display.GetZeroScreenPositionOnLevel(),
 				null,
 				Color.White,
 				0.0f,
@@ -49,7 +49,7 @@ namespace WizardPlatformer {
 				Display.DrawScale,
 				SpriteEffects.None,
 				0.0f);
-			spriteBatch.DrawString(font, "Pause Screen", new Vector2(Display.TargetResolution.X / 2 - Display.GameMatrix.Translation.X, Display.TargetResolution.Y / 2 - Display.GameMatrix.Translation.Y), Color.White);
+			spriteBatch.DrawString(font, "Pause Screen", new Vector2(Display.GetZeroScreenPositionOnLevel().X + Display.BaseResolution.X / 2, Display.BaseResolution.Y / 2), Color.White);
 		}
 	}
 }
