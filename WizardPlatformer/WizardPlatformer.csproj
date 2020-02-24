@@ -57,11 +57,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Logic\Core\GameObject.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />
-    <Compile Include="Logic\Core\IDrawable.cs" />
     <Compile Include="Logic\Core\InputManager.cs" />
-    <Compile Include="Logic\Core\ScreenResolution.cs" />
+    <Compile Include="Logic\Core\Display.cs" />
     <Compile Include="Logic\Entity\Entity.cs" />
     <Compile Include="Logic\Entity\EntityPlayer.cs" />
     <Compile Include="Logic\Level\Level.cs" />
@@ -149,6 +147,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Content\tile\tile_id_map.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_0_1.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

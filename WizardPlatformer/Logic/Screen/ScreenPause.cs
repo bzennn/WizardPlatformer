@@ -17,10 +17,14 @@ namespace WizardPlatformer {
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
-			base.LoadContent(contentManager);
+			this.screenContent = new ContentManager(contentManager.ServiceProvider, "Content");
 
 			background = screenContent.Load<Texture2D>("gui/pause_background");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
+		}
+
+		public override void UnloadContent() {
+			this.screenContent.Unload();
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -42,10 +46,10 @@ namespace WizardPlatformer {
 				Color.White,
 				0.0f,
 				Vector2.Zero,
-				ScreenResolution.DrawScale,
+				Display.DrawScale,
 				SpriteEffects.None,
 				0.0f);
-			spriteBatch.DrawString(font, "Pause Screen", new Vector2(ScreenResolution.BaseResolution.X / 2, ScreenResolution.BaseResolution.Y / 2), Color.White);
+			spriteBatch.DrawString(font, "Pause Screen", new Vector2(Display.TargetResolution.X / 2 - Display.GameMatrix.Translation.X, Display.TargetResolution.Y / 2 - Display.GameMatrix.Translation.Y), Color.White);
 		}
 	}
 }

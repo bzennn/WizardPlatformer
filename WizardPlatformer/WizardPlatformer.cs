@@ -13,14 +13,14 @@ namespace WizardPlatformer {
 		}
 
 		protected override void Initialize() {
-			ScreenResolution.InitScaleMatrix(graphics, 1280, 720);
+			Display.InitScaleMatrix(graphics, 1280, 720);
 			//ScreenResolution.InitScaleMatrix(graphics, 1920, 1080);
 
 			IsMouseVisible = true;
 			graphics.IsFullScreen = false;
 
-			graphics.PreferredBackBufferWidth = (int) ScreenResolution.TargetResolution.X;
-			graphics.PreferredBackBufferHeight = (int) ScreenResolution.TargetResolution.Y;
+			graphics.PreferredBackBufferWidth = (int) Display.TargetResolution.X;
+			graphics.PreferredBackBufferHeight = (int) Display.TargetResolution.Y;
 			graphics.ApplyChanges();
 
 			ScreenManager.GetInstance().Initialize();
@@ -52,7 +52,7 @@ namespace WizardPlatformer {
 		protected override void Draw(GameTime gameTime) {
 			GraphicsDevice.Clear(new Color(140, 206, 223));
 
-			spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, ScreenResolution.ScreenScale);
+			spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Display.GameMatrix);
 			ScreenManager.GetInstance().Draw(spriteBatch, gameTime);
 			spriteBatch.End();
 

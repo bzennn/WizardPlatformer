@@ -18,8 +18,8 @@ namespace WizardPlatformer {
 		private int CalcTileSideSize;
 
 		private LevelLoader() {
-			this.TileSideSize = ScreenResolution.TileSideSize;
-			this.CalcTileSideSize = ScreenResolution.CalcTileSideSize;
+			this.TileSideSize = Display.TileSideSize;
+			this.CalcTileSideSize = Display.CalcTileSideSize;
 		}
 
 		public static LevelLoader GetInstance() {

@@ -35,7 +35,7 @@ namespace WizardPlatformer {
 			this.roomId = roomId;
 			this.tileSet = tileSet;
 			this.tileSetSize = tileSetSize;
-			this.TileSideSize = ScreenResolution.TileSideSize;
+			this.TileSideSize = Display.TileSideSize;
 			this.background = new Texture2D[3];
 		}
 
@@ -66,7 +66,7 @@ namespace WizardPlatformer {
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
 			DrawBackground(spriteBatch, gameTime, background);
-
+			//spriteBatch.GraphicsDevice.
 			DrawLayer(spriteBatch, gameTime, backLayer, roomSizeId);
 			DrawLayer(spriteBatch, gameTime, baseLayer, roomSizeId);
 
@@ -105,7 +105,7 @@ namespace WizardPlatformer {
 				Color.White,
 				0.0f,
 				Vector2.Zero,
-				ScreenResolution.DrawScale,
+				Display.DrawScale,
 				SpriteEffects.None,
 				0.0f);
 				}
@@ -137,6 +137,14 @@ namespace WizardPlatformer {
 				layerCoords.Y >= 0 && layerCoords.Y < roomHeigth) {
 				baseLayer[layerCoords.X, layerCoords.Y] = null;
 			}
+		}
+
+		public int RoomWidth {
+			get { return roomWidth; }
+		}
+
+		public int RoomHeigth {
+			get { return roomHeigth; }
 		}
 	}
 }

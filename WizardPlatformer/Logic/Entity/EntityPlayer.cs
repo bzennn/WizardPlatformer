@@ -42,7 +42,9 @@ namespace WizardPlatformer {
 		protected override void DrawDebugInfo(SpriteBatch spriteBatch, GameTime gameTime) {
 			base.DrawDebugInfo(spriteBatch, gameTime);
 
-			spriteBatch.DrawString(debugFont, "Coins = " + coins, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
+			if (drawDebugInfo) {
+				spriteBatch.DrawString(debugFont, "Coins = " + coins, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
+			}
 		}
 
 		private void UpdateInput(GameTime gameTime) {

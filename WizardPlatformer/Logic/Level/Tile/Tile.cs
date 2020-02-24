@@ -31,8 +31,8 @@ namespace WizardPlatformer {
 		private SpriteFont debugFont;
 
 		public Tile(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY) {
-			this.TileSideSize = ScreenResolution.CalcTileSideSize;
-			this.ScaleFactor = (int)ScreenResolution.DrawScale.X;
+			this.TileSideSize = Display.CalcTileSideSize;
+			this.ScaleFactor = (int)Display.DrawScale.X;
 			this.texture = texture;
 			this.spritePos = new Rectangle(spritePos.X * TileSideSize, spritePos.Y * TileSideSize, TileSideSize, TileSideSize);
 			this.collision = collision;
@@ -57,7 +57,7 @@ namespace WizardPlatformer {
 				Color.White,
 				0.0f,
 				Vector2.Zero,
-				ScreenResolution.DrawScale,
+				Display.DrawScale,
 				SpriteEffects.None,
 				0.5f);
 
@@ -102,7 +102,7 @@ namespace WizardPlatformer {
 				Color.White,
 				0.0f,
 				Vector2.Zero,
-				ScreenResolution.DrawScale,
+				Display.DrawScale,
 				SpriteEffects.None,
 				0.5f
 				);

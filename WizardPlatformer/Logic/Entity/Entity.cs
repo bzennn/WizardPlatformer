@@ -50,7 +50,7 @@ namespace WizardPlatformer {
 		#endregion
 
 		public Entity(int health, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) {
-			this.scaleFactor = (int)ScreenResolution.DrawScale.X; // Only on top of the constructor!!
+			this.scaleFactor = (int)Display.DrawScale.X; // Only on top of the constructor!!
 
 			this.health = health;
 			this.damage = damage;
@@ -79,7 +79,7 @@ namespace WizardPlatformer {
 			this.spriteOffset = new Vector2(heatBoxSpritePosX, heatBoxSpritePosY);
 
 			this.currentFrame = new Point(0, 0);
-			this.frameSize = new Point(ScreenResolution.CalcTileSideSize * 2, ScreenResolution.CalcTileSideSize * 2);
+			this.frameSize = new Point(Display.CalcTileSideSize * 2, Display.CalcTileSideSize * 2);
 			this.frameTimeCounter = 0;
 			this.frameUpdateMillis = 150;
 			
@@ -113,7 +113,7 @@ namespace WizardPlatformer {
 				Color.White,
 				0.0f,
 				Vector2.Zero,
-				ScreenResolution.DrawScale,
+				Display.DrawScale,
 				spriteFlip,
 				0.5f);
 		}
@@ -127,7 +127,7 @@ namespace WizardPlatformer {
 				Color.White,
 				0.0f,
 				Vector2.Zero,
-				ScreenResolution.DrawScale,
+				Display.DrawScale,
 				SpriteEffects.None,
 				0.5f
 				);
@@ -243,8 +243,14 @@ namespace WizardPlatformer {
 		}
 
 		protected void AccelerateJump(float startVelocity, int maxJumpTime, bool clearAcceleration) {
-			if ((currentVelocity.Y < 0 && clearAcceleration) || movingTime.Y >= maxJumpTime) {
-				currentAcceleration.Y = 0;
+			Tile topTileL = level.GetTile(heatBox.Left + heatBox.Width / 2 - 10, heatBox.Top - 1);
+			Tile topTileR = level.GetTile(heatBox.Left + heatBox.Width / 2 + 10, heatBox.Top - 1);
+
+			bool isTopTileLImpassable = (topTileL != null) && (topTileL.Collision == Tile.CollisionType.IMPASSABLE);
+			bool isTopTileRImpassable = (topTileR != null) && (topTileR.Collision == Tile.CollisionType.IMPASSABLE);
+
+			if ((currentVelocity.Y < 0 && clearAcceleration) || movingTime.Y >= maxJumpTime || (isTopTileLImpassable && isTopTileRImpassable)) {
+				 currentAcceleration.Y = 0;
 				currentVelocity.Y = 0;
 
 				isFalling = true;
@@ -293,6 +299,14 @@ namespace WizardPlatformer {
 
 		private void UpdateCollision() {
 			surroundingTiles = GetSurrondingTiles(EntityPosition);
+
+			if (EntityPosition.X < 0) {
+				EntityPosition = new Vector2(0, EntityPosition.Y);
+			}
+
+			if (EntityPosition.X + heatBox.Width > level.RoomWidth * Display.TileSideSize) {
+				EntityPosition = new Vector2(level.RoomWidth * Display.TileSideSize, EntityPosition.Y);
+			}
 
 			for (int i = 0; i < 10; i++) {
 				if (surroundingTiles[i] != null && surroundingTiles[i].Collision != Tile.CollisionType.PASSABLE) {
