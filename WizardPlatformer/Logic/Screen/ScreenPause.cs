@@ -49,7 +49,7 @@ namespace WizardPlatformer {
 				Display.DrawScale,
 				SpriteEffects.None,
 				0.0f);
-			spriteBatch.DrawString(font, "Pause Screen", new Vector2(Display.GetZeroScreenPositionOnLevel().X + Display.BaseResolution.X / 2, Display.BaseResolution.Y / 2), Color.White);
+			spriteBatch.DrawString(font, "Pause Screen", Display.GetScreenCenter(), Color.White);
 		}
 	}
 }

@@ -16,8 +16,9 @@ namespace WizardPlatformer {
 			Display.InitScaleMatrix(graphics, 1280, 720);
 			//Display.InitScaleMatrix(graphics, 1920, 1080);
 
-			IsMouseVisible = true;
+			IsMouseVisible = false;
 			graphics.IsFullScreen = false;
+			//graphics.IsFullScreen = true;
 
 			graphics.PreferredBackBufferWidth = (int) Display.TargetResolution.X;
 			graphics.PreferredBackBufferHeight = (int) Display.TargetResolution.Y;

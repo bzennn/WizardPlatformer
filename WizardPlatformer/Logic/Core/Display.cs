@@ -38,5 +38,10 @@ namespace WizardPlatformer {
 		public static Vector2 GetZeroScreenPositionOnLevel() {
 			return ScreenToLevelPosition(Vector2.Zero);
 		}
+
+		public static Vector2 GetScreenCenter() {
+			Vector2 zeroScreenPosition = Display.GetZeroScreenPositionOnLevel();
+			return new Vector2(zeroScreenPosition.X + Display.BaseResolution.X / 2, zeroScreenPosition.Y + Display.BaseResolution.Y / 2);
+		}
 	}
 }

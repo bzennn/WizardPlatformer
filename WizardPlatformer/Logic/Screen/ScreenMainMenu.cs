@@ -27,7 +27,7 @@ namespace WizardPlatformer {
 		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
 			base.Draw(spriteBatch, gameTime);
 
-			spriteBatch.DrawString(font, "MainMenu Screen", new Vector2(Display.BaseResolution.X / 2, Display.BaseResolution.Y / 2), Color.Black);
+			spriteBatch.DrawString(font, "MainMenu Screen", Display.GetScreenCenter(), Color.Black);
 		}
 	}
 }
