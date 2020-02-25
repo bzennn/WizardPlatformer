@@ -28,6 +28,7 @@ namespace WizardPlatformer {
 		private Tile[,] backLayer;
 		private Tile[,] baseLayer;
 		private Tile[,] decoLayer;
+		private Tile[,] functionalLayer;
 
 		private EntityPlayer player;
 
@@ -46,15 +47,17 @@ namespace WizardPlatformer {
 			this.backLayer = mappedLevelParts.LayerBack;
 			this.baseLayer = mappedLevelParts.LayerBase;
 			this.decoLayer = mappedLevelParts.LayerDeco;
+			this.functionalLayer = mappedLevelParts.LayerFunctional;
 			this.roomSizeId = mappedLevelParts.RoomSize;
 			this.roomWidth = RoomSize[roomSizeId][0];
 			this.roomHeigth = RoomSize[roomSizeId][1];
+
 			//TODO Background load;
 			background[0] = contentManager.Load<Texture2D>("background/test_back");
 
 			// Pos 100 4000 for vert level
 			// Pos 100 1500 for vert/hor level
-			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, 100, 1500, roomSizeId, this);
+			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, 100, 1300, roomSizeId, this);
 			player.LoadContent(contentManager);
 		}
 
@@ -66,7 +69,7 @@ namespace WizardPlatformer {
 
 			UpdateLayer(gameTime, decoLayer, roomSizeId);
 
-			UpdateScrollPosition();
+			UpdateCameraPosition();
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
@@ -153,7 +156,7 @@ namespace WizardPlatformer {
 			}
 		}
 
-		public void UpdateScrollPosition() {
+		public void UpdateCameraPosition() {
 			int roomWidthPixels = roomWidth * Display.TileSideSize;
 			int roomHeigthPixels = roomHeigth * Display.TileSideSize;
 			int halfScreenWidth = (int)Display.BaseResolution.X / 2;

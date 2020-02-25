@@ -45,6 +45,7 @@ namespace WizardPlatformer {
 			string layerBase = "";
 			string layerBack = "";
 			string layerDeco = "";
+			string layerFunctional = "";
 
 			try {
 				if (!File.Exists(filePath)) {
@@ -99,6 +100,12 @@ namespace WizardPlatformer {
 									} else {
 										layerDeco = xLayer.FirstChild.InnerText;
 									}
+								} else if (attribute.Value == "functional") {
+									if (!xLayer.HasChildNodes) {
+										throw levelFormatException;
+									} else {
+										layerFunctional = xLayer.FirstChild.InnerText;
+									}
 								}
 							}
 						}
@@ -109,11 +116,11 @@ namespace WizardPlatformer {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
 			}
 
-			return new string[5] { backgroundId, roomSize, layerBase, layerBack, layerDeco };
+			return new string[6] { backgroundId, roomSize, layerBase, layerBack, layerDeco, layerFunctional };
 		}
 
 		private UnmappedLevelParts PrepareLoadedLevelParts(string[] levelParts) {
-			if (levelParts.Length != 5) {
+			if (levelParts.Length != 6) {
 				throw levelFormatException;
 			}
 			int backgroundId = 0;
@@ -121,6 +128,7 @@ namespace WizardPlatformer {
 			int[] layerBase = null;
 			int[] layerBack = null;
 			int[] layerDeco = null;
+			int[] layerFunctional = null;
 
 			try {
 				if (!int.TryParse(levelParts[0], out backgroundId)) {
@@ -158,9 +166,16 @@ namespace WizardPlatformer {
 					layerDeco = new int[roomTilesQuantity];
 				}
 
+				if (levelParts[5].Length > 0) {
+					layerFunctional = Array.ConvertAll(levelParts[4].Split(','), int.Parse);
+				} else {
+					layerFunctional = new int[roomTilesQuantity];
+				}
+
 				if (layerBase.Length != roomTilesQuantity ||
 					layerBack.Length != roomTilesQuantity ||
-					layerDeco.Length != roomTilesQuantity) {
+					layerDeco.Length != roomTilesQuantity ||
+					layerFunctional.Length != roomTilesQuantity) {
 					throw levelFormatException;
 				}
 			} catch (Exception e) {
@@ -168,7 +183,7 @@ namespace WizardPlatformer {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
 			}
 
-			return new UnmappedLevelParts(backgroundId, roomSize, layerBase, layerBack, layerDeco);
+			return new UnmappedLevelParts(backgroundId, roomSize, layerBase, layerBack, layerDeco, layerFunctional);
 		}
 
 		private Dictionary<int, string> ParseTileIdMapXml(Point tileSetSize) {
@@ -239,6 +254,7 @@ namespace WizardPlatformer {
 			Tile[,] backLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] baseLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] decoLayer = new Tile[roomSizeWidth, roomSizeHeigth];
+			Tile[,] functionalLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 
 			try {
 				int currentTileId = 0;
@@ -262,13 +278,18 @@ namespace WizardPlatformer {
 					if (currentTileId != 0) {
 						decoLayer[k, j] = CreateTile(currentTileId, tileSet, GetTilePosOnTextureById(currentTileId, tileSetSize), k * TileSideSize, j * TileSideSize);
 					}
+
+					currentTileId = unmappedLevelParts.LayerFunctional[i];
+					if (currentTileId != 0) {
+						functionalLayer[k, j] = CreateTile(currentTileId, tileSet, GetTilePosOnTextureById(currentTileId, tileSetSize), k * TileSideSize, j * TileSideSize);
+					}
 				}
 			} catch (Exception e) {
 				Exception levelE = new Exception("Level load error:\n" + e.Message);
 				ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
 			}
 
-			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, baseLayer, backLayer, decoLayer);
+			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, baseLayer, backLayer, decoLayer, functionalLayer);
 		}
 
 		private Point GetTilePosOnTextureById(int tileId, Point tileSetSize) {
@@ -316,6 +337,8 @@ namespace WizardPlatformer {
 					return new TileChest(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, CalcTileSideSize, CalcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "checkpoint":
 					return new TileCheckpoint(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, CalcTileSideSize, CalcTileSideSize, 0, 0, tilePosX, tilePosY);
+				
+				
 				case "debug":
 					return new Tile(tileSet, new Point(11, 19), Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, CalcTileSideSize, CalcTileSideSize, 0, 0, tilePosX, tilePosY);
 			}

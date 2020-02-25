@@ -23,7 +23,7 @@
   <tile id="21" map_value="platform"/>
   <tile id="22" map_value="destroy_collect"/>
   <tile id="23" map_value="hostile"/>
-  <tile id="24" map_value="air"/>
+  <tile id="24" map_value="hostile"/>
   <tile id="25" map_value="solid"/>
   <tile id="26" map_value="solid"/>
   <tile id="27" map_value="solid"/>
@@ -35,7 +35,7 @@
   <tile id="33" map_value="destroy_collect"/>
   <tile id="34" map_value="collectable"/>
   <tile id="35" map_value="hostile"/>
-  <tile id="36" map_value="air"/>
+  <tile id="36" map_value="hostile"/>
   <tile id="37" map_value="solid"/>
   <tile id="38" map_value="solid"/>
   <tile id="39" map_value="solid"/>
@@ -236,8 +236,8 @@
   <tile id="234" map_value="air"/>
   <tile id="235" map_value="air"/>
   <tile id="236" map_value="air"/>
-  <tile id="237" map_value="air"/>
-  <tile id="238" map_value="air"/>
-  <tile id="239" map_value="air"/>
+  <tile id="237" map_value="trigger"/>
+  <tile id="238" map_value="exit"/>
+  <tile id="239" map_value="death"/>
   <tile id="240" map_value="debug"/>
 </id_map>

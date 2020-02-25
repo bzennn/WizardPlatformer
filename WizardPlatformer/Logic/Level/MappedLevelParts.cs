@@ -9,13 +9,15 @@ namespace WizardPlatformer {
 		Tile[,] layerBase;
 		Tile[,] layerBack;
 		Tile[,] layerDeco;
+		Tile[,] layerFunctional;
 
-		public MappedLevelParts(int backgroundId, int roomSize, Tile[,] layerBase, Tile[,] layerBack, Tile[,] layerDeco) {
+		public MappedLevelParts(int backgroundId, int roomSize, Tile[,] layerBase, Tile[,] layerBack, Tile[,] layerDeco, Tile[,] layerFunctional) {
 			this.backgroundId = backgroundId;
 			this.roomSize = roomSize;
 			this.layerBase = layerBase;
 			this.layerBack = layerBack;
 			this.layerDeco = layerDeco;
+			this.layerFunctional = layerFunctional;
 		}
 
 		public int BackgoundId {
@@ -34,6 +36,10 @@ namespace WizardPlatformer {
 		}
 		public Tile[,] LayerDeco {
 			get { return layerDeco; }
+		}
+
+		public Tile[,] LayerFunctional {
+			get { return layerFunctional; }
 		}
 	}
 }
