@@ -56,7 +56,7 @@ namespace WizardPlatformer {
 			background[0] = contentManager.Load<Texture2D>("background/test_back");
 
 			// Pos 100 4000 for vert level
-			// Pos 100 1500 for vert/hor level
+			// Pos 100 1300 for vert/hor level
 			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, 100, 1300, roomSizeId, this);
 			player.LoadContent(contentManager);
 		}
