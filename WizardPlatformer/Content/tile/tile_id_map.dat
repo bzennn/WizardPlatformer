@@ -11,7 +11,7 @@
   <tile id="9" map_value="platform"/>
   <tile id="10" map_value="hostile"/>
   <tile id="11" map_value="hostile"/>
-  <tile id="12" map_value="air"/>
+  <tile id="12" map_value="hostile"/>
   <tile id="13" map_value="solid"/>
   <tile id="14" map_value="solid"/>
   <tile id="15" map_value="solid"/>

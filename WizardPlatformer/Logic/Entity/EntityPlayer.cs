@@ -66,7 +66,7 @@ namespace WizardPlatformer {
 			}
 
 			if (InputManager.GetInstance().IsKeyDown(Keys.Space)) {
-				if ((isOnGround && InputManager.GetInstance().IsKeyPressed(Keys.Space)) || isJumping) {
+				if ((isOnGround && InputManager.GetInstance().IsKeyPressed(Keys.Space)) || isJumping || !isGravityOn) {
 					this.AccelerateJump(-8.5f, 32, false);
 				}
 			} else {

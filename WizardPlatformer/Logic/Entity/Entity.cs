@@ -31,6 +31,7 @@ namespace WizardPlatformer {
 		protected bool isFalling;
 		protected bool isOnGround;
 		protected bool isFallingThrough;
+		protected bool isGravityOn;
 
 		protected Texture2D sprite;
 		protected Point spriteSize;
@@ -75,6 +76,7 @@ namespace WizardPlatformer {
 			this.isOnGround = false;
 			this.isFalling = true;
 			this.isFallingThrough = false;
+			this.isGravityOn = true;
 
 			this.spriteFlip = SpriteEffects.None;
 			this.spritePosition = new Vector2(posX - heatBoxSpritePosX, posY - heatBoxSpritePosY);
@@ -178,7 +180,7 @@ namespace WizardPlatformer {
 				currentVelocity.X = Math.Max(currentAcceleration.X * movingTime.X, -maxVelocity.X);
 			}
 
-			if (!isJumping) {
+			if (!isJumping && isGravityOn) {
 				if (!isOnGround) {
 					currentAcceleration.Y = gravityAcceleration;
 					movingTime.Y++;
