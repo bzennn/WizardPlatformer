@@ -30,6 +30,7 @@ namespace WizardPlatformer {
 		protected bool isJumping;
 		protected bool isFalling;
 		protected bool isOnGround;
+		protected bool isFallingThrough;
 
 		protected Texture2D sprite;
 		protected Point spriteSize;
@@ -73,6 +74,7 @@ namespace WizardPlatformer {
 			this.isJumping = false;
 			this.isOnGround = false;
 			this.isFalling = true;
+			this.isFallingThrough = false;
 
 			this.spriteFlip = SpriteEffects.None;
 			this.spritePosition = new Vector2(posX - heatBoxSpritePosX, posY - heatBoxSpritePosY);
@@ -134,8 +136,10 @@ namespace WizardPlatformer {
 
 				spriteBatch.DrawString(debugFont, "Entity:\nX= " + heatBox.Left + " " + heatBox.Right +
 					"\nHP = " + health +
-					"\nY = " + heatBox.Top + " " + heatBox.Bottom + "\nVel = " + currentVelocity +
-					"\nAcc = " + currentAcceleration, entityPosition - new Vector2(0, 120), Color.AntiqueWhite);
+					"\nY = " + heatBox.Top + " " + heatBox.Bottom + 
+					"\nVel = " + currentVelocity +
+					"\nAcc = " + currentAcceleration +
+					"\nIsFallingThrough = " + isFallingThrough, entityPosition - new Vector2(0, 140), Color.AntiqueWhite);
 			}
 		}
 
@@ -249,7 +253,7 @@ namespace WizardPlatformer {
 			bool isTopTileLImpassable = (topTileL != null) && (topTileL.Collision == Tile.CollisionType.IMPASSABLE);
 			bool isTopTileRImpassable = (topTileR != null) && (topTileR.Collision == Tile.CollisionType.IMPASSABLE);
 
-			if ((currentVelocity.Y < 0 && clearAcceleration) || movingTime.Y >= maxJumpTime || (isTopTileLImpassable && isTopTileRImpassable)) {
+			if ((currentVelocity.Y < 0 && clearAcceleration) || movingTime.Y >= maxJumpTime || (isTopTileLImpassable || isTopTileRImpassable)) {
 				 currentAcceleration.Y = 0;
 				currentVelocity.Y = 0;
 
@@ -273,6 +277,28 @@ namespace WizardPlatformer {
 				isJumping = true;
 
 				movingTime.Y++;
+				return;
+			}
+		}
+
+		protected void FallThrough(bool destroy) {
+			if (destroy) {
+				isFallingThrough = false;
+				return;
+			}
+
+			if (!destroy) {
+				Tile bottomTileL = level.GetTile(heatBox.Left + heatBox.Width / 2 - 10, heatBox.Bottom + 1);
+				Tile bottomTileR = level.GetTile(heatBox.Left + heatBox.Width / 2 + 10, heatBox.Bottom + 1);
+
+				bool isBottomTileLImpassable = (bottomTileL != null) && (bottomTileL.Collision == Tile.CollisionType.IMPASSABLE);
+				bool isBottomTileRImpassable = (bottomTileR != null) && (bottomTileR.Collision == Tile.CollisionType.IMPASSABLE);
+
+				if (!isBottomTileLImpassable && !isBottomTileRImpassable) {
+					isFallingThrough = true;
+					isFalling = true;
+					isOnGround = false;
+				}
 				return;
 			}
 		}
@@ -309,7 +335,8 @@ namespace WizardPlatformer {
 			}
 
 			for (int i = 0; i < 10; i++) {
-				if (surroundingTiles[i] != null && surroundingTiles[i].Collision != Tile.CollisionType.PASSABLE) {
+				if (surroundingTiles[i] != null && surroundingTiles[i].Collision != Tile.CollisionType.PASSABLE &&
+					!(surroundingTiles[i].Collision == Tile.CollisionType.PLATFORM && isFallingThrough)) {
 					Vector2 collisionDepth = Geometry.GetCollisionDepth(heatBox, surroundingTiles[i].HeatBox);
 
 					if (collisionDepth != Vector2.Zero) {
@@ -322,7 +349,8 @@ namespace WizardPlatformer {
 								isOnGround = true;
 							}
 
-							if (surroundingTiles[i].Collision == Tile.CollisionType.IMPASSABLE || isOnGround) {
+							if (surroundingTiles[i].Collision == Tile.CollisionType.IMPASSABLE || 
+								(previousEntityBottom <= surroundingTiles[i].HeatBox.Top)) {
 								EntityPosition = new Vector2(EntityPosition.X, EntityPosition.Y + collisionDepth.Y);
 							}
 							

@@ -72,6 +72,12 @@ namespace WizardPlatformer {
 			} else {
 				this.AccelerateJump(-8.5f, 32, true);
 			}
+
+			if (InputManager.GetInstance().IsKeyPressed(Keys.S)) {
+				this.FallThrough(false);
+			} else {
+				this.FallThrough(true);
+			}
 		}
 
 		private void UpdateExtraCollisions(GameTime gameTime) {
