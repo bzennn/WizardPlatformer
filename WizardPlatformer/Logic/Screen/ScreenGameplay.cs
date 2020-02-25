@@ -25,7 +25,7 @@ namespace WizardPlatformer {
 			tileSet = screenContent.Load<Texture2D>("tile/tileset_export");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
-			currentLevel = new Level(0, 2, tileSet, tileSetSize);
+			currentLevel = new Level(0, 3, tileSet, tileSetSize);
 			currentLevel.LoadContent(contentManager);
 		}
 

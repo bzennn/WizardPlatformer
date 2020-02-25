@@ -135,7 +135,7 @@ namespace WizardPlatformer {
 					throw levelFormatException;
 				}
 
-				if (roomSize < 0 || roomSize > 2) {
+				if (roomSize < 0 || roomSize > Level.RoomSize.Count - 1) {
 					throw levelFormatException;
 				}
 

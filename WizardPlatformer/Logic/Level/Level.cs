@@ -11,6 +11,7 @@ namespace WizardPlatformer {
 			{ 0, new int[2]{ 32, 18}},
 			{ 1, new int[2]{ 96, 18}},
 			{ 2, new int[2]{ 32, 96}},
+			{ 3, new int[2]{ 64, 36}}
 		};
 
 		private int levelId;
@@ -52,7 +53,7 @@ namespace WizardPlatformer {
 			background[0] = contentManager.Load<Texture2D>("background/test_back");
 
 			// Pos 100 4000 for vert level
-			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, 100, 4000, roomSizeId, this);
+			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, 100, 1500, roomSizeId, this);
 			player.LoadContent(contentManager);
 		}
 
@@ -157,18 +158,22 @@ namespace WizardPlatformer {
 			int halfScreenWidth = (int)Display.BaseResolution.X / 2;
 			int halfScreenHeigth = (int)Display.BaseResolution.Y / 2;
 
+			Matrix cameraOffsetX = Matrix.Identity;
+			Matrix cameraOffsetY = Matrix.Identity;
 			if (roomWidthPixels > Display.BaseResolution.X) {
 				if (player.Position.X >= halfScreenWidth &&
 					player.Position.X <= roomWidthPixels - halfScreenWidth) {
-					Display.GameMatrix = Matrix.CreateTranslation(-player.Position.X + halfScreenWidth, 0, 0) * Display.ScreenScale;
+					//Display.GameMatrix = Matrix.CreateTranslation(-player.Position.X + halfScreenWidth, 0, 0) * Display.ScreenScale;
+					cameraOffsetX = Matrix.CreateTranslation(-player.Position.X + halfScreenWidth, 0, 0);
 				} else {
 					if (player.Position.X >= halfScreenWidth) {
-						Display.GameMatrix = Matrix.CreateTranslation(- roomWidthPixels + halfScreenWidth * 2, 0, 0) * Display.ScreenScale;
-						
+						//Display.GameMatrix = Matrix.CreateTranslation(- roomWidthPixels + halfScreenWidth * 2, 0, 0) * Display.ScreenScale;
+						cameraOffsetX = Matrix.CreateTranslation(-roomWidthPixels + halfScreenWidth * 2, 0, 0);
 					}
 
 					if (player.Position.X <= roomWidthPixels - Display.BaseResolution.X) {
-						Display.GameMatrix = Display.ScreenScale;
+						//Display.GameMatrix = Matrix.CreateTranslation(0, 0, 0) * Display.ScreenScale;
+						cameraOffsetX = Matrix.CreateTranslation(0, 0, 0);
 					}
 					
 				}
@@ -177,19 +182,26 @@ namespace WizardPlatformer {
 			if (roomHeigthPixels > Display.BaseResolution.Y) {
 				if (player.Position.Y >= halfScreenHeigth &&
 					player.Position.Y <= roomHeigthPixels - halfScreenHeigth) {
-					Display.GameMatrix = Matrix.CreateTranslation(0, -player.Position.Y + halfScreenHeigth, 0) * Display.ScreenScale;
+					//Display.GameMatrix = Matrix.CreateTranslation(0, -player.Position.Y + halfScreenHeigth, 0) * Display.ScreenScale;
+					cameraOffsetY = Matrix.CreateTranslation(0, -player.Position.Y + halfScreenHeigth, 0);
 				} else {
 					if (player.Position.Y >= halfScreenHeigth) {
-						Display.GameMatrix = Matrix.CreateTranslation(0, -roomHeigthPixels + halfScreenHeigth * 2, 0) * Display.ScreenScale;
-
+						//Display.GameMatrix = Matrix.CreateTranslation(0, -roomHeigthPixels + halfScreenHeigth * 2, 0) * Display.ScreenScale;
+						cameraOffsetY = Matrix.CreateTranslation(0, -roomHeigthPixels + halfScreenHeigth * 2, 0);
 					}
 
 					if (player.Position.Y <= roomHeigthPixels - Display.BaseResolution.Y) {
-						Display.GameMatrix = Display.ScreenScale;
+						//Display.GameMatrix = Matrix.CreateTranslation(0, 0, 0) * Display.ScreenScale;
+						cameraOffsetY = Matrix.CreateTranslation(0, 0, 0);
 					}
 
 				}
 			}
+
+			//if (roomWidthPixels > Display.BaseResolution.X ||
+			//	roomHeigthPixels > Display.BaseResolution.Y) {
+				Display.GameMatrix = (cameraOffsetX * cameraOffsetY) * Display.ScreenScale;
+			//}
 		}
 
 		public int RoomWidth {
