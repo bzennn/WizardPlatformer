@@ -13,7 +13,7 @@ namespace WizardPlatformer {
 
 			this.coins = coins;
 			this.spriteSize = new Point(6, 6);
-			this.drawDebugInfo = true;
+			this.drawDebugInfo = false;
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
@@ -82,7 +82,7 @@ namespace WizardPlatformer {
 		}
 
 		private void UpdateExtraCollisions(GameTime gameTime) {
-			surroundingTiles = GetSurrondingTiles(EntityPosition);
+			surroundingTiles = GetSurrondingTiles();
 
 			for (int i = 0; i < 10; i++) {
 				if (surroundingTiles[i] != null && heatBox.Intersects(surroundingTiles[i].HeatBox) && surroundingTiles[i] is TileCollectable) {
@@ -90,6 +90,15 @@ namespace WizardPlatformer {
 					this.level.DestroyTile(surroundingTiles[i]);
 					break;
 				}
+			}
+		}
+
+		protected override void HandleFunctionalTile(TileFunctional tile) {
+			base.HandleFunctionalTile(tile);
+
+			if (tile.Type == TileFunctional.FunctionType.TRIGGER) {
+				level.HandleTrigger();
+				return;
 			}
 		}
 

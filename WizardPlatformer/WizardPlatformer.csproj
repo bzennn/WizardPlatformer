@@ -77,6 +77,7 @@
     <Compile Include="Logic\Level\Tile\TileChest.cs" />
     <Compile Include="Logic\Level\Tile\TileCollectable.cs" />
     <Compile Include="Logic\Level\Tile\TileDestroyable.cs" />
+    <Compile Include="Logic\Level\Tile\TileFunctional.cs" />
     <Compile Include="Logic\Level\Tile\TileMovingPlatform.cs" />
     <Compile Include="Logic\Level\Tile\TileMovingPlatformRail.cs" />
     <Compile Include="Logic\Level\LevelLoading\UnmappedLevelParts.cs" />

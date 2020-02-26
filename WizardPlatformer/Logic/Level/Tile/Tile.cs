@@ -49,12 +49,12 @@ namespace WizardPlatformer {
 			} 
 		}
 
-		public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
+		public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime, float opacity = 1.0f) {
 			spriteBatch.Draw(
 				texture,
 				Position,
 				spritePos,
-				Color.White,
+				Color.White * opacity,
 				0.0f,
 				Vector2.Zero,
 				Display.DrawScale,

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -32,6 +31,10 @@ namespace WizardPlatformer.Logic.Level {
 		private Tile[,] decoLayer;
 		private Tile[,] functionalLayer;
 
+		private bool isDecoLayerVisible;
+		private int visibilityAnimationCounter;
+		private float currentOpacity;
+
 		private Point playerStartPosition;
 		private EntityPlayer player;
 		private List<Entity> entities;
@@ -45,6 +48,11 @@ namespace WizardPlatformer.Logic.Level {
 			this.playerStartPosition = playerStartPosition;
 			this.TileSideSize = Display.TileSideSize;
 			this.background = new Texture2D[3];
+			this.entities = new List<Entity>();
+
+			this.isDecoLayerVisible = true;
+			this.visibilityAnimationCounter = 0;
+			this.currentOpacity = 1.0f;
 		}
 
 		public void LoadContent(ContentManager contentManager) {
@@ -62,17 +70,21 @@ namespace WizardPlatformer.Logic.Level {
 			background[0] = contentManager.Load<Texture2D>("background/test_back");
 
 			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
-			player.LoadContent(contentManager);
+			SpawnEntity(player);
+
+			LoadEntitiesContent(contentManager);
 		}
 
 		public void Update(GameTime gameTime) {
+			ReturnLayersVisibility(gameTime, 50);
+
 			UpdateLayer(gameTime, backLayer, roomSizeId);
 			UpdateLayer(gameTime, baseLayer, roomSizeId);
-			
-			player.Update(gameTime);
+
+			UpdateEntities(gameTime);
 
 			UpdateLayer(gameTime, decoLayer, roomSizeId);
-
+			
 			UpdateCameraPosition();
 		}
 
@@ -82,9 +94,9 @@ namespace WizardPlatformer.Logic.Level {
 			DrawLayer(spriteBatch, gameTime, backLayer, roomSizeId);
 			DrawLayer(spriteBatch, gameTime, baseLayer, roomSizeId);
 
-			player.Draw(spriteBatch, gameTime);
-
-			DrawLayer(spriteBatch, gameTime, decoLayer, roomSizeId);
+			DrawEntities(spriteBatch, gameTime);
+			
+			DrawLayer(spriteBatch, gameTime, decoLayer, roomSizeId, currentOpacity);
 		}
 
 		private void UpdateLayer(GameTime gameTime, Tile[,] tileLayer, int roomSizeId) {
@@ -97,11 +109,11 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
-		private void DrawLayer(SpriteBatch spriteBatch, GameTime gameTime, Tile[,] tileLayer, int roomSizeId) {
+		private void DrawLayer(SpriteBatch spriteBatch, GameTime gameTime, Tile[,] tileLayer, int roomSizeId, float opacity = 1.0f) {
 			for (int i = 0; i < RoomSize[roomSizeId][0]; i++) {
 				for (int j = 0; j < RoomSize[roomSizeId][1]; j++) {
 					if (tileLayer[i, j] != null) {
-						tileLayer[i, j].Draw(spriteBatch, gameTime);
+						tileLayer[i, j].Draw(spriteBatch, gameTime, opacity);
 					}
 				}
 			}
@@ -124,6 +136,8 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
+		#region Tiles
+
 		public Point GetTileLayerCoords(float posX, float posY) {
 			int x = (int)Math.Floor(posX / TileSideSize);
 			int y = (int)Math.Floor(posY / TileSideSize);
@@ -145,6 +159,8 @@ namespace WizardPlatformer.Logic.Level {
 						return backLayer[x, y];
 					case "deco":
 						return decoLayer[x, y];
+					case "functional":
+						return functionalLayer[x, y];
 				}
 			}
 
@@ -159,6 +175,68 @@ namespace WizardPlatformer.Logic.Level {
 				baseLayer[layerCoords.X, layerCoords.Y] = null;
 			}
 		}
+
+		public virtual void HandleTrigger() {
+			if (isDecoLayerVisible == true && currentOpacity <= 1.0) {
+
+				if (currentOpacity > 10e-4f) {
+					currentOpacity -= 0.015f;
+				} else {
+					isDecoLayerVisible = false;
+					currentOpacity = 0.0f;
+				}
+			}
+		}
+
+		public void ReturnLayersVisibility(GameTime gameTime, int animationSpeed) {
+			if (isDecoLayerVisible == false && currentOpacity >= 0.0f) {
+
+				if (currentOpacity < 1.0f) {
+					currentOpacity += 0.015f;
+				} else {
+					isDecoLayerVisible = true;
+					currentOpacity = 1.0f;
+				}
+			}
+		}
+
+		#endregion
+
+		#region Entities
+
+		public void SpawnEntity(Entity entity) {
+			entities.Add(entity);
+		}
+
+		public void DespawnEntity(Entity entity) {
+			if (entity != null) {
+				if (!entity.IsAlive) {
+					if (entities.Contains(entity)) {
+						entities.Remove(entity);
+					}
+				}
+			}
+		}
+
+		public void LoadEntitiesContent(ContentManager contentManager) {
+			foreach (Entity entity in entities) {
+				entity.LoadContent(contentManager);
+			}
+		}
+
+		public void UpdateEntities(GameTime gameTime) {
+			foreach (Entity entity in entities) {
+				entity.Update(gameTime);
+			}
+		}
+
+		public void DrawEntities(SpriteBatch spriteBatch, GameTime gameTime) {
+			foreach (Entity entity in entities) {
+				entity.Draw(spriteBatch, gameTime);
+			}
+		}
+
+		#endregion
 
 		public void UpdateCameraPosition() {
 			int roomWidthPixels = roomWidth * Display.TileSideSize;

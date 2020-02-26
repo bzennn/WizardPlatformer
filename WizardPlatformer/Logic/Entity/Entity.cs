@@ -12,6 +12,7 @@ namespace WizardPlatformer {
 
 		protected int health;
 		protected int damage;
+		private bool isAlive;
 
 		protected Level level;
 		protected Tile[] surroundingTiles;
@@ -57,6 +58,7 @@ namespace WizardPlatformer {
 
 			this.health = health;
 			this.damage = damage;
+			this.isAlive = true;
 
 			this.level = level;
 			this.surroundingTiles = new Tile[10];
@@ -107,6 +109,8 @@ namespace WizardPlatformer {
 			if (emulatePhysics) {
 				UpdatePhysics(gameTime);
 			}
+
+			HandleFuctionalTiles();
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
@@ -154,6 +158,14 @@ namespace WizardPlatformer {
 				heatBox.Y = (int)entityPosition.Y;
 				spritePosition = entityPosition - spriteOffset;
 			}
+		}
+
+		public int Health {
+			get { return health; }
+		}
+
+		public bool IsAlive {
+			get { return isAlive; }
 		}
 
 		#region Moving
@@ -310,24 +322,24 @@ namespace WizardPlatformer {
 
 		#region Collision Resolve and Detection
 
-		protected Tile[] GetSurrondingTiles(Vector2 entityPosition) {
+		protected Tile[] GetSurrondingTiles(string layer = "base") {
 			Tile[] surroundingTiles = new Tile[10];
 
-			surroundingTiles[0] = level.GetTile(entityPosition.X, entityPosition.Y);
-			surroundingTiles[1] = level.GetTile(entityPosition.X, entityPosition.Y + heatBox.Height / 2);
-			surroundingTiles[2] = level.GetTile(entityPosition.X, entityPosition.Y + heatBox.Height);
-			surroundingTiles[3] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y);
-			surroundingTiles[4] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y + heatBox.Height / 2);
-			surroundingTiles[5] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y + heatBox.Height);
-			surroundingTiles[7] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y);
-			surroundingTiles[8] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y + heatBox.Height / 2);
-			surroundingTiles[9] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y + heatBox.Height);
+			surroundingTiles[0] = level.GetTile(entityPosition.X, entityPosition.Y, layer);
+			surroundingTiles[1] = level.GetTile(entityPosition.X, entityPosition.Y + heatBox.Height / 2, layer);
+			surroundingTiles[2] = level.GetTile(entityPosition.X, entityPosition.Y + heatBox.Height, layer);
+			surroundingTiles[3] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y, layer);
+			surroundingTiles[4] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y + heatBox.Height / 2, layer);
+			surroundingTiles[5] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y + heatBox.Height, layer);
+			surroundingTiles[7] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y, layer);
+			surroundingTiles[8] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y + heatBox.Height / 2, layer);
+			surroundingTiles[9] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y + heatBox.Height, layer);
 
 			return surroundingTiles;
 		}
 
 		private void UpdateCollision() {
-			surroundingTiles = GetSurrondingTiles(EntityPosition);
+			surroundingTiles = GetSurrondingTiles();
 
 			if (EntityPosition.X < 0) {
 				EntityPosition = new Vector2(0, EntityPosition.Y);
@@ -367,5 +379,31 @@ namespace WizardPlatformer {
 		}
 
 		#endregion
+
+		#region FunctionalTilesHandling
+
+		private void HandleFuctionalTiles() {
+			surroundingTiles = GetSurrondingTiles("functional");
+
+			foreach (Tile tile in surroundingTiles) {
+				if (tile is TileFunctional) {
+					HandleFunctionalTile((TileFunctional)tile);
+				}
+			}
+		}
+
+		protected virtual void HandleFunctionalTile(TileFunctional tile) {
+			if (tile.Type == TileFunctional.FunctionType.DEADLY) {
+				Die();
+				return;
+			}
+		}
+
+		#endregion
+
+		public void Die() {
+			health = 0;
+			isAlive = false;
+		}
 	}
 }

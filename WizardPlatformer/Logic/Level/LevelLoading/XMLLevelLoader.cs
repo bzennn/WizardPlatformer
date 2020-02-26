@@ -140,7 +140,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				}
 
 				if (levelParts[5].Length > 0) {
-					layerFunctional = Array.ConvertAll(levelParts[4].Split(','), int.Parse);
+					layerFunctional = Array.ConvertAll(levelParts[5].Split(','), int.Parse);
 				} else {
 					layerFunctional = new int[roomTilesQuantity];
 				}

@@ -16,8 +16,8 @@ namespace WizardPlatformer {
 			base.Update(gameTime);
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
-			base.Draw(spriteBatch, gameTime);
+		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, float opacity = 1.0f) {
+			base.Draw(spriteBatch, gameTime, opacity);
 		}
 	}
 }
