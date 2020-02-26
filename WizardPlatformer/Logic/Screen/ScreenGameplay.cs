@@ -2,11 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using WizardPlatformer.Logic.Level.LevelLoading;
+using WizardPlatformer.Logic.Level;
 
 namespace WizardPlatformer {
 	public class ScreenGameplay : Screen {
 
-		#region fields
+		#region Fields
+		LevelLoader levelLoader;
 
 		Texture2D tileSet;
 		Point tileSetSize = new Point(12, 20);
@@ -25,7 +28,8 @@ namespace WizardPlatformer {
 			tileSet = screenContent.Load<Texture2D>("tile/tileset_export");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
-			currentLevel = new Level(0, 3, tileSet, tileSetSize);
+			levelLoader = new LevelLoader(tileSet, tileSetSize);
+			currentLevel = new Level(0, 2, levelLoader, new Point(100, 4000));
 			currentLevel.LoadContent(contentManager);
 		}
 

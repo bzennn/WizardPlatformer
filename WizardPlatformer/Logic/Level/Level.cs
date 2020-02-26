@@ -4,8 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
+using WizardPlatformer.Logic.Level.LevelLoading;
 
-namespace WizardPlatformer {
+namespace WizardPlatformer.Logic.Level {
 	public class Level {
 		public static readonly Dictionary<int, int[]> RoomSize = new Dictionary<int, int[]>(){
 			{ 0, new int[2]{ 32, 18}},
@@ -14,50 +15,53 @@ namespace WizardPlatformer {
 			{ 3, new int[2]{ 64, 36}}
 		};
 
+		#region Fields
+
 		private int levelId;
 		private int roomId;
 		private int roomSizeId;
 		private int roomWidth;
 		private int roomHeigth;
 
+		private LevelLoader levelLoader;
 		private Texture2D[] background;
 		private int TileSideSize;
-		private Texture2D tileSet;
-		private Point tileSetSize;
 
 		private Tile[,] backLayer;
 		private Tile[,] baseLayer;
 		private Tile[,] decoLayer;
 		private Tile[,] functionalLayer;
 
+		private Point playerStartPosition;
 		private EntityPlayer player;
+		private List<Entity> entities;
 
-		public Level(int levelId, int roomId, Texture2D tileSet, Point tileSetSize) {
+		#endregion
+
+		public Level(int levelId, int roomId, LevelLoader levelLoader, Point playerStartPosition) {
 			this.levelId = levelId;
 			this.roomId = roomId;
-			this.tileSet = tileSet;
-			this.tileSetSize = tileSetSize;
+			this.levelLoader = levelLoader;
+			this.playerStartPosition = playerStartPosition;
 			this.TileSideSize = Display.TileSideSize;
 			this.background = new Texture2D[3];
 		}
 
 		public void LoadContent(ContentManager contentManager) {
-			MappedLevelParts mappedLevelParts = LevelLoader.GetInstance().LoadLevel(levelId, roomId, tileSet, tileSetSize);
+			MappedLevelParts mappedLevelParts = levelLoader.LoadLevel(levelId, roomId);
 
-			this.backLayer = mappedLevelParts.LayerBack;
-			this.baseLayer = mappedLevelParts.LayerBase;
-			this.decoLayer = mappedLevelParts.LayerDeco;
-			this.functionalLayer = mappedLevelParts.LayerFunctional;
-			this.roomSizeId = mappedLevelParts.RoomSize;
-			this.roomWidth = RoomSize[roomSizeId][0];
-			this.roomHeigth = RoomSize[roomSizeId][1];
+			backLayer = mappedLevelParts.LayerBack;
+			baseLayer = mappedLevelParts.LayerBase;
+			decoLayer = mappedLevelParts.LayerDeco;
+			functionalLayer = mappedLevelParts.LayerFunctional;
+			roomSizeId = mappedLevelParts.RoomSize;
+			roomWidth = RoomSize[roomSizeId][0];
+			roomHeigth = RoomSize[roomSizeId][1];
 
 			//TODO Background load;
 			background[0] = contentManager.Load<Texture2D>("background/test_back");
 
-			// Pos 100 4000 for vert level
-			// Pos 100 1300 for vert/hor level
-			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, 100, 1300, roomSizeId, this);
+			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
 			player.LoadContent(contentManager);
 		}
 

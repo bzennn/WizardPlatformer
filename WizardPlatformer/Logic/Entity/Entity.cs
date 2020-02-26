@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System;
+using WizardPlatformer.Logic.Level;
 
 namespace WizardPlatformer {
 	public abstract class Entity {

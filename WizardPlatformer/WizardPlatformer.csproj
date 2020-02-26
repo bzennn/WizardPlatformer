@@ -62,9 +62,16 @@
     <Compile Include="Logic\Core\Display.cs" />
     <Compile Include="Logic\Entity\Entity.cs" />
     <Compile Include="Logic\Entity\EntityPlayer.cs" />
+    <Compile Include="Logic\Exceptions\LevelFormatException.cs" />
+    <Compile Include="Logic\Exceptions\LevelMappingException.cs" />
+    <Compile Include="Logic\Exceptions\TileIdMapFormatException.cs" />
     <Compile Include="Logic\Level\Level.cs" />
-    <Compile Include="Logic\Level\LevelLoader.cs" />
-    <Compile Include="Logic\Level\MappedLevelParts.cs" />
+    <Compile Include="Logic\Level\LevelLoading\LevelLoader.cs" />
+    <Compile Include="Logic\Level\LevelLoading\LevelMapper.cs" />
+    <Compile Include="Logic\Level\LevelLoading\MappedLevelParts.cs" />
+    <Compile Include="Logic\Level\LevelLoading\TileCreator.cs" />
+    <Compile Include="Logic\Level\LevelLoading\XMLLevelLoader.cs" />
+    <Compile Include="Logic\Level\LevelLoading\XMLTileIdMapLoader.cs" />
     <Compile Include="Logic\Level\Tile\Tile.cs" />
     <Compile Include="Logic\Level\Tile\TileCheckpoint.cs" />
     <Compile Include="Logic\Level\Tile\TileChest.cs" />
@@ -72,7 +79,7 @@
     <Compile Include="Logic\Level\Tile\TileDestroyable.cs" />
     <Compile Include="Logic\Level\Tile\TileMovingPlatform.cs" />
     <Compile Include="Logic\Level\Tile\TileMovingPlatformRail.cs" />
-    <Compile Include="Logic\Level\UnmappedLevelParts.cs" />
+    <Compile Include="Logic\Level\LevelLoading\UnmappedLevelParts.cs" />
     <Compile Include="Logic\Screen\Screen.cs" />
     <Compile Include="Logic\Screen\ScreenError.cs" />
     <Compile Include="Logic\Screen\ScreenGameplay.cs" />
@@ -168,7 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\tile\background\" />
-    <Folder Include="Logic\Exception\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\tile\tileset_export.png" />

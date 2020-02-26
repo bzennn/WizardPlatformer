@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace WizardPlatformer {
+namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class MappedLevelParts {
 		int backgroundId;
 		int roomSize;
