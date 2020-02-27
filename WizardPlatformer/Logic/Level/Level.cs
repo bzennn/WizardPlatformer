@@ -24,20 +24,21 @@ namespace WizardPlatformer.Logic.Level {
 
 		private LevelLoader levelLoader;
 		private Texture2D[] background;
-		private int TileSideSize;
+		private int tileSideSize;
 
 		private Tile[,] backLayer;
 		private Tile[,] baseLayer;
 		private Tile[,] decoLayer;
 		private Tile[,] functionalLayer;
 
-		private bool isDecoLayerVisible;
-		private int visibilityAnimationCounter;
+		private bool isTriggerOn;
 		private float currentOpacity;
 
 		private Point playerStartPosition;
 		private EntityPlayer player;
 		private List<Entity> entities;
+
+		private List<Tile> tileEntities;
 
 		#endregion
 
@@ -46,12 +47,12 @@ namespace WizardPlatformer.Logic.Level {
 			this.roomId = roomId;
 			this.levelLoader = levelLoader;
 			this.playerStartPosition = playerStartPosition;
-			this.TileSideSize = Display.TileSideSize;
+			this.tileSideSize = Display.TileSideSize;
 			this.background = new Texture2D[3];
 			this.entities = new List<Entity>();
+			this.tileEntities = new List<Tile>();
 
-			this.isDecoLayerVisible = true;
-			this.visibilityAnimationCounter = 0;
+			this.isTriggerOn = false;
 			this.currentOpacity = 1.0f;
 		}
 
@@ -76,10 +77,12 @@ namespace WizardPlatformer.Logic.Level {
 		}
 
 		public void Update(GameTime gameTime) {
-			ReturnLayersVisibility(gameTime, 50);
+			UpdateLayersVisibility(gameTime, 0.05f);
 
 			UpdateLayer(gameTime, backLayer, roomSizeId);
 			UpdateLayer(gameTime, baseLayer, roomSizeId);
+
+			UpdateTileEntities(gameTime);
 
 			UpdateEntities(gameTime);
 
@@ -93,6 +96,8 @@ namespace WizardPlatformer.Logic.Level {
 			
 			DrawLayer(spriteBatch, gameTime, backLayer, roomSizeId);
 			DrawLayer(spriteBatch, gameTime, baseLayer, roomSizeId);
+			
+			DrawTileEntities(spriteBatch, gameTime);
 
 			DrawEntities(spriteBatch, gameTime);
 			
@@ -139,15 +144,19 @@ namespace WizardPlatformer.Logic.Level {
 		#region Tiles
 
 		public Point GetTileLayerCoords(float posX, float posY) {
-			int x = (int)Math.Floor(posX / TileSideSize);
-			int y = (int)Math.Floor(posY / TileSideSize);
+			int x = (int)Math.Floor(posX / tileSideSize);
+			int y = (int)Math.Floor(posY / tileSideSize);
 
 			return new Point(x, y);
 		}
 
+		public Point GetTileCoordsFromLayer(int x, int y) {
+			return new Point(x * tileSideSize, y * tileSideSize);
+		}
+
 		public Tile GetTile(float posX, float posY, string layer = "base") {
-			int x = (int)Math.Floor(posX / TileSideSize);
-			int y = (int)Math.Floor(posY / TileSideSize);
+			int x = (int)Math.Floor(posX / tileSideSize);
+			int y = (int)Math.Floor(posY / tileSideSize);
 
 			if (x >= 0 && x < roomWidth && y >= 0 && y < roomHeigth) {
 				switch (layer) {
@@ -168,7 +177,7 @@ namespace WizardPlatformer.Logic.Level {
 		}
 
 		public void DestroyTile(Tile tile) {
-			Point layerCoords = GetTileLayerCoords(tile.Position.X, tile.Position.Y);
+			Point layerCoords = GetTileLayerCoords(tile.TilePosition.X, tile.TilePosition.Y);
 
 			if (layerCoords.X >= 0 && layerCoords.X < roomWidth &&
 				layerCoords.Y >= 0 && layerCoords.Y < roomHeigth) {
@@ -176,28 +185,63 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
-		public virtual void HandleTrigger() {
-			if (isDecoLayerVisible == true && currentOpacity <= 1.0) {
+		#region TileEntities
 
-				if (currentOpacity > 10e-4f) {
-					currentOpacity -= 0.015f;
-				} else {
-					isDecoLayerVisible = false;
-					currentOpacity = 0.0f;
+		public void SpawnTileEntity(Tile tile) {
+			tileEntities.Add(tile);
+		}
+
+		public void DespawnTileEntity(Tile tile) {
+			if (tile != null) {
+				if (tileEntities.Contains(tile)) {
+					tileEntities.Remove(tile);
 				}
 			}
 		}
 
-		public void ReturnLayersVisibility(GameTime gameTime, int animationSpeed) {
-			if (isDecoLayerVisible == false && currentOpacity >= 0.0f) {
+		public void UpdateTileEntities(GameTime gameTime) {
+			foreach (Tile tile in tileEntities) {
+				tile.Update(gameTime);
+			}
+		}
 
+		public void DrawTileEntities(SpriteBatch spriteBatch, GameTime gameTime) {
+			foreach (Tile tile in tileEntities) {
+				tile.Draw(spriteBatch, gameTime);
+			}
+		}
+
+		#endregion
+
+		#region Triggers
+
+		public virtual void HandleTrigger() {
+			isTriggerOn = true;
+		}
+
+		private void RestoreTrigger() {
+			isTriggerOn = false;
+		}
+
+		#endregion
+
+		private void UpdateLayersVisibility(GameTime gameTime, float opacitySpeed) {
+			if (!isTriggerOn) {
 				if (currentOpacity < 1.0f) {
-					currentOpacity += 0.015f;
+					currentOpacity += opacitySpeed;
 				} else {
-					isDecoLayerVisible = true;
 					currentOpacity = 1.0f;
 				}
+			} else if (isTriggerOn) {
+
+				if (currentOpacity > 10e-4f) {
+					currentOpacity -= opacitySpeed;
+				} else {
+					currentOpacity = 0.0f;
+				}
 			}
+
+			RestoreTrigger();
 		}
 
 		#endregion

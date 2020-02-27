@@ -54,8 +54,8 @@
   <tile id="52" map_value="solid"/>
   <tile id="53" map_value="solid"/>
   <tile id="54" map_value="solid"/>
-  <tile id="55" map_value="moving_plat"/>
-  <tile id="56" map_value="moving_plat"/>
+  <tile id="55" map_value="moving_plat_st"/>
+  <tile id="56" map_value="moving_plat_gr"/>
   <tile id="57" map_value="rail_vert"/>
   <tile id="58" map_value="rail_hor"/>
   <tile id="59" map_value="air"/>

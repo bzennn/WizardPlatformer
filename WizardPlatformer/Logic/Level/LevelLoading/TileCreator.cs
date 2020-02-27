@@ -40,20 +40,22 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, 8, 8, 8, 8, tilePosX, tilePosY);
 				case "destroy_collect":
 					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
-				case "moving_plat":
-					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.PLATFORM, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+				case "moving_plat_st":
+					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.PLATFORM, Tile.PassType.REGULAR, 4.25f, calcTileSideSize, 8, 0, 8, tilePosX, tilePosY);
+				case "moving_plat_gr":
+					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.PLATFORM, Tile.PassType.REGULAR, 4.25f, calcTileSideSize, 8, 0, 0, tilePosX, tilePosY);
 				case "rail_vert":
-					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.VERTICAL, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "rail_hor":
-					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.HORIZONTAL, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "rail_up_right":
-					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.UP_RIGHT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "rail_up_left":
-					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.UP_LEFT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "rail_down_right":
-					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.DOWN_RIGHT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "rail_down_left":
-					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.DOWN_LEFT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "chest":
 					return new TileChest(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "checkpoint":

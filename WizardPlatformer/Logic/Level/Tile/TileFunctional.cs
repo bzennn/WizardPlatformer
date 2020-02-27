@@ -7,15 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WizardPlatformer {
-	public class TileFunctional : Tile {
-		private FunctionType type;
-
+	public class TileFunctional : Tile { 
 		public enum FunctionType {
 			EXIT,
 			ENTRANCE,
 			DEADLY,
 			TRIGGER
 		}
+
+		private FunctionType type;
 
 		public TileFunctional(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, FunctionType type, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY) 
 			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {

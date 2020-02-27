@@ -20,5 +20,9 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 			return levelMapper.MapUnmappedLevelParts(unmappedLevelParts);
 		}
+
+		public TileCreator GetTileCreator() {
+			return levelMapper.TileCreator;
+		}
 	}
 }

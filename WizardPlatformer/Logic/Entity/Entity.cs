@@ -395,7 +395,6 @@ namespace WizardPlatformer {
 		protected virtual void HandleFunctionalTile(TileFunctional tile) {
 			if (tile.Type == TileFunctional.FunctionType.DEADLY) {
 				Die();
-				return;
 			}
 		}
 

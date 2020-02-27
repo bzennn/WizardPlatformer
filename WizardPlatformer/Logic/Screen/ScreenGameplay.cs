@@ -29,8 +29,14 @@ namespace WizardPlatformer {
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
 			levelLoader = new LevelLoader(tileSet, tileSetSize);
-			currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
+			currentLevel = new Level(0, 2, levelLoader, new Point(1266, 650));
 			currentLevel.LoadContent(contentManager);
+
+			// 37 29 for level 0-3
+			// 17 17 for level 0-2
+			TileMovingPlatform movingPlatform = (TileMovingPlatform)levelLoader.GetTileCreator().CreateTile(56, 17 * Display.TileSideSize, 17 * Display.TileSideSize);
+			movingPlatform.Level = currentLevel;
+			currentLevel.SpawnTileEntity(movingPlatform);
 		}
 
 		public override void Update(GameTime gameTime) {

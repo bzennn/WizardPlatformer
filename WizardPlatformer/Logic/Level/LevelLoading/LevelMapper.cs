@@ -58,5 +58,9 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, baseLayer, backLayer, decoLayer, functionalLayer);
 		}
+
+		public TileCreator TileCreator {
+			get { return tileCreator; }
+		}
 	}
 }
