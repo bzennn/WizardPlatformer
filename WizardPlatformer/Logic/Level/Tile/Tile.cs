@@ -16,12 +16,14 @@ namespace WizardPlatformer {
 		}
 
 		private Rectangle heatBox;
-		private Vector2 spriteOffset;
+		private Vector2 heatBoxOffset;
 		public Vector2 tilePosition;
 
 		private Texture2D sprite;
 		private Vector2 spritePosition;
+		private Vector2 spriteOffset;
 		private Rectangle spriteOnMap;
+
 		private int tileSideSize;
 		private int scaleFactor;
 
@@ -35,6 +37,7 @@ namespace WizardPlatformer {
 			this.tileSideSize = Display.CalcTileSideSize;
 
 			this.heatBox = new Rectangle(posX, posY, heatBoxWidth * scaleFactor, heatBoxHeigth * scaleFactor);
+			this.heatBoxOffset = Vector2.Zero;
 			this.tilePosition = new Vector2(posX, posY);
 
 			this.sprite = texture;
@@ -86,14 +89,15 @@ namespace WizardPlatformer {
 			get { return tilePosition; }
 			set {
 				tilePosition = value;
-				heatBox.X = (int)tilePosition.X;
-				heatBox.Y = (int)tilePosition.Y;
+				heatBox.X = (int)tilePosition.X - (int)heatBoxOffset.X;
+				heatBox.Y = (int)tilePosition.Y - (int)heatBoxOffset.Y;
 				spritePosition = tilePosition - spriteOffset;
 			}
 		}
 
 		public CollisionType Collision {
 			get { return collision; }
+			set { collision = value; }
 		}
 
 		public PassType Pass {
@@ -102,6 +106,12 @@ namespace WizardPlatformer {
 
 		public Rectangle HeatBox {
 			get { return heatBox; }
+			set { heatBox = value; }
+		}
+
+		public Vector2 HeatBoxOffset {
+			get { return heatBoxOffset; }
+			set { heatBoxOffset = value; }
 		}
 		
 		public bool DebugInfo {

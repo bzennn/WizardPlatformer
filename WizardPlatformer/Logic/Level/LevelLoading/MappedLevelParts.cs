@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class MappedLevelParts {
@@ -10,14 +11,16 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		Tile[,] layerBack;
 		Tile[,] layerDeco;
 		Tile[,] layerFunctional;
+		List<TileMovingPlatform> movingPlatforms;
 
-		public MappedLevelParts(int backgroundId, int roomSize, Tile[,] layerBase, Tile[,] layerBack, Tile[,] layerDeco, Tile[,] layerFunctional) {
+		public MappedLevelParts(int backgroundId, int roomSize, Tile[,] layerBase, Tile[,] layerBack, Tile[,] layerDeco, Tile[,] layerFunctional, List<TileMovingPlatform> movingPlatforms) {
 			this.backgroundId = backgroundId;
 			this.roomSize = roomSize;
 			this.layerBase = layerBase;
 			this.layerBack = layerBack;
 			this.layerDeco = layerDeco;
 			this.layerFunctional = layerFunctional;
+			this.movingPlatforms = movingPlatforms;
 		}
 
 		public int BackgoundId {
@@ -40,6 +43,10 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public Tile[,] LayerFunctional {
 			get { return layerFunctional; }
+		}
+
+		public List<TileMovingPlatform> MovingPlatforms {
+			get { return movingPlatforms; }
 		}
 	}
 }

@@ -41,9 +41,9 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				case "destroy_collect":
 					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "moving_plat_st":
-					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.PLATFORM, Tile.PassType.REGULAR, 4.25f, calcTileSideSize, 8, 0, 8, tilePosX, tilePosY);
+					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, 2.00f, calcTileSideSize, 8, 0, 0, tilePosX, tilePosY);
 				case "moving_plat_gr":
-					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.PLATFORM, Tile.PassType.REGULAR, 4.25f, calcTileSideSize, 8, 0, 0, tilePosX, tilePosY);
+					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, 2.00f, calcTileSideSize, 8, 0, 0, tilePosX, tilePosY);
 				case "rail_vert":
 					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.VERTICAL, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "rail_hor":

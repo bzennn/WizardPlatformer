@@ -16,44 +16,74 @@ namespace WizardPlatformer {
 		private float velocityCoefficient;
 
 		private TileMovingPlatformRail rail;
+		private TileMovingPlatformRail previousRail;
+
+		private Tile leftTile;
+		private Tile rightTile;
+
+		private bool isMoving;
 
 		public TileMovingPlatform(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, float velocityCoefficient, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY)
 			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
 
 			this.level = null;
+
 			this.velocity = Vector2.Zero;
-			this.velocityCoefficient = velocityCoefficient;
-			this.rail = null;
-			this.drawDebugInfo = true;
 			this.TilePosition += new Vector2(0, 8);
 			this.previousPosition = this.TilePosition;
+			this.velocityCoefficient = velocityCoefficient;
+			
+			this.rail = null;
+			this.previousRail = null;
+
+			this.leftTile = null;
+			this.rightTile = null;
+
+			this.isMoving = true;
+			this.drawDebugInfo = false;
 		}
 
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
-			this.previousPosition = this.TilePosition;
-			UpdateMoving();
+			if (isMoving) {
+				UpdateMoving();
+			}
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, float opacity = 1.0f) {
 			base.Draw(spriteBatch, gameTime, opacity);
-		}
 
-		public Level Level {
-			set { level = value; }
+			if (rightTile != null) {
+				rightTile.Draw(spriteBatch, gameTime);
+			}
+
+			if (leftTile != null) {
+				leftTile.Draw(spriteBatch, gameTime);
+			}
 		}
 
 		private void UpdateMoving() {
+			previousRail = rail;
 			UpdateRail();
 			UpdateVelocity();
+			
+			previousPosition = this.TilePosition;
 			UpdatePosition();
 		}
 
 		private void UpdateRail() {
 			Vector2 centerPosition = this.HeatBox.Center.ToVector2();
 			if (level != null) {
-				Tile backTile = level.GetTile(centerPosition.X, centerPosition.Y, "base");
+				Tile backTile;
+				if (rightTile != null && leftTile == null) {
+					backTile = level.GetTile(centerPosition.X - rightTile.HeatBox.Width / 2, centerPosition.Y, "base");
+				} else if (rightTile == null && leftTile != null) {
+					backTile = level.GetTile(centerPosition.X + leftTile.HeatBox.Width / 2, centerPosition.Y, "base");
+				} else {
+					backTile = level.GetTile(centerPosition.X, centerPosition.Y, "base");
+				}
+				
 				if (backTile is TileMovingPlatformRail) {
 					rail = (TileMovingPlatformRail)backTile;
 				} else {
@@ -67,6 +97,17 @@ namespace WizardPlatformer {
 				if (velocity == Vector2.Zero) {
 					velocity = rail.GetBaseDirectionVelocity(false) * velocityCoefficient;
 				} else {
+					if (previousRail != null && rail.GetDirection() != previousRail.GetDirection()) {
+						if (rail.GetDirection() == TileMovingPlatformRail.Direction.VERTICAL) {
+							this.TilePosition -= velocity;
+							this.TilePosition = new Vector2(rail.TilePosition.X, this.TilePosition.Y);
+						}
+
+						if (rail.GetDirection() == TileMovingPlatformRail.Direction.HORIZONTAL) {
+							this.TilePosition -= velocity;
+							this.TilePosition = new Vector2(this.TilePosition.X, rail.TilePosition.Y + 8);
+						}
+					}
 					velocity = rail.GetUpdateDirectionVelocity(velocity) * velocityCoefficient;
 				}
 			} else {
@@ -76,6 +117,48 @@ namespace WizardPlatformer {
 
 		private void UpdatePosition() {
 			this.TilePosition += velocity;
+			this.TilePosition = new Vector2((int)this.TilePosition.X, (int)this.TilePosition.Y);
+
+			if (rightTile != null) {
+				rightTile.TilePosition = new Vector2(this.TilePosition.X + rightTile.HeatBox.Width, this.TilePosition.Y);
+			} 
+			
+			if (leftTile != null) {
+				leftTile.TilePosition = new Vector2(this.TilePosition.X - leftTile.HeatBox.Width, this.TilePosition.Y);
+			}
+		}
+
+		public float VelocityCoefficient {
+			get { return velocityCoefficient; }
+			set { velocityCoefficient = value; }
+		}
+
+		public bool IsMoving {
+			get { return isMoving; }
+			set { isMoving = value; }
+		}
+
+		public Vector2 Velocity {
+			get { return velocity; }
+		}
+
+		public void SetLevel(Level level) {
+			this.level = level;
+		}
+
+		public void SetRightTile(Tile tile) {
+			rightTile = tile;
+			rightTile.Collision = CollisionType.IMPASSABLE;
+			rightTile.TilePosition = new Vector2(this.TilePosition.X + rightTile.HeatBox.Width , this.TilePosition.Y);
+			this.HeatBox = new Rectangle(HeatBox.X, HeatBox.Y, HeatBox.Width + rightTile.HeatBox.Width, HeatBox.Height);
+		}
+
+		public void SetLeftTile(Tile tile) {
+			leftTile = tile;
+			leftTile.Collision = CollisionType.IMPASSABLE;
+			leftTile.TilePosition = new Vector2(this.TilePosition.X - leftTile.HeatBox.Width, this.TilePosition.Y);
+			this.HeatBox = new Rectangle(HeatBox.X, HeatBox.Y, HeatBox.Width + leftTile.HeatBox.Width, HeatBox.Height);
+			this.HeatBoxOffset = new Vector2(leftTile.HeatBox.Width, 0);
 		}
 	}
 }

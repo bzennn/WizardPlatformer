@@ -70,6 +70,13 @@ namespace WizardPlatformer.Logic.Level {
 			//TODO Background load;
 			background[0] = contentManager.Load<Texture2D>("background/test_back");
 
+			foreach (TileMovingPlatform platform in mappedLevelParts.MovingPlatforms) {
+				if (platform != null) {
+					platform.SetLevel(this);
+					SpawnTileEntity(platform);
+				}
+			}
+
 			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
 			SpawnEntity(player);
 
@@ -199,16 +206,20 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
-		public void UpdateTileEntities(GameTime gameTime) {
+		private void UpdateTileEntities(GameTime gameTime) {
 			foreach (Tile tile in tileEntities) {
 				tile.Update(gameTime);
 			}
 		}
 
-		public void DrawTileEntities(SpriteBatch spriteBatch, GameTime gameTime) {
+		private void DrawTileEntities(SpriteBatch spriteBatch, GameTime gameTime) {
 			foreach (Tile tile in tileEntities) {
 				tile.Draw(spriteBatch, gameTime);
 			}
+		}
+
+		public List<Tile> TileEntitiesList {
+			get { return tileEntities; }
 		}
 
 		#endregion
@@ -268,16 +279,20 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
-		public void UpdateEntities(GameTime gameTime) {
+		private void UpdateEntities(GameTime gameTime) {
 			foreach (Entity entity in entities) {
 				entity.Update(gameTime);
 			}
 		}
 
-		public void DrawEntities(SpriteBatch spriteBatch, GameTime gameTime) {
+		private void DrawEntities(SpriteBatch spriteBatch, GameTime gameTime) {
 			foreach (Entity entity in entities) {
 				entity.Draw(spriteBatch, gameTime);
 			}
+		}
+
+		public List<Entity> EntitiesList {
+			get { return entities; }
 		}
 
 		#endregion

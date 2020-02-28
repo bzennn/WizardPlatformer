@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using WizardPlatformer.Logic.Exceptions;
 
 namespace WizardPlatformer.Logic.Level.LevelLoading {
@@ -22,6 +23,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			Tile[,] baseLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] decoLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] functionalLayer = new Tile[roomSizeWidth, roomSizeHeigth];
+			List<TileMovingPlatform> movingPlatforms = new List<TileMovingPlatform>();
 
 			try {
 				int currentTileId = 0;
@@ -51,12 +53,44 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 						functionalLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
 					}
 				}
+
+				foreach (int[] platformData in unmappedLevelParts.MovingPlatforms) {
+					TileMovingPlatform platform = null;
+
+					if (platformData[0] == 0) {
+						platform = (TileMovingPlatform)tileCreator.CreateTile(56, platformData[3] * tileSideSize, platformData[4] * tileSideSize);
+
+						if (platformData[1] == 1) {
+							Tile platformRight = tileCreator.CreateTile(9, 0, 0);
+							platform.SetRightTile(platformRight);
+						}
+
+						if (platformData[2] == 1) {
+							Tile platformLeft = tileCreator.CreateTile(7, 0, 0);
+							platform.SetLeftTile(platformLeft);
+						}
+					} else if (platformData[0] == 1) {
+						platform = (TileMovingPlatform)tileCreator.CreateTile(55, platformData[3] * tileSideSize, platformData[4] * tileSideSize);
+
+						if (platformData[1] == 1) {
+							Tile platformRight = tileCreator.CreateTile(45, 0, 0);
+							platform.SetRightTile(platformRight);
+						}
+
+						if (platformData[2] == 1) {
+							Tile platformLeft = tileCreator.CreateTile(43, 0, 0);
+							platform.SetLeftTile(platformLeft);
+						}
+					}
+
+					movingPlatforms.Add(platform);
+				}
 			} catch (Exception e) {
 				LevelMappingException mappingException = new LevelMappingException("Level mapping error:\n" + e.Message);
 				ScreenManager.GetInstance().ChangeScreen(new ScreenError(mappingException), true);
 			}
 
-			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, baseLayer, backLayer, decoLayer, functionalLayer);
+			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, baseLayer, backLayer, decoLayer, functionalLayer, movingPlatforms);
 		}
 
 		public TileCreator TileCreator {

@@ -71,6 +71,7 @@
     <Compile Include="Logic\Level\LevelLoading\MappedLevelParts.cs" />
     <Compile Include="Logic\Level\LevelLoading\TileCreator.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLLevelLoader.cs" />
+    <Compile Include="Logic\Level\LevelLoading\XMLLevelParts.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLTileIdMapLoader.cs" />
     <Compile Include="Logic\Level\Tile\Tile.cs" />
     <Compile Include="Logic\Level\Tile\TileCheckpoint.cs" />
@@ -164,6 +165,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Content\level\level_0_3.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_0_4.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

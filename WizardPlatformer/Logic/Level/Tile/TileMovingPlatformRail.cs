@@ -118,5 +118,9 @@ namespace WizardPlatformer {
 
 			return directionVelocity;
 		}
+
+		public Direction GetDirection() {
+			return direction;
+		}
 	}
 }
