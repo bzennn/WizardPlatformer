@@ -1,0 +1,22 @@
+@startuml
+class TileMovingPlatformRail {
+    - direction : Direction
+    + TileMovingPlatformRail(texture:Texture2D, spritePos:Point, collision:CollisionType, pass:PassType, direction:Direction, heatBoxWidth:int, heatBoxHeigth:int, heatBoxPosX:int, heatBoxPosY:int, posX:int, posY:int)
+    + <<override>> Update(gameTime:GameTime) : void
+    + <<override>> Draw(spriteBatch:SpriteBatch, gameTime:GameTime, opacity:float) : void
+    + GetBaseDirectionVelocity(invert:bool) : Vector2
+    + GetBaseDirectionVelocity(direction:Direction, invert:bool) : Vector2
+    + GetUpdateDirectionVelocity(currentVelocity:Vector2) : Vector2
+    + GetDirection() : Direction
+}
+enum Direction {
+    VERTICAL,
+    HORIZONTAL,
+    UP_RIGHT,
+    UP_LEFT,
+    DOWN_RIGHT,
+    DOWN_LEFT,
+}
+Tile <|-- TileMovingPlatformRail
+TileMovingPlatformRail +-- Direction
+@enduml

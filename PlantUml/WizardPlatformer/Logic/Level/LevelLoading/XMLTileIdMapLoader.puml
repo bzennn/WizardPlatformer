@@ -1,0 +1,6 @@
+@startuml
+class XMLTileIdMapLoader <<static>> {
+    - {static} tileIdMapFormatException : TileIdMapFormatException
+    + {static} XMLLoadTileIdMap(tileSetSize:Point) : Dictionary<int, string>
+}
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+class TileMovingPlatform {
+    - level : Level
+    - velocity : Vector2
+    - previousPosition : Vector2
+    - velocityCoefficient : float
+    - rail : TileMovingPlatformRail
+    - previousRail : TileMovingPlatformRail
+    - leftTile : Tile
+    - rightTile : Tile
+    - isMoving : bool
+    + TileMovingPlatform(texture:Texture2D, spritePos:Point, collision:CollisionType, pass:PassType, velocityCoefficient:float, heatBoxWidth:int, heatBoxHeigth:int, heatBoxPosX:int, heatBoxPosY:int, posX:int, posY:int)
+    + <<override>> Update(gameTime:GameTime) : void
+    + <<override>> Draw(spriteBatch:SpriteBatch, gameTime:GameTime, opacity:float) : void
+    - UpdateMoving() : void
+    - UpdateRail() : void
+    - UpdateVelocity() : void
+    - UpdatePosition() : void
+    + VelocityCoefficient : float <<get>> <<set>>
+    + IsMoving : bool <<get>> <<set>>
+    + Velocity : Vector2 <<get>>
+    + SetLevel(level:Level) : void
+    + SetRightTile(tile:Tile) : void
+    + SetLeftTile(tile:Tile) : void
+}
+Tile <|-- TileMovingPlatform
+@enduml

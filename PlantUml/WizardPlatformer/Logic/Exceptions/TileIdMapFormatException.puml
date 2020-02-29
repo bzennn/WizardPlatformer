@@ -1,0 +1,7 @@
+@startuml
+class TileIdMapFormatException {
+    + TileIdMapFormatException(message:string)
+    + TileIdMapFormatException(message:string, innerException:Exception)
+}
+FormatException <|-- TileIdMapFormatException
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class LevelLoader {
+    levelMapper : LevelMapper
+    + LevelLoader(tileSet:Texture2D, tileSetSize:Point)
+    + LoadLevel(levelId:int, roomId:int) : MappedLevelParts
+    + GetTileCreator() : TileCreator
+}
+@enduml

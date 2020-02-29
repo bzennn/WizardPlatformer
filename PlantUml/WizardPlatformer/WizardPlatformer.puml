@@ -1,0 +1,13 @@
+@startuml
+class WizardPlatformer {
+    graphics : GraphicsDeviceManager
+    spriteBatch : SpriteBatch
+    + WizardPlatformer()
+    # <<override>> Initialize() : void
+    # <<override>> LoadContent() : void
+    # <<override>> UnloadContent() : void
+    # <<override>> Update(gameTime:GameTime) : void
+    # <<override>> Draw(gameTime:GameTime) : void
+}
+Game <|-- WizardPlatformer
+@enduml

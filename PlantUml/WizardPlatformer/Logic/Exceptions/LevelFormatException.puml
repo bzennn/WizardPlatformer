@@ -1,0 +1,7 @@
+@startuml
+class LevelFormatException {
+    + LevelFormatException(message:string)
+    + LevelFormatException(message:string, innerException:System.Exception)
+}
+FormatException <|-- LevelFormatException
+@enduml

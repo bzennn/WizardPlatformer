@@ -1,0 +1,14 @@
+@startuml
+class InputManager {
+    - {static} instance : InputManager
+    - currentKeyboardState : KeyboardState
+    - previousKeyboardState : KeyboardState
+    - InputManager()
+    + {static} GetInstance() : InputManager
+    + CurrentKeyboardState : KeyboardState <<get>> <<set>>
+    + PreviousKeyboardState : KeyboardState <<get>>
+    + IsKeyPressed(key:Keys) : bool
+    + IsKeyReleased(key:Keys) : bool
+    + IsKeyDown(key:Keys) : bool
+}
+@enduml

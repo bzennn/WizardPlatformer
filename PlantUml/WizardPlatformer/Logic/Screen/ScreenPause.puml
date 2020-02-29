@@ -1,0 +1,13 @@
+@startuml
+class ScreenPause {
+    - previousScreen : Screen
+    - background : Texture2D
+    + ScreenPause(previousScreen:Screen)
+    + <<override>> Initialize() : void
+    + <<override>> LoadContent(contentManager:ContentManager) : void
+    + <<override>> UnloadContent() : void
+    + <<override>> Update(gameTime:GameTime) : void
+    + <<override>> Draw(spriteBatch:SpriteBatch, gameTime:GameTime) : void
+}
+Screen <|-- ScreenPause
+@enduml

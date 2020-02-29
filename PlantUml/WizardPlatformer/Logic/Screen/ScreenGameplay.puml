@@ -1,0 +1,14 @@
+@startuml
+class ScreenGameplay {
+    levelLoader : LevelLoader
+    tileSet : Texture2D
+    tileSetSize : Point
+    currentLevel : Level
+    contentManager : ContentManager
+    + <<override>> Initialize() : void
+    + <<override>> LoadContent(contentManager:ContentManager) : void
+    + <<override>> Update(gameTime:GameTime) : void
+    + <<override>> Draw(spriteBatch:SpriteBatch, gameTime:GameTime) : void
+}
+Screen <|-- ScreenGameplay
+@enduml

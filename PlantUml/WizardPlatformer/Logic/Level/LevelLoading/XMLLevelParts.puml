@@ -1,0 +1,21 @@
+@startuml
+class XMLLevelParts {
+    - backgroundId : string
+    - roomSize : string
+    - layerBase : string
+    - layerBack : string
+    - layerDeco : string
+    - layerFunctional : string
+    - movingPlatforms : List<string>
+    - entities : List<string>
+    + XMLLevelParts(backgroundId:string, roomSize:string, layerBase:string, layerBack:string, layerDeco:string, layerFunctional:string, movingPlatforms:List<string>, entities:List<string>)
+    + BackgroundId : string <<get>>
+    + RoomSize : string <<get>>
+    + LayerBase : string <<get>>
+    + LayerBack : string <<get>>
+    + LayerDeco : string <<get>>
+    + LayerFunctional : string <<get>>
+    + MovingPlatforms : List<string> <<get>>
+    + Entities : List<string> <<get>>
+}
+@enduml

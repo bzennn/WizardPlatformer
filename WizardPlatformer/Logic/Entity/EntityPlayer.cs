@@ -119,5 +119,9 @@ namespace WizardPlatformer {
 		public Vector2 Position {
 			get { return this.heatBox.Center.ToVector2(); }
 		}
+
+		public Vector2 Velocity {
+			get { return this.currentVelocity; }
+		}
 	}
 }

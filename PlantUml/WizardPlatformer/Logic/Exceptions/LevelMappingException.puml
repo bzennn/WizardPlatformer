@@ -1,0 +1,7 @@
+@startuml
+class LevelMappingException {
+    + LevelMappingException(message:string)
+    + LevelMappingException(message:string, innerException:Exception)
+}
+Exception <|-- LevelMappingException
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+abstract class Entity {
+    # health : int
+    # damage : int
+    - isAlive : bool
+    # level : Level
+    # surroundingTiles : Tile[]
+    # heatBox : Rectangle
+    # entityPosition : Vector2
+    - previousEntityBottom : float
+    # maxVelocity : Vector2
+    # maxAcceleration : float
+    # gravityAcceleration : float
+    # currentVelocity : Vector2
+    - currentAcceleration : Vector2
+    - movingTime : Vector2
+    - emulatePhysics : bool
+    # isJumping : bool
+    # isFalling : bool
+    # isOnGround : bool
+    # isFallingThrough : bool
+    # isGravityOn : bool
+    # isOnMovingPlatform : bool
+    # sprite : Texture2D
+    # spriteSize : Point
+    # spriteFlip : SpriteEffects
+    - spritePosition : Vector2
+    - spriteOffset : Vector2
+    - scaleFactor : int
+    # currentFrame : Point
+    # frameSize : Point
+    # frameTimeCounter : int
+    # frameUpdateMillis : int
+    movingPlatform : Tile
+    # drawDebugInfo : bool
+    # debugSprite : Texture2D
+    # debugFont : SpriteFont
+    + Entity(health:int, damage:int, velocity:float, emulatePhysics:bool, heatBoxWidth:int, heatBoxHeight:int, heatBoxSpritePosX:int, heatBoxSpritePosY:int, posX:int, posY:int, roomSizeId:int, level:Level)
+    + <<virtual>> LoadContent(contentManager:ContentManager) : void
+    + <<virtual>> Update(gameTime:GameTime) : void
+    + Draw(spriteBatch:SpriteBatch, gameTime:GameTime) : void
+    # <<virtual>> DrawDebugInfo(spriteBatch:SpriteBatch, gameTime:GameTime) : void
+    # EntityPosition : Vector2 <<get>> <<set>>
+    + Health : int <<get>>
+    + IsAlive : bool <<get>>
+    - UpdatePhysics(gameTime:GameTime) : void
+    # AccelerateLeft(acceleration:float, crearAcceleration:bool) : void
+    # AccelerateRight(acceleration:float, clearAcceleration:bool) : void
+    # AccelerateJump(startVelocity:float, maxJumpTime:int, clearAcceleration:bool) : void
+    # FallThrough(destroy:bool) : void
+    # GetSurrondingTiles(layer:string) : Tile[]
+    - GetTileEntitySurrondingTiles() : Tile[]
+    - UpdateCollision() : void
+    - HandleFuctionalTiles() : void
+    # <<virtual>> HandleFunctionalTile(tile:TileFunctional) : void
+    + Die() : void
+}
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class XMLLevelLoader <<static>> {
+    - {static} levelFormatException : LevelFormatException
+    + {static} XMLLoadUnmappedLevelParts(levelId:int, roomId:int) : UnmappedLevelParts
+    - {static} XMLLoadLevelRaw(levelId:int, roomId:int) : XMLLevelParts
+    - {static} PrepareRawLevel(levelParts:XMLLevelParts) : UnmappedLevelParts
+}
+@enduml

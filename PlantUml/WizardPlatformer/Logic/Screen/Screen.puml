@@ -1,0 +1,11 @@
+@startuml
+abstract class Screen {
+    # font : SpriteFont
+    # screenContent : ContentManager
+    + <<virtual>> Initialize() : void
+    + <<virtual>> LoadContent(contentManager:ContentManager) : void
+    + <<virtual>> UnloadContent() : void
+    + <<virtual>> Update(gameTime:GameTime) : void
+    + <<virtual>> Draw(spriteBatch:SpriteBatch, gameTime:GameTime) : void
+}
+@enduml

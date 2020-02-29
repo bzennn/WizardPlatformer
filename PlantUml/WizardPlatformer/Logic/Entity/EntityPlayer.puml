@@ -1,0 +1,15 @@
+@startuml
+class EntityPlayer {
+    - coins : int
+    + EntityPlayer(health:int, damage:int, velocity:float, coins:int, emulatePhysics:bool, heatBoxWidth:int, heatBoxHeight:int, heatBoxSpritePosX:int, heatBoxSpritePosY:int, posX:int, posY:int, roomSizeId:int, level:Level)
+    + <<override>> LoadContent(contentManager:ContentManager) : void
+    + <<override>> Update(gameTime:GameTime) : void
+    # <<override>> DrawDebugInfo(spriteBatch:SpriteBatch, gameTime:GameTime) : void
+    - UpdateInput(gameTime:GameTime) : void
+    - UpdateExtraCollisions(gameTime:GameTime) : void
+    # <<override>> HandleFunctionalTile(tile:TileFunctional) : void
+    - Animate(row:int, frameQuantity:int) : void
+    + Position : Vector2 <<get>>
+}
+Entity <|-- EntityPlayer
+@enduml

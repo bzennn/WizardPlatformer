@@ -1,0 +1,18 @@
+@startuml
+class Display {
+    + {static} <<readonly>> CalcResolution : Vector2
+    + {static} <<readonly>> CalcTileSideSize : int = 12
+    + {static} <<readonly>> BaseResolution : Vector2
+    + {static} <<readonly>> DrawScale : Vector2
+    + {static} <<readonly>> TileSideSize : int
+    + {static} TargetResolution : Vector2
+    + {static} ScreenScale : Matrix
+    + {static} GameMatrix : Matrix
+    - Display()
+    + {static} InitScaleMatrix(graphics:GraphicsDeviceManager, targetWidth:int, targetHeigth:int) : void
+    + {static} GetMouseCoordinates(mouseState:MouseState) : Vector2
+    + {static} ScreenToLevelPosition(position:Vector2) : Vector2
+    + {static} GetZeroScreenPositionOnLevel() : Vector2
+    + {static} GetScreenCenter() : Vector2
+}
+@enduml
