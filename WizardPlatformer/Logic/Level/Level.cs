@@ -30,8 +30,8 @@ namespace WizardPlatformer.Logic.Level {
 		private Tile[,] decoLayer;
 		private Tile[,] functionalLayer;
 
-		private Texture2D[] background;
-
+		private Background background;
+		
 		private bool isTriggerOn;
 		private float currentOpacity;
 
@@ -49,7 +49,6 @@ namespace WizardPlatformer.Logic.Level {
 			this.levelLoader = levelLoader;
 			this.playerStartPosition = playerStartPosition;
 			this.tileSideSize = Display.TileSideSize;
-			this.background = new Texture2D[7];
 			this.entities = new List<Entity>();
 			this.tileEntities = new List<Tile>();
 
@@ -68,8 +67,8 @@ namespace WizardPlatformer.Logic.Level {
 			roomWidth = RoomSize[roomSizeId][0];
 			roomHeigth = RoomSize[roomSizeId][1];
 
-			BackgroundLoadContent(contentManager, mappedLevelParts.BackgoundId);
-			
+			background = new Background(roomWidth, roomHeigth);
+			background.LoadContent(contentManager, mappedLevelParts.BackgoundId, 1);
 
 			foreach (TileMovingPlatform platform in mappedLevelParts.MovingPlatforms) {
 				if (platform != null) {
@@ -97,10 +96,12 @@ namespace WizardPlatformer.Logic.Level {
 			UpdateLayer(gameTime, decoLayer, roomSizeId);
 			
 			UpdateCameraPosition();
+
+			background.Update(gameTime, player.Position);
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
-			DrawBackground(spriteBatch, gameTime, background);
+			background.Draw(spriteBatch, gameTime);
 			
 			DrawLayer(spriteBatch, gameTime, backLayer, roomSizeId);
 			DrawLayer(spriteBatch, gameTime, baseLayer, roomSizeId);
@@ -132,77 +133,7 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
-		private void BackgroundLoadContent(ContentManager contentManager, int backgroundId) {
-			background[0] = contentManager.Load<Texture2D>("background/back_0/sky_0");
-			background[1] = contentManager.Load<Texture2D>("background/back_0/size_0/sky_mountain_0_0");
-			background[2] = contentManager.Load<Texture2D>("background/back_0/size_0/mountains_0");
-			background[3] = contentManager.Load<Texture2D>("background/back_0/size_0/far_forest_0");
-			background[4] = contentManager.Load<Texture2D>("background/back_0/size_0/forest_0");
-			background[5] = contentManager.Load<Texture2D>("background/back_0/sun");
-			background[6] = contentManager.Load<Texture2D>("background/back_0/clouds");
-		}
-
-		float offsetM = 0;
-		float offsetFF = 0;
-		float offsetF = 0;
-		private void DrawBackground(SpriteBatch spriteBatch, GameTime gameTime, Texture2D[] background) {
-			Vector2 backPos = Vector2.Zero;
-			float velocityCoefficientX = 1.0f;
-			float velocityCoefficientY = 0.1f;
-			int halfScreenWidth = (int)Display.BaseResolution.X / 2;
-			bool isInside = player.Position.X <= halfScreenWidth || player.Position.X >= roomWidth * tileSideSize - halfScreenWidth;
-
-			if (isInside) {
-				offsetM = Math.Abs(player.Position.X * 0.1f * velocityCoefficientX - player.Position.X * 0.1f * 0.1f);
-				offsetFF = Math.Abs(player.Position.X * 0.2f * velocityCoefficientX - player.Position.X * 0.2f * 0.1f);
-				offsetF = Math.Abs(player.Position.X * 0.3f * velocityCoefficientX - player.Position.X * 0.3f * 0.1f);
-				velocityCoefficientX = 0.1f;
-				
-			}
-
-			for (int i = 0; i < background.Length; i++) {
-				if (background[i] != null) {
-					backPos = Display.GetZeroScreenPositionOnLevel();
-					switch (i) {
-						case 0:;
-							break;
-						case 1:
-							break;
-						case 2:
-							backPos -= new Vector2(player.Position.X * 0.1f * velocityCoefficientX - ((isInside) ? 0 : offsetM), 
-								player.Position.Y * 0.1f * velocityCoefficientY);
-							break;
-						case 3:
-							backPos -= new Vector2(player.Position.X * 0.2f * velocityCoefficientX - ((isInside) ? 0 : offsetFF), 
-								player.Position.Y * 0.2f * velocityCoefficientY);
-							break;
-						case 4:
-							backPos -= new Vector2(player.Position.X * 0.3f * velocityCoefficientX - ((isInside) ? 0 : offsetF), 
-								player.Position.Y * 0.3f * velocityCoefficientY);
-							break;
-						case 5:
-							break;
-						case 6:
-							backPos = new Vector2(backPos.X, 0);
-							break;
-						default:
-							break;
-					}
-
-
-					spriteBatch.Draw(
-					background[i],
-					backPos,
-					null,
-					Color.White,
-					0.0f,
-					Vector2.Zero,
-					Display.DrawScale,
-					SpriteEffects.None,
-					0.0f);
-				}
-			}
-		}
+		
 
 		#region Tiles
 

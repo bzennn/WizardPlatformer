@@ -65,6 +65,7 @@
     <Compile Include="Logic\Exceptions\LevelFormatException.cs" />
     <Compile Include="Logic\Exceptions\LevelMappingException.cs" />
     <Compile Include="Logic\Exceptions\TileIdMapFormatException.cs" />
+    <Compile Include="Logic\Level\Background.cs" />
     <Compile Include="Logic\Level\Level.cs" />
     <Compile Include="Logic\Level\LevelLoading\LevelLoader.cs" />
     <Compile Include="Logic\Level\LevelLoading\LevelMapper.cs" />
