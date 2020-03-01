@@ -5,6 +5,10 @@ using Microsoft.Xna.Framework.Content;
 
 namespace WizardPlatformer {
 	class ScreenMainMenu : Screen {
+		string help = "\nPress: \n" +
+			"Enter, then NumPad 1-5 for load level\n" +
+			"Backspace to return to main menu\n" +
+			"Esc to exit";
 
 		public override void Initialize() {
 			base.Initialize();
@@ -28,6 +32,7 @@ namespace WizardPlatformer {
 			base.Draw(spriteBatch, gameTime);
 
 			spriteBatch.DrawString(font, "MainMenu Screen", Display.GetScreenCenter(), Color.Black);
+			spriteBatch.DrawString(font, help, Display.GetZeroScreenPositionOnLevel(), Color.Black);
 		}
 	}
 }
