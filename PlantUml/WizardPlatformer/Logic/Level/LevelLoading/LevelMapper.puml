@@ -1,9 +1,0 @@
-@startuml
-class LevelMapper {
-    - tileCreator : TileCreator
-    - tileSideSize : int
-    + LevelMapper(tileSet:Texture2D, tileSetSize:Point)
-    + MapUnmappedLevelParts(unmappedLevelParts:UnmappedLevelParts) : MappedLevelParts
-    + TileCreator : TileCreator <<get>>
-}
-@enduml

@@ -31,7 +31,7 @@ namespace WizardPlatformer {
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
 			levelLoader = new LevelLoader(tileSet, tileSetSize);
-			currentLevel = new Level(0, 4, levelLoader, new Point(100, 300));
+			currentLevel = new Level(0, 2, levelLoader, new Point(100, 4000));
 			//currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
 			currentLevel.LoadContent(contentManager);
 		}
@@ -39,11 +39,11 @@ namespace WizardPlatformer {
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
-			/*if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
+			if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenPause(this), false);
 			}
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad1)) {
+			/*if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad1)) {
 				currentLevel = new Level(0, 0, levelLoader, new Point(100, 300));
 				currentLevel.LoadContent(contentManager);
 			}

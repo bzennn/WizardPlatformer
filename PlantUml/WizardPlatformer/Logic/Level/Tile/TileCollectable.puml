@@ -1,8 +1,0 @@
-@startuml
-class TileCollectable {
-    + TileCollectable(texture:Texture2D, spritePos:Point, collision:CollisionType, pass:PassType, heatBoxWidth:int, heatBoxHeigth:int, heatBoxPosX:int, heatBoxPosY:int, posX:int, posY:int)
-    + <<override>> Update(gameTime:GameTime) : void
-    + <<override>> Draw(spriteBatch:SpriteBatch, gameTime:GameTime, opacity:float) : void
-}
-Tile <|-- TileCollectable
-@enduml

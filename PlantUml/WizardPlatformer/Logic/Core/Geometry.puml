@@ -1,5 +1,0 @@
-@startuml
-class Geometry <<static>> {
-    + {static} GetCollisionDepth(heatBoxA:Rectangle, heatBoxB:Rectangle) : Vector2
-}
-@enduml

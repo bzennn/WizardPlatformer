@@ -1,9 +1,0 @@
-@startuml
-class ScreenMainMenu {
-    + <<override>> Initialize() : void
-    + <<override>> LoadContent(contentManager:ContentManager) : void
-    + <<override>> Update(gameTime:GameTime) : void
-    + <<override>> Draw(spriteBatch:SpriteBatch, gameTime:GameTime) : void
-}
-Screen <|-- ScreenMainMenu
-@enduml

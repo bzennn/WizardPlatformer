@@ -26,17 +26,21 @@ namespace WizardPlatformer {
 			base.Update(gameTime);
 
 			UpdateInput(gameTime);
-			UpdateExtraCollisions(gameTime);
 
-			// Test Animate
-			if (this.currentVelocity.Y < 0) {
-				Animate(2, 4);
-			} else if (this.currentVelocity.Y > 10e-4f) {
-				currentFrame = new Point(3, 2);
-			} else if (this.currentVelocity.X < 0 || this.currentVelocity.X > 10e-4f) {
-				Animate(1, 6);
+			if (this.health > 0) {
+				if (isJumping) {
+					Animate(2, 0, 3, false);
+				} else {
+					if (this.currentVelocity.Y > 10e-4f) {
+						currentFrame = new Point(3, 2);
+					} else if (this.currentVelocity.X < 0 || this.currentVelocity.X > 10e-4f) {
+						Animate(1, 0, 6);
+					} else {
+						Animate(0, 0, 2);
+					}
+				}  
 			} else {
-				Animate(0, 2);
+				Animate(5, 0, 4, false);
 			}
 		}
 
@@ -54,19 +58,19 @@ namespace WizardPlatformer {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenMainMenu(), true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.A)) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.A) && this.health > 0) {
 				this.AccelerateLeft(-maxAcceleration, false);
 			} else {
 				this.AccelerateLeft(-maxAcceleration, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.D)) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.D) && this.health > 0) {
 				this.AccelerateRight(maxAcceleration, false);
 			} else {
 				this.AccelerateRight(maxAcceleration, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.Space)) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.Space) && this.health > 0) {
 				if ((isOnGround && InputManager.GetInstance().IsKeyPressed(Keys.Space)) || isJumping || !isGravityOn) {
 					this.AccelerateJump(-8.5f, 32, false);
 				}
@@ -74,22 +78,19 @@ namespace WizardPlatformer {
 				this.AccelerateJump(-8.5f, 32, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.S)) {
+			if (InputManager.GetInstance().IsKeyPressed(Keys.S) && this.health > 0) {
 				this.FallThrough(false);
 			} else {
 				this.FallThrough(true);
 			}
 		}
 
-		private void UpdateExtraCollisions(GameTime gameTime) {
-			surroundingTiles = GetSurrondingTiles();
+		protected override void HandleExtraTile(Tile tile) {
+			base.HandleExtraTile(tile);
 
-			for (int i = 0; i < 10; i++) {
-				if (surroundingTiles[i] != null && heatBox.Intersects(surroundingTiles[i].HeatBox) && surroundingTiles[i] is TileCollectable) {
-					coins++;
-					this.level.DestroyTile(surroundingTiles[i]);
-					break;
-				}
+			if (tile is TileCollectable) {
+				coins++;
+				this.level.DestroyTile(tile);
 			}
 		}
 
@@ -101,9 +102,10 @@ namespace WizardPlatformer {
 			}
 		}
 
-		private void Animate(int row, int frameQuantity) {
+		private void Animate(int row, int startFrame, int frameQuantity, bool repeat = true) {
 			if (currentFrame.Y != row) {
 				currentFrame.Y = row;
+				currentFrame.X = startFrame;
 				frameTimeCounter = 0;
 			}
 
@@ -111,7 +113,12 @@ namespace WizardPlatformer {
 				currentFrame.X++;
 
 				if (currentFrame.X > frameQuantity - 1) {
-					currentFrame.X = 0;
+					if (repeat) {
+						currentFrame.X = startFrame;
+					} else {
+						currentFrame.X--;
+					}
+					
 				}
 			}
 		}

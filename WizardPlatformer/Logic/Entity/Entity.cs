@@ -116,6 +116,7 @@ namespace WizardPlatformer {
 				UpdatePhysics(gameTime);
 			}
 
+			HandleExtraTiles();
 			HandleFuctionalTiles();
 		}
 
@@ -379,6 +380,14 @@ namespace WizardPlatformer {
 				EntityPosition = new Vector2(level.RoomWidth * Display.TileSideSize - heatBox.Width, EntityPosition.Y);
 			}
 
+			if (EntityPosition.Y < -heatBox.Height) {
+				EntityPosition = new Vector2(EntityPosition.X, -heatBox.Height);
+			}
+
+			if (EntityPosition.Y + heatBox.Height > level.RoomHeigth * Display.TileSideSize + heatBox.Height) {
+				EntityPosition = new Vector2(EntityPosition.X, level.RoomHeigth * Display.TileSideSize + heatBox.Height);
+			}
+
 			for (int i = 0; i < surroundingTiles.Length; i++) {
 				if (surroundingTiles[i] != null && surroundingTiles[i].Collision != Tile.CollisionType.PASSABLE &&
 					!(surroundingTiles[i].Collision == Tile.CollisionType.PLATFORM && isFallingThrough)) {
@@ -432,9 +441,26 @@ namespace WizardPlatformer {
 			}
 		}
 
+		private void HandleExtraTiles() {
+			surroundingTiles = GetSurrondingTiles();
+
+			foreach (Tile tile in surroundingTiles) {
+				if (tile != null && heatBox.Intersects(tile.HeatBox)) {
+					HandleExtraTile(tile);
+					break;
+				}
+			}
+		}
+
+		protected virtual void HandleExtraTile(Tile tile) {
+			if (tile.Pass == Tile.PassType.HOSTILE) {
+				Die();
+			}
+		}
+
 		#endregion
 
-		public void Die() {
+		public virtual void Die() {
 			health = 0;
 			isAlive = false;
 		}
