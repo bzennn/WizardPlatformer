@@ -66,11 +66,11 @@ namespace WizardPlatformer {
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad5)) {
 				currentLevel = new Level(0, 4, levelLoader, new Point(100, 300));
 				currentLevel.LoadContent(contentManager);
-			}
+			}*/
 
 			if (currentLevel != null) {
 				currentLevel.Update(gameTime);
-			}*/
+			}
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
