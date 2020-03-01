@@ -68,7 +68,7 @@ namespace WizardPlatformer.Logic.Level {
 			roomHeigth = RoomSize[roomSizeId][1];
 
 			background = new Background(roomWidth, roomHeigth);
-			background.LoadContent(contentManager, mappedLevelParts.BackgoundId, 1);
+			background.LoadContent(contentManager, mappedLevelParts.BackgoundId);
 
 			foreach (TileMovingPlatform platform in mappedLevelParts.MovingPlatforms) {
 				if (platform != null) {

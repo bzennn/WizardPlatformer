@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class UnmappedLevelParts {
-		int backgroundId;
+		string backgroundId;
 		int roomSize;
 		int[] layerBase;
 		int[] layerBack;
@@ -14,7 +14,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		List<int[]> movingPlatforms;
 		List<int[]> entities;
 
-		public UnmappedLevelParts(int backgroundId, int roomSize, int[] layerBase, int[] layerBack, int[] layerDeco, int[] layerFunctional, List<int[]> movingPlatforms) {
+		public UnmappedLevelParts(string backgroundId, int roomSize, int[] layerBase, int[] layerBack, int[] layerDeco, int[] layerFunctional, List<int[]> movingPlatforms) {
 			this.backgroundId = backgroundId;
 			this.roomSize = roomSize;
 			this.layerBase = layerBase;
@@ -24,7 +24,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			this.movingPlatforms = movingPlatforms;
 		}
 
-		public int BackgroundId {
+		public string BackgroundId {
 			get { return backgroundId; }
 		}
 

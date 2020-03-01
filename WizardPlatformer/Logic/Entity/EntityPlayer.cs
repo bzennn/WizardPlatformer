@@ -13,7 +13,7 @@ namespace WizardPlatformer {
 
 			this.coins = coins;
 			this.spriteSize = new Point(6, 6);
-			this.drawDebugInfo = true;
+			this.drawDebugInfo = false;
 		}
 
 		public override void LoadContent(ContentManager contentManager) {

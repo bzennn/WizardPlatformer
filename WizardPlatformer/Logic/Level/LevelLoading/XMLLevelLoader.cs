@@ -142,7 +142,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		}
 
 		private static UnmappedLevelParts PrepareRawLevel(XMLLevelParts levelParts) {
-			int backgroundId = 0;
+			string backgroundId = "";
 			int roomSize = 0;
 			int[] layerBase = null;
 			int[] layerBack = null;
@@ -151,15 +151,13 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			List<int[]> movingPlatforms = new List<int[]>();
 
 			try {
-				if (!int.TryParse(levelParts.BackgroundId, out backgroundId)) {
-					throw levelFormatException;
-				}
+				backgroundId = levelParts.BackgroundId;
 
 				if (!int.TryParse(levelParts.RoomSize, out roomSize)) {
 					throw levelFormatException;
 				}
 
-				if (backgroundId < 0 || backgroundId > 1) {
+				if (backgroundId.Length != 5) {
 					throw levelFormatException;
 				}
 

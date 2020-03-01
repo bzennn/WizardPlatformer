@@ -34,6 +34,10 @@ namespace WizardPlatformer.Logic.Level {
 		private float velocityCoefficientMaxX;
 		private float velocityCoefficientMaxY;
 
+		private float cloudsOffset;
+		private float cloudsVelocity;
+		private bool isCloudsOn;
+
 		public Background(int roomWidth, int roomHeigth) {
 			this.background = new Texture2D[7];
 			this.backgroundPositions = new Vector2[7];
@@ -59,16 +63,31 @@ namespace WizardPlatformer.Logic.Level {
 
 			this.velocityCoefficientMaxX = 1.0f;
 			this.velocityCoefficientMaxY = 0.1f;
+
+			this.cloudsOffset = 0.0f;
+			this.cloudsVelocity = 0.25f;
+			this.isCloudsOn = false;
 		}
 
-		public void LoadContent(ContentManager contentManager, int backgroundId, int skyType) {
-			background[0] = contentManager.Load<Texture2D>("background/back_" + backgroundId + "/sky_" + skyType);
-			background[1] = contentManager.Load<Texture2D>("background/back_" + backgroundId + "/size_0/sky_mountain_" + skyType + "_0");
-			background[2] = contentManager.Load<Texture2D>("background/back_" + backgroundId + "/size_0/mountains_0");
-			background[3] = contentManager.Load<Texture2D>("background/back_" + backgroundId + "/size_0/far_forest_0");
-			background[4] = contentManager.Load<Texture2D>("background/back_" + backgroundId + "/size_0/forest_0");
-			background[5] = contentManager.Load<Texture2D>("background/back_" + backgroundId + "/sun");
-			background[6] = contentManager.Load<Texture2D>("background/back_" + backgroundId + "/clouds");
+		public void LoadContent(ContentManager contentManager, string backgroundId) {
+			background[0] = contentManager.Load<Texture2D>("background/back_" + backgroundId[0] + "/sky_" + backgroundId[1]);
+
+			if (backgroundId[2].Equals('1')) {
+				background[1] = contentManager.Load<Texture2D>("background/back_" + backgroundId[0] + "/sun");
+			} else if (backgroundId[2].Equals('2')) {
+				background[1] = contentManager.Load<Texture2D>("background/back_" + backgroundId[0] + "/moon");
+			}
+			
+			background[2] = contentManager.Load<Texture2D>("background/back_" + backgroundId[0] + "/size_" + backgroundId[4] + "/sky_mountains_" + backgroundId[1]);
+			background[3] = contentManager.Load<Texture2D>("background/back_" + backgroundId[0] + "/size_" + backgroundId[4] + "/l_0");
+			
+			if (backgroundId[3].Equals('1')) {
+				isCloudsOn = true;
+				background[4] = contentManager.Load<Texture2D>("background/back_" + backgroundId[0] + "/clouds");
+			}
+			
+			background[5] = contentManager.Load<Texture2D>("background/back_" + backgroundId[0] + "/size_" + backgroundId[4] + "/l_1");
+			background[6] = contentManager.Load<Texture2D>("background/back_" + backgroundId[0] + "/size_" + backgroundId[4] + "/l_2");	
 
 			if (roomWidth <= 32) {
 				velocityCoefficientMaxX = 0.05f;
@@ -104,38 +123,62 @@ namespace WizardPlatformer.Logic.Level {
 				if (background[i] != null) {
 					backgroundPositions[i] = Display.GetZeroScreenPositionOnLevel();
 					switch (i) {
-						case 0:
+						case 0: // sky
 							break;
-						case 1:
+						case 1: // sun/moon
 							break;
-						case 2:
+						case 2: // far mountains
+							break;
+						case 3: // mountains
 							currentPositionOffset = GetPositionOffset(0.1f, velocityCoefficientX, velocityCoefficientY, playerPosition, hasTransition, hasTransitionL, hasTransitionR, offsetL1, offsetR1);
 							backgroundPositions[i] -= currentPositionOffset;
 							if (hasTransition) {
 								offsetR1 = currentPositionOffset.X;
 							}
 							break;
-						case 3:
+						case 4: // clouds
+							if (isCloudsOn) {
+								cloudsOffset += cloudsVelocity;
+								if (cloudsOffset >= halfScreenWidth * 2) {
+									cloudsOffset = 0;
+								}
+								backgroundPositions[i] -= new Vector2(cloudsOffset, 0);
+							}
+							break;
+						case 5: // far forest
 							currentPositionOffset = GetPositionOffset(0.2f, velocityCoefficientX, velocityCoefficientY, playerPosition, hasTransition, hasTransitionL, hasTransitionR, offsetL2, offsetR2);
 							backgroundPositions[i] -= currentPositionOffset;
 							if (hasTransition) {
 								offsetR2 = currentPositionOffset.X;
 							}
 							break;
-						case 4:
+						case 6: // forest
 							currentPositionOffset = GetPositionOffset(0.3f, velocityCoefficientX, velocityCoefficientY, playerPosition, hasTransition, hasTransitionL, hasTransitionR, offsetL3, offsetR3);
 							backgroundPositions[i] -= currentPositionOffset;
 							if (hasTransition) {
 								offsetR3 = currentPositionOffset.X;
 							}
 							break;
-						case 5:
-							break;
-						case 6:
-							break;
 						default:
 							break;
 					}
+				}
+			}
+		}
+
+		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
+			for (int i = 0; i < background.Length; i++) {
+				if (background[i] != null) {
+					spriteBatch.Draw(
+					background[i],
+					backgroundPositions[i],
+					null,
+					Color.White,
+					0.0f,
+					Vector2.Zero,
+					Display.DrawScale,
+					SpriteEffects.None,
+					0.0f);
 				}
 			}
 		}
@@ -154,23 +197,6 @@ namespace WizardPlatformer.Logic.Level {
 			}
 
 			return positionOffset;
-		}
-
-		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
-			for (int i = 0; i < background.Length; i++) {
-				if (background[i] != null) {
-					spriteBatch.Draw(
-					background[i],
-					backgroundPositions[i],
-					null,
-					Color.White,
-					0.0f,
-					Vector2.Zero,
-					Display.DrawScale,
-					SpriteEffects.None,
-					0.0f);
-				}
-			}
 		}
 
 		private float GetTransitionOffset(float baseVelocity, float velocityCoefficient, float playerPosition) {
