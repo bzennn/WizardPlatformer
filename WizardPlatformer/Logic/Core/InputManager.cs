@@ -8,9 +8,15 @@ namespace WizardPlatformer {
 		private KeyboardState currentKeyboardState;
 		private KeyboardState previousKeyboardState;
 
+		private MouseState currentMouseState;
+		private MouseState previousMouseState;
+
 		private InputManager() {
 			currentKeyboardState = Keyboard.GetState();
 			previousKeyboardState = currentKeyboardState;
+
+			currentMouseState = Mouse.GetState();
+			previousMouseState = currentMouseState;
 		}
 
 		public static InputManager GetInstance() {
@@ -22,15 +28,22 @@ namespace WizardPlatformer {
 		}
 
 		public KeyboardState CurrentKeyboardState {
-			get { return this.currentKeyboardState; }
+			get { return currentKeyboardState; }
 			set {
-				this.previousKeyboardState = currentKeyboardState;
-				this.currentKeyboardState = value; 
+				previousKeyboardState = currentKeyboardState;
+				currentKeyboardState = value; 
 			}
 		}
 
+		public MouseState CurrentMouseState {
+			get { return currentMouseState; }
+			set {
+				previousMouseState = currentMouseState;
+				currentMouseState = value; }
+		}
+
 		public KeyboardState PreviousKeyboardState {
-			get { return this.previousKeyboardState; }
+			get { return previousKeyboardState; }
 		}
 
 		public bool IsKeyPressed(Keys key) {
@@ -51,6 +64,60 @@ namespace WizardPlatformer {
 
 		public bool IsKeyDown(Keys key) {
 			if (currentKeyboardState.IsKeyDown(key)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		public Vector2 GetMousePosition() {
+			return Display.ScreenToLevelPosition(currentMouseState.Position.ToVector2());
+		}
+
+		public bool IsMouseLeftButtonPressed() {
+			if (currentMouseState.LeftButton == ButtonState.Pressed &&
+				previousMouseState.LeftButton == ButtonState.Released) {
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool IsMouseLeftButtonReleased() {
+			if (currentMouseState.LeftButton == ButtonState.Released &&
+				previousMouseState.LeftButton == ButtonState.Pressed) {
+				return true;
+			}
+
+			return false;
+		}
+		public bool IsMouseLeftButtonDown() {
+			if (currentMouseState.LeftButton == ButtonState.Pressed) {
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool IsMouseRightButtonPressed() {
+			if (currentMouseState.RightButton == ButtonState.Pressed &&
+				previousMouseState.RightButton == ButtonState.Released) {
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool IsMouseRightButtonReleased() {
+			if (currentMouseState.RightButton == ButtonState.Released &&
+				previousMouseState.RightButton == ButtonState.Pressed) {
+				return true;
+			}
+
+			return false;
+		}
+		public bool IsMouseRightButtonDown() {
+			if (currentMouseState.RightButton == ButtonState.Pressed) {
 				return true;
 			}
 

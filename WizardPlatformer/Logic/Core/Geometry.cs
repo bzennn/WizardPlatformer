@@ -5,6 +5,7 @@ using System;
 
 namespace WizardPlatformer {
 	public static class Geometry {
+        private static float correctionAngle = MathHelper.Pi / 2;
 
 		public static Vector2 GetCollisionDepth(Rectangle heatBoxA, Rectangle heatBoxB) {
 			Vector2 centerA = heatBoxA.Center.ToVector2();
@@ -23,6 +24,10 @@ namespace WizardPlatformer {
             float depthY = offsetY > 0 ? minOffsetY - offsetY : -minOffsetY - offsetY;
 
             return new Vector2(depthX, depthY);
+        }
+
+        public static float GetAngleBetweenVectors(Vector2 pointA, Vector2 pointB) {
+            return (float)Math.Atan2(pointA.Y - pointB.Y, pointA.X - pointB.X) + MathHelper.Pi;
         }
 	}
 }

@@ -22,6 +22,7 @@ namespace WizardPlatformer.Logic.Level {
 		private int roomWidth;
 		private int roomHeigth;
 
+		private ContentManager levelContentManager;
 		private LevelLoader levelLoader;
 		private int tileSideSize;
 
@@ -57,6 +58,7 @@ namespace WizardPlatformer.Logic.Level {
 		}
 
 		public void LoadContent(ContentManager contentManager) {
+			levelContentManager = contentManager;
 			MappedLevelParts mappedLevelParts = levelLoader.LoadLevel(levelId, roomId);
 
 			backLayer = mappedLevelParts.LayerBack;
@@ -98,6 +100,10 @@ namespace WizardPlatformer.Logic.Level {
 			UpdateCameraPosition();
 
 			background.Update(gameTime, player.Position);
+
+			if (InputManager.GetInstance().IsMouseLeftButtonPressed()) {
+				SpawnEntity(new EntityRangeAttack(3000, 10, 7.0f, true, 4, 4, 44, 40, (int)player.Position.X, (int)player.Position.Y, roomSizeId, this, InputManager.GetInstance().GetMousePosition()));
+			}
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
@@ -248,6 +254,7 @@ namespace WizardPlatformer.Logic.Level {
 
 		public void SpawnEntity(Entity entity) {
 			entities.Add(entity);
+			entity.LoadContent(levelContentManager);
 		}
 
 		public void DespawnEntity(Entity entity) {
@@ -261,20 +268,32 @@ namespace WizardPlatformer.Logic.Level {
 		}
 
 		public void LoadEntitiesContent(ContentManager contentManager) {
-			foreach (Entity entity in entities) {
-				entity.LoadContent(contentManager);
+			Entity entity;
+			for (int i = 0; i < entities.Count; i++) {
+				entity = entities[i];
+				if (entity != null) {
+					entity.LoadContent(contentManager);
+				}
 			}
 		}
 
 		private void UpdateEntities(GameTime gameTime) {
-			foreach (Entity entity in entities) {
-				entity.Update(gameTime);
+			Entity entity;
+			for (int i = 0; i < entities.Count; i++) {
+				entity = entities[i];
+				if (entity != null) {
+					entity.Update(gameTime);
+				}
 			}
 		}
 
 		private void DrawEntities(SpriteBatch spriteBatch, GameTime gameTime) {
-			foreach (Entity entity in entities) {
-				entity.Draw(spriteBatch, gameTime);
+			Entity entity;
+			for (int i = 0; i < entities.Count; i++) {
+				entity = entities[i];
+				if (entity != null) {
+					entity.Draw(spriteBatch, gameTime);
+				}
 			}
 		}
 
@@ -333,6 +352,10 @@ namespace WizardPlatformer.Logic.Level {
 
 		public int RoomHeigth {
 			get { return roomHeigth; }
+		}
+
+		public int RoomSizeId {
+			get { return roomSizeId; }
 		}
 	}
 }

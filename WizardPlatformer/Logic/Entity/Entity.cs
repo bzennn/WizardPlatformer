@@ -35,12 +35,16 @@ namespace WizardPlatformer {
 		protected bool isFallingThrough;
 		protected bool isGravityOn;
 		protected bool isOnMovingPlatform;
+		protected bool isStanding;
 
 		protected Texture2D sprite;
 		protected Point spriteSize;
 		protected SpriteEffects spriteFlip;
-		private Vector2 spritePosition;
-		private Vector2 spriteOffset;
+		protected Vector2 spritePosition;
+		protected Vector2 spriteOffset;
+		protected bool isRotatable;
+		protected float spriteRotation;
+		protected Vector2 spriteRotationOrigin;
 		private int scaleFactor;
 
 		protected Point currentFrame;
@@ -84,10 +88,14 @@ namespace WizardPlatformer {
 			this.isFallingThrough = false;
 			this.isGravityOn = true;
 			this.isOnMovingPlatform = false;
+			this.isStanding = false;
 
 			this.spriteFlip = SpriteEffects.None;
 			this.spritePosition = new Vector2(posX - heatBoxSpritePosX, posY - heatBoxSpritePosY);
 			this.spriteOffset = new Vector2(heatBoxSpritePosX, heatBoxSpritePosY);
+			this.isRotatable = false;
+			this.spriteRotation = 0.0f;
+			this.spriteRotationOrigin = Vector2.Zero;
 
 			this.currentFrame = new Point(0, 0);
 			this.frameSize = new Point(Display.CalcTileSideSize * 2, Display.CalcTileSideSize * 2);
@@ -127,8 +135,8 @@ namespace WizardPlatformer {
 				spritePosition,
 				new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y),
 				Color.White,
-				0.0f,
-				Vector2.Zero,
+				spriteRotation,
+				spriteRotationOrigin,
 				Display.DrawScale,
 				spriteFlip,
 				0.5f);
@@ -163,7 +171,14 @@ namespace WizardPlatformer {
 				entityPosition = value;
 				heatBox.X = (int)entityPosition.X;
 				heatBox.Y = (int)entityPosition.Y;
-				spritePosition = entityPosition - spriteOffset;
+				UpdateSpritePosition();
+			}
+		}
+
+		protected void UpdateSpritePosition() {
+			spritePosition = entityPosition - spriteOffset;
+			if (isRotatable) {
+				spritePosition += spriteRotationOrigin * scaleFactor;
 			}
 		}
 
@@ -210,8 +225,8 @@ namespace WizardPlatformer {
 				currentVelocity.X = Math.Max(currentAcceleration.X * movingTime.X, -maxVelocity.X);
 			}
 
-			if (!isJumping && isGravityOn) {
-				if (!isOnGround) {
+			if (!isJumping) {
+				if (!isOnGround && isGravityOn) {
 					currentAcceleration.Y = gravityAcceleration;
 					movingTime.Y++;
 				}
@@ -226,15 +241,18 @@ namespace WizardPlatformer {
 			EntityPosition += currentVelocity;
 
 			UpdateCollision();
+			isStanding = false;
 
 			if (previousEntityPosition.X == EntityPosition.X) {
 				currentVelocity.X = 0;
 				currentAcceleration.X = 0;
+				isStanding = true;
 			}
 
 			if (previousEntityPosition.Y == EntityPosition.Y) {
 				currentVelocity.Y = 0;
 				currentAcceleration.Y = 0;
+				isStanding = true;
 			}
 		}
 
@@ -274,6 +292,38 @@ namespace WizardPlatformer {
 					spriteFlip = SpriteEffects.None;
 					movingTime.X = 0;
 				}
+				return;
+			}
+		}
+
+		protected void AccelerateUp(float acceleration, bool clearAcceleration) {
+			if (currentAcceleration.Y < 0 && clearAcceleration) {
+				currentAcceleration.Y = 0;
+				movingTime.Y = 0;
+				currentVelocity.Y = 0;
+				return;
+			}
+
+			if (acceleration < 0 && !clearAcceleration) {
+				currentAcceleration.Y = acceleration;
+				movingTime.Y++;
+
+				return;
+			}
+		}
+
+		protected void AccelerateDown(float acceleration, bool clearAcceleration) {
+			if (currentAcceleration.Y > 10e-4f && clearAcceleration) {
+				currentAcceleration.Y = 0;
+				movingTime.Y = 0;
+				currentVelocity.Y = 0;
+				return;
+			}
+
+			if (acceleration > 10e-4f && !clearAcceleration) {
+				currentAcceleration.Y = acceleration;
+				movingTime.Y++;
+
 				return;
 			}
 		}

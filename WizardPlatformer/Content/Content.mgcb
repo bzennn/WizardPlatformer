@@ -169,6 +169,18 @@
 /processorParam:TextureFormat=Color
 /build:entity/debug_sprite.png
 
+#begin entity/ice_arrow_sprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:entity/ice_arrow_sprite.png
+
 #begin entity/wizard_sprite.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -208,6 +220,18 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:font/russo_one_20.spritefont
+
+#begin gui/cursor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:gui/cursor.png
 
 #begin gui/pause_background.png
 /importer:TextureImporter

@@ -57,11 +57,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Logic\Core\Animator.cs" />
+    <Compile Include="Logic\Core\Cursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />
     <Compile Include="Logic\Core\InputManager.cs" />
     <Compile Include="Logic\Core\Display.cs" />
     <Compile Include="Logic\Entity\Entity.cs" />
+    <Compile Include="Logic\Entity\EntityMeleeAttack.cs" />
     <Compile Include="Logic\Entity\EntityPlayer.cs" />
+    <Compile Include="Logic\Entity\EntityRangeAttack.cs" />
     <Compile Include="Logic\Exceptions\LevelFormatException.cs" />
     <Compile Include="Logic\Exceptions\LevelMappingException.cs" />
     <Compile Include="Logic\Exceptions\TileIdMapFormatException.cs" />
@@ -74,14 +78,14 @@
     <Compile Include="Logic\Level\LevelLoading\XMLLevelLoader.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLLevelParts.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLTileIdMapLoader.cs" />
-    <Compile Include="Logic\Level\Tile\Tile.cs" />
-    <Compile Include="Logic\Level\Tile\TileCheckpoint.cs" />
-    <Compile Include="Logic\Level\Tile\TileChest.cs" />
-    <Compile Include="Logic\Level\Tile\TileCollectable.cs" />
-    <Compile Include="Logic\Level\Tile\TileDestroyable.cs" />
-    <Compile Include="Logic\Level\Tile\TileFunctional.cs" />
-    <Compile Include="Logic\Level\Tile\TileMovingPlatform.cs" />
-    <Compile Include="Logic\Level\Tile\TileMovingPlatformRail.cs" />
+    <Compile Include="Logic\Tile\Tile.cs" />
+    <Compile Include="Logic\Tile\TileCheckpoint.cs" />
+    <Compile Include="Logic\Tile\TileChest.cs" />
+    <Compile Include="Logic\Tile\TileCollectable.cs" />
+    <Compile Include="Logic\Tile\TileDestroyable.cs" />
+    <Compile Include="Logic\Tile\TileFunctional.cs" />
+    <Compile Include="Logic\Tile\TileMovingPlatform.cs" />
+    <Compile Include="Logic\Tile\TileMovingPlatformRail.cs" />
     <Compile Include="Logic\Level\LevelLoading\UnmappedLevelParts.cs" />
     <Compile Include="Logic\Screen\Screen.cs" />
     <Compile Include="Logic\Screen\ScreenError.cs" />

@@ -7,9 +7,13 @@ namespace WizardPlatformer {
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+		Cursor cursor;
+
 		public WizardPlatformer() {
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
+
+			cursor = new Cursor(Color.Multiply(Color.AliceBlue, 10));
 		}
 
 		protected override void Initialize() {
@@ -33,6 +37,8 @@ namespace WizardPlatformer {
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			ScreenManager.GetInstance().LoadContent(Content);
+
+			cursor.LoadContent(Content);
 		}
 
 		protected override void UnloadContent() {
@@ -44,8 +50,11 @@ namespace WizardPlatformer {
 				Exit();
 
 			InputManager.GetInstance().CurrentKeyboardState = Keyboard.GetState();
+			InputManager.GetInstance().CurrentMouseState =  Mouse.GetState();
 			
 			ScreenManager.GetInstance().Update(gameTime);
+
+			cursor.Update(gameTime);
 
 			base.Update(gameTime);
 		}
@@ -55,6 +64,7 @@ namespace WizardPlatformer {
 
 			spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Display.GameMatrix);
 			ScreenManager.GetInstance().Draw(spriteBatch, gameTime);
+			cursor.Draw(spriteBatch, gameTime);
 			spriteBatch.End();
 
 			base.Draw(gameTime);

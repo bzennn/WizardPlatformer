@@ -12,14 +12,14 @@ namespace WizardPlatformer {
 			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
 
 			this.coins = coins;
-			this.spriteSize = new Point(6, 6);
-			this.drawDebugInfo = false;
+			this.drawDebugInfo = true;
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
 			base.LoadContent(contentManager);
 
 			this.sprite = contentManager.Load<Texture2D>("entity/wizard_sprite");
+			this.spriteSize = new Point(6, 6);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -29,18 +29,18 @@ namespace WizardPlatformer {
 
 			if (this.health > 0) {
 				if (isJumping) {
-					Animate(2, 0, 3, false);
+					Animator.Animate(2, 0, 3, false, frameTimeCounter, ref currentFrame);
 				} else {
 					if (this.currentVelocity.Y > 10e-4f) {
 						currentFrame = new Point(3, 2);
 					} else if (this.currentVelocity.X < 0 || this.currentVelocity.X > 10e-4f) {
-						Animate(1, 0, 6);
+						Animator.Animate(1, 0, 6, true, frameTimeCounter, ref currentFrame);
 					} else {
-						Animate(0, 0, 2);
+						Animator.Animate(0, 0, 2, true, frameTimeCounter, ref currentFrame);
 					}
 				}  
 			} else {
-				Animate(5, 0, 4, false);
+				Animator.Animate(5, 0, 4, false, frameTimeCounter, ref currentFrame);
 			}
 		}
 
@@ -83,6 +83,10 @@ namespace WizardPlatformer {
 			} else {
 				this.FallThrough(true);
 			}
+
+			/*if (InputManager.GetInstance().IsMouseLeftButtonPressed()) {
+				this.level.SpawnEntity(new EntityRangeAttack(10000, 10, 7.0f, true, 4, 4, 44, 40, (int)EntityPosition.X, (int)EntityPosition.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+			}*/
 		}
 
 		protected override void HandleExtraTile(Tile tile) {
@@ -99,27 +103,6 @@ namespace WizardPlatformer {
 
 			if (tile.Type == TileFunctional.FunctionType.TRIGGER) {
 				level.HandleTrigger();
-			}
-		}
-
-		private void Animate(int row, int startFrame, int frameQuantity, bool repeat = true) {
-			if (currentFrame.Y != row) {
-				currentFrame.Y = row;
-				currentFrame.X = startFrame;
-				frameTimeCounter = 0;
-			}
-
-			if (frameTimeCounter == 0) {
-				currentFrame.X++;
-
-				if (currentFrame.X > frameQuantity - 1) {
-					if (repeat) {
-						currentFrame.X = startFrame;
-					} else {
-						currentFrame.X--;
-					}
-					
-				}
 			}
 		}
 
