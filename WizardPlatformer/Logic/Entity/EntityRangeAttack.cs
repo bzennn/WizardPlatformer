@@ -9,21 +9,24 @@ using System.Threading.Tasks;
 using WizardPlatformer.Logic.Level;
 
 namespace WizardPlatformer {
-	public class EntityRangeAttack : Entity {
-		private int TTL;
+	public class EntityRangeAttack : EntityAttack {
+
 		private bool isStartAnimationEnd;
 
-		public EntityRangeAttack(int TTL, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level, Vector2 directionVector) 
-			: base(0, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
+		public EntityRangeAttack(int TTL, int sourceId, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level, Vector2 directionVector)
+			: base(TTL, sourceId, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
 
-			this.TTL = TTL;
-			this.isGravityOn = false;
 			this.isRotatable = true;
+			this.isSpriteFlipping = false;
 
 			this.spriteRotation = Geometry.GetAngleBetweenVectors(this.EntityPosition, directionVector);
 
+			this.frameUpdateMillis = 150;
+
 			this.drawDebugInfo = true;
 			this.isStartAnimationEnd = false;
+
+			SetStartVelocity();
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
@@ -38,46 +41,55 @@ namespace WizardPlatformer {
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
-			TTL -= gameTime.ElapsedGameTime.Milliseconds;
-
 			if (!isStartAnimationEnd) {
 				Animator.Animate(0, 0, 3, false, frameTimeCounter, ref currentFrame);
-				if (!currentFrame.Equals(new Point(0, 2))) {
+				if (currentFrame.X == 2) {
 					isStartAnimationEnd = true;
 				}
 			} else {
 				Animator.Animate(1, 0, 2, true, frameTimeCounter, ref currentFrame);
 			}
-			
-			if (Math.Cos(this.spriteRotation) > 0) {
-				AccelerateRight(0.4f, false);
-			}  else {
-				AccelerateLeft(-0.4f, false);
-			}
-
-			if (TTL <= 0) {
-				this.Die();
-				this.level.DespawnEntity(this);
-			}
-
-			//this.spriteFlip = SpriteEffects.None;
 		}
 
 		protected override void DrawDebugInfo(SpriteBatch spriteBatch, GameTime gameTime) {
 			base.DrawDebugInfo(spriteBatch, gameTime);
 
 			if (drawDebugInfo) {
-				spriteBatch.DrawString(debugFont, "Angle = " + Math.Cos(this.spriteRotation), heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
+				spriteBatch.DrawString(debugFont, "AngleCos = " + Math.Cos(this.spriteRotation) +
+					"\nAngleSin = " + Math.Sin(this.spriteRotation) +
+					"\nVelocity = " + this.currentVelocity, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
 			}
 		}
 
-		protected override void HandleExtraTile(Tile tile) {
+		/*protected override void HandleExtraTile(Tile tile) {
 			base.HandleExtraTile(tile);
 
 			if (tile.Collision == Tile.CollisionType.IMPASSABLE) {
-				this.Die();
+				this.Collapse();
 				this.level.DespawnEntity(this);
 			}
+		}*/
+
+		private void SetStartVelocity() {
+			float angleCos = (float)Math.Cos(this.spriteRotation);
+			float angleSin = (float)Math.Sin(this.spriteRotation);
+
+			if (Math.Abs(angleCos) < 0.05f) {
+				angleCos = 0.0f;
+			}
+
+			if (Math.Abs(angleSin) < 0.05f) {
+				angleSin = 0.0f;
+			}
+
+			this.currentVelocity.X = angleCos * this.maxVelocity.X;
+			this.currentVelocity.Y = angleSin * this.maxVelocity.X;
+		}
+
+		public override void Collapse() {
+			this.currentVelocity = Vector2.Zero;
+
+			base.Collapse();
 		}
 	}
 }

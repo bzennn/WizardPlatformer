@@ -88,40 +88,42 @@ namespace WizardPlatformer.Logic.Level {
 		public void Update(GameTime gameTime) {
 			UpdateLayersVisibility(gameTime, 0.05f);
 
-			UpdateLayer(gameTime, backLayer, roomSizeId);
-			UpdateLayer(gameTime, baseLayer, roomSizeId);
+			UpdateTileLayer(gameTime, backLayer, roomSizeId);
+			UpdateTileLayer(gameTime, baseLayer, roomSizeId);
 
 			UpdateTileEntities(gameTime);
 
 			UpdateEntities(gameTime);
 
-			UpdateLayer(gameTime, decoLayer, roomSizeId);
+			UpdateTileLayer(gameTime, decoLayer, roomSizeId);
 			
 			UpdateCameraPosition();
 
 			background.Update(gameTime, player.Position);
-
-			if (InputManager.GetInstance().IsMouseLeftButtonPressed()) {
-				SpawnEntity(new EntityRangeAttack(3000, 10, 7.0f, true, 4, 4, 44, 40, (int)player.Position.X, (int)player.Position.Y, roomSizeId, this, InputManager.GetInstance().GetMousePosition()));
-			}
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
 			background.Draw(spriteBatch, gameTime);
 			
-			DrawLayer(spriteBatch, gameTime, backLayer, roomSizeId);
-			DrawLayer(spriteBatch, gameTime, baseLayer, roomSizeId);
+			DrawTileLayer(spriteBatch, gameTime, backLayer, roomSizeId);
+			DrawTileLayer(spriteBatch, gameTime, baseLayer, roomSizeId);
 			
 			DrawTileEntities(spriteBatch, gameTime);
 
 			DrawEntities(spriteBatch, gameTime);
 			
-			DrawLayer(spriteBatch, gameTime, decoLayer, roomSizeId, currentOpacity);
+			DrawTileLayer(spriteBatch, gameTime, decoLayer, roomSizeId, currentOpacity);
 		}
 
-		private void UpdateLayer(GameTime gameTime, Tile[,] tileLayer, int roomSizeId) {
+		#region Tiles
+
+		private void UpdateTileLayer(GameTime gameTime, Tile[,] tileLayer, int roomSizeId) {
 			for (int i = 0; i < RoomSize[roomSizeId][0]; i++) {
 				for (int j = 0; j < RoomSize[roomSizeId][1]; j++) {
+					if (tileLayer[i, j] != null && tileLayer[i, j].IsCollapsed) {
+						tileLayer[i, j] = null;
+					}
+
 					if (tileLayer[i, j] != null) {
 						tileLayer[i, j].Update(gameTime);
 					}
@@ -129,7 +131,7 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
-		private void DrawLayer(SpriteBatch spriteBatch, GameTime gameTime, Tile[,] tileLayer, int roomSizeId, float opacity = 1.0f) {
+		private void DrawTileLayer(SpriteBatch spriteBatch, GameTime gameTime, Tile[,] tileLayer, int roomSizeId, float opacity = 1.0f) {
 			for (int i = 0; i < RoomSize[roomSizeId][0]; i++) {
 				for (int j = 0; j < RoomSize[roomSizeId][1]; j++) {
 					if (tileLayer[i, j] != null) {
@@ -138,10 +140,6 @@ namespace WizardPlatformer.Logic.Level {
 				}
 			}
 		}
-
-		
-
-		#region Tiles
 
 		public Point GetTileLayerCoords(float posX, float posY) {
 			int x = (int)Math.Floor(posX / tileSideSize);
@@ -281,6 +279,13 @@ namespace WizardPlatformer.Logic.Level {
 			Entity entity;
 			for (int i = 0; i < entities.Count; i++) {
 				entity = entities[i];
+				
+				if (entity != null && !entity.IsAlive) {
+					if (!(entity is EntityPlayer)) {
+						DespawnEntity(entity);
+					}
+				}
+
 				if (entity != null) {
 					entity.Update(gameTime);
 				}

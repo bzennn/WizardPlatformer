@@ -63,6 +63,8 @@
     <Compile Include="Logic\Core\InputManager.cs" />
     <Compile Include="Logic\Core\Display.cs" />
     <Compile Include="Logic\Entity\Entity.cs" />
+    <Compile Include="Logic\Entity\EntityAttack.cs" />
+    <Compile Include="Logic\Entity\EntityLiving.cs" />
     <Compile Include="Logic\Entity\EntityMeleeAttack.cs" />
     <Compile Include="Logic\Entity\EntityPlayer.cs" />
     <Compile Include="Logic\Entity\EntityRangeAttack.cs" />

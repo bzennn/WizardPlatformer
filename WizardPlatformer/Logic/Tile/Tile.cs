@@ -30,6 +30,8 @@ namespace WizardPlatformer {
 		private CollisionType collision;
 		private PassType pass;
 
+		private bool isCollapsed;
+
 		protected bool drawDebugInfo;
 
 		public Tile(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY) {
@@ -47,7 +49,9 @@ namespace WizardPlatformer {
 
 			this.collision = collision;
 			this.pass = pass;
-			
+
+			this.isCollapsed = false;
+
 			this.drawDebugInfo = false;
 		}
 
@@ -85,6 +89,10 @@ namespace WizardPlatformer {
 			}
 		}
 
+		public void Collapse() {
+			isCollapsed = true;
+		}
+
 		public Vector2 TilePosition {
 			get { return tilePosition; }
 			set {
@@ -117,6 +125,10 @@ namespace WizardPlatformer {
 		public bool DebugInfo {
 			get { return drawDebugInfo; }
 			set { drawDebugInfo = value; }
+		}
+		
+		public bool IsCollapsed {
+			get { return isCollapsed; }
 		}
 	}
 }

@@ -25,69 +25,64 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			Tile[,] functionalLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			List<TileMovingPlatform> movingPlatforms = new List<TileMovingPlatform>();
 
-			try {
-				int currentTileId = 0;
-				for (int i = 0, j = 0, k = 0; i < roomSizeWidth * roomSizeHeigth; i++, k++) {
-					if (i % roomSizeWidth == 0 && i != 0) {
-						j++;
-						k = 0;
+			int currentTileId = 0;
+			for (int i = 0, j = 0, k = 0; i < roomSizeWidth * roomSizeHeigth; i++, k++) {
+				if (i % roomSizeWidth == 0 && i != 0) {
+					j++;
+					k = 0;
+				}
+
+				currentTileId = unmappedLevelParts.LayerBack[i];
+				if (currentTileId != 0) {
+					backLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
+				}
+
+				currentTileId = unmappedLevelParts.LayerBase[i];
+				if (currentTileId != 0) {
+					baseLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
+				}
+
+				currentTileId = unmappedLevelParts.LayerDeco[i];
+				if (currentTileId != 0) {
+					decoLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
+				}
+
+				currentTileId = unmappedLevelParts.LayerFunctional[i];
+				if (currentTileId != 0) {
+					functionalLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
+				}
+			}
+
+			foreach (int[] platformData in unmappedLevelParts.MovingPlatforms) {
+				TileMovingPlatform platform = null;
+
+				if (platformData[0] == 0) {
+					platform = (TileMovingPlatform)tileCreator.CreateTile(56, platformData[3] * tileSideSize, platformData[4] * tileSideSize);
+
+					if (platformData[1] == 1) {
+						Tile platformRight = tileCreator.CreateTile(9, 0, 0);
+						platform.SetRightTile(platformRight);
 					}
 
-					currentTileId = unmappedLevelParts.LayerBack[i];
-					if (currentTileId != 0) {
-						backLayer[k, j] = tileCreator.CreateTile(currentTileId,  k * tileSideSize, j * tileSideSize);
+					if (platformData[2] == 1) {
+						Tile platformLeft = tileCreator.CreateTile(7, 0, 0);
+						platform.SetLeftTile(platformLeft);
+					}
+				} else if (platformData[0] == 1) {
+					platform = (TileMovingPlatform)tileCreator.CreateTile(55, platformData[3] * tileSideSize, platformData[4] * tileSideSize);
+
+					if (platformData[1] == 1) {
+						Tile platformRight = tileCreator.CreateTile(45, 0, 0);
+						platform.SetRightTile(platformRight);
 					}
 
-					currentTileId = unmappedLevelParts.LayerBase[i];
-					if (currentTileId != 0) {
-						baseLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
-					}
-
-					currentTileId = unmappedLevelParts.LayerDeco[i];
-					if (currentTileId != 0) {
-						decoLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
-					}
-
-					currentTileId = unmappedLevelParts.LayerFunctional[i];
-					if (currentTileId != 0) {
-						functionalLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
+					if (platformData[2] == 1) {
+						Tile platformLeft = tileCreator.CreateTile(43, 0, 0);
+						platform.SetLeftTile(platformLeft);
 					}
 				}
 
-				foreach (int[] platformData in unmappedLevelParts.MovingPlatforms) {
-					TileMovingPlatform platform = null;
-
-					if (platformData[0] == 0) {
-						platform = (TileMovingPlatform)tileCreator.CreateTile(56, platformData[3] * tileSideSize, platformData[4] * tileSideSize);
-
-						if (platformData[1] == 1) {
-							Tile platformRight = tileCreator.CreateTile(9, 0, 0);
-							platform.SetRightTile(platformRight);
-						}
-
-						if (platformData[2] == 1) {
-							Tile platformLeft = tileCreator.CreateTile(7, 0, 0);
-							platform.SetLeftTile(platformLeft);
-						}
-					} else if (platformData[0] == 1) {
-						platform = (TileMovingPlatform)tileCreator.CreateTile(55, platformData[3] * tileSideSize, platformData[4] * tileSideSize);
-
-						if (platformData[1] == 1) {
-							Tile platformRight = tileCreator.CreateTile(45, 0, 0);
-							platform.SetRightTile(platformRight);
-						}
-
-						if (platformData[2] == 1) {
-							Tile platformLeft = tileCreator.CreateTile(43, 0, 0);
-							platform.SetLeftTile(platformLeft);
-						}
-					}
-
-					movingPlatforms.Add(platform);
-				}
-			} catch (Exception e) {
-				LevelMappingException mappingException = new LevelMappingException("Level mapping error:\n" + e.Message);
-				ScreenManager.GetInstance().ChangeScreen(new ScreenError(mappingException), true);
+				movingPlatforms.Add(platform);
 			}
 
 			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, baseLayer, backLayer, decoLayer, functionalLayer, movingPlatforms);

@@ -3,13 +3,17 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using WizardPlatformer.Logic.Level;
+using System;
 
 namespace WizardPlatformer {
-	public class EntityPlayer : Entity {
+	public class EntityPlayer : EntityLiving {
+		private static int playerID;
 		private int coins;
 
 		public EntityPlayer(int health, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
 			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
+
+			playerID = this.id;
 
 			this.coins = coins;
 			this.drawDebugInfo = true;
@@ -50,6 +54,14 @@ namespace WizardPlatformer {
 			if (drawDebugInfo) {
 				spriteBatch.DrawString(debugFont, "Coins = " + coins +
 					"\nPosition = " + Position, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
+
+				float angle = Geometry.GetAngleBetweenVectors(this.EntityPosition, InputManager.GetInstance().GetMousePosition());
+				float angleCos = (float)Math.Cos(angle);
+				float angleSin = (float)Math.Sin(angle);
+
+				spriteBatch.DrawString(debugFont, "Angle:\n angle = " + angle +
+					"\nCos = " + angleCos +
+					"\nSin = " + angleSin, Display.GetZeroScreenPositionOnLevel() + new Vector2(60, 0), Color.AntiqueWhite);
 			}
 		}
 
@@ -58,19 +70,19 @@ namespace WizardPlatformer {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenMainMenu(), true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.A) && this.health > 0) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.A) && this.IsAlive) {
 				this.AccelerateLeft(-maxAcceleration, false);
 			} else {
 				this.AccelerateLeft(-maxAcceleration, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.D) && this.health > 0) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.D) && this.IsAlive) {
 				this.AccelerateRight(maxAcceleration, false);
 			} else {
 				this.AccelerateRight(maxAcceleration, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.Space) && this.health > 0) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.Space) && this.IsAlive) {
 				if ((isOnGround && InputManager.GetInstance().IsKeyPressed(Keys.Space)) || isJumping || !isGravityOn) {
 					this.AccelerateJump(-8.5f, 32, false);
 				}
@@ -78,15 +90,15 @@ namespace WizardPlatformer {
 				this.AccelerateJump(-8.5f, 32, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.S) && this.health > 0) {
+			if (InputManager.GetInstance().IsKeyPressed(Keys.S) && this.IsAlive) {
 				this.FallThrough(false);
 			} else {
 				this.FallThrough(true);
 			}
 
-			/*if (InputManager.GetInstance().IsMouseLeftButtonPressed()) {
-				this.level.SpawnEntity(new EntityRangeAttack(10000, 10, 7.0f, true, 4, 4, 44, 40, (int)EntityPosition.X, (int)EntityPosition.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
-			}*/
+			if (InputManager.GetInstance().IsMouseLeftButtonPressed() && this.IsAlive) {
+				this.level.SpawnEntity(new EntityRangeAttack(3000, this.id, this.damage, 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+			}
 		}
 
 		protected override void HandleExtraTile(Tile tile) {
@@ -94,7 +106,7 @@ namespace WizardPlatformer {
 
 			if (tile is TileCollectable) {
 				coins++;
-				this.level.DestroyTile(tile);
+				tile.Collapse();
 			}
 		}
 
@@ -112,6 +124,10 @@ namespace WizardPlatformer {
 
 		public Vector2 Velocity {
 			get { return this.currentVelocity; }
+		}
+
+		public static int PlayerID {
+			get { return playerID; }
 		}
 	}
 }

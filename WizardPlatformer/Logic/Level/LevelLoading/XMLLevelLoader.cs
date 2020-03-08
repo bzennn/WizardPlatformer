@@ -23,120 +23,119 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			List<string> movingPlatforms = new List<string>();
 			List<string> entities = new List<string>();
 
-			try {
-				if (!File.Exists(filePath)) {
-					throw new FileNotFoundException("Level not found! \nFile: \"" + filePath + "\" not exist!");
-				}
+			if (!File.Exists(filePath)) {
+				throw new FileNotFoundException("Level not found! \nFile: \"" + filePath + "\" not exist!");
+			}
 
-				XmlDocument room = new XmlDocument();
-				room.Load(filePath);
+			XmlDocument room = new XmlDocument();
+			room.Load(filePath);
 
-				XmlElement xLevel = room.DocumentElement;
-				foreach (XmlNode xPart in xLevel) {
-					if (xPart.Name.Equals("room")) {
-						if (xPart.Attributes.Count == 2) {
-							XmlNode attribute = xPart.Attributes.GetNamedItem("backgroundId");
-							if (attribute == null) {
-								throw levelFormatException;
-							} else {
-								backgroundId = attribute.Value;
-							}
-
-							attribute = xPart.Attributes.GetNamedItem("size");
-							if (attribute == null) {
-								throw levelFormatException;
-							} else {
-								roomSize = attribute.Value;
-							}
+			XmlElement xLevel = room.DocumentElement;
+			foreach (XmlNode xPart in xLevel) {
+				if (xPart.Name.Equals("room")) {
+					if (xPart.Attributes.Count == 2) {
+						XmlNode attribute = xPart.Attributes.GetNamedItem("backgroundId");
+						if (attribute == null) {
+							throw levelFormatException;
+						} else {
+							backgroundId = attribute.Value;
 						}
 
-						foreach (XmlNode xLayer in xPart) {
-							if (xLayer.Attributes.Count != 1) {
+						attribute = xPart.Attributes.GetNamedItem("size");
+						if (attribute == null) {
+							throw levelFormatException;
+						} else {
+							roomSize = attribute.Value;
+						}
+					}
+
+					foreach (XmlNode xLayer in xPart) {
+						if (xLayer.Attributes.Count != 1) {
+							throw levelFormatException;
+						} else {
+							XmlNode attribute = xLayer.Attributes.GetNamedItem("id");
+
+							if (attribute == null) {
 								throw levelFormatException;
 							} else {
-								XmlNode attribute = xLayer.Attributes.GetNamedItem("id");
-
-								if (attribute == null) {
-									throw levelFormatException;
-								} else {
-									if (attribute.Value == "base") {
-										if (!xLayer.HasChildNodes) {
-											throw levelFormatException;
-										} else {
-											layerBase = xLayer.FirstChild.InnerText;
-										}
-									} else if (attribute.Value == "back") {
-										if (!xLayer.HasChildNodes) {
-											throw levelFormatException;
-										} else {
-											layerBack = xLayer.FirstChild.InnerText;
-										}
-									} else if (attribute.Value == "deco") {
-										if (!xLayer.HasChildNodes) {
-											throw levelFormatException;
-										} else {
-											layerDeco = xLayer.FirstChild.InnerText;
-										}
-									} else if (attribute.Value == "functional") {
-										if (!xLayer.HasChildNodes) {
-											throw levelFormatException;
-										} else {
-											layerFunctional = xLayer.FirstChild.InnerText;
-										}
+								if (attribute.Value == "base") {
+									if (!xLayer.HasChildNodes) {
+										throw levelFormatException;
+									} else {
+										layerBase = xLayer.FirstChild.InnerText;
+									}
+								} else if (attribute.Value == "back") {
+									if (!xLayer.HasChildNodes) {
+										throw levelFormatException;
+									} else {
+										layerBack = xLayer.FirstChild.InnerText;
+									}
+								} else if (attribute.Value == "deco") {
+									if (!xLayer.HasChildNodes) {
+										throw levelFormatException;
+									} else {
+										layerDeco = xLayer.FirstChild.InnerText;
+									}
+								} else if (attribute.Value == "functional") {
+									if (!xLayer.HasChildNodes) {
+										throw levelFormatException;
+									} else {
+										layerFunctional = xLayer.FirstChild.InnerText;
 									}
 								}
 							}
 						}
-					} else if (xPart.Name.Equals("moving_platforms")) {
-						foreach (XmlNode xPlatform in xPart) {
-							if (xPlatform.Attributes.Count != 5) {
+					}
+				} else if (xPart.Name.Equals("moving_platforms")) {
+					foreach (XmlNode xPlatform in xPart) {
+						if (xPlatform.Attributes.Count != 5) {
+							throw levelFormatException;
+						} else {
+							XmlNode attribute = xPlatform.Attributes.GetNamedItem("type");
+							string platform = "";
+							if (attribute == null) {
 								throw levelFormatException;
 							} else {
-								XmlNode attribute = xPlatform.Attributes.GetNamedItem("type");
-								string platform = "";
-								if (attribute == null) {
-									throw levelFormatException;
-								} else {
-									platform += attribute.Value + ",";
-								}
-
-								attribute = xPlatform.Attributes.GetNamedItem("right");
-								if (attribute == null) {
-									throw levelFormatException;
-								} else {
-									platform += attribute.Value + ",";
-								}
-
-								attribute = xPlatform.Attributes.GetNamedItem("left");
-								if (attribute == null) {
-									throw levelFormatException;
-								} else {
-									platform += attribute.Value + ",";
-								}
-
-								attribute = xPlatform.Attributes.GetNamedItem("x");
-								if (attribute == null) {
-									throw levelFormatException;
-								} else {
-									platform += attribute.Value + ",";
-								}
-
-								attribute = xPlatform.Attributes.GetNamedItem("y");
-								if (attribute == null) {
-									throw levelFormatException;
-								} else {
-									platform += attribute.Value;
-								}
-
-								movingPlatforms.Add(platform);
+								platform += attribute.Value + ",";
 							}
+
+							attribute = xPlatform.Attributes.GetNamedItem("right");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								platform += attribute.Value + ",";
+							}
+
+							attribute = xPlatform.Attributes.GetNamedItem("left");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								platform += attribute.Value + ",";
+							}
+
+							attribute = xPlatform.Attributes.GetNamedItem("x");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								platform += attribute.Value + ",";
+							}
+
+							attribute = xPlatform.Attributes.GetNamedItem("y");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								platform += attribute.Value;
+							}
+
+							movingPlatforms.Add(platform);
 						}
 					}
 				}
-			} catch (Exception e) {
-				Exception levelE = new Exception("Level load error:\n" + e.Message);
-				ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
 			}
+			/*catch (Exception e) {
+			   Exception levelE = new Exception("Level load error:\n" + e.Message);
+			   ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
+		   }*/
 
 			return new XMLLevelParts(backgroundId, roomSize, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities);
 		}

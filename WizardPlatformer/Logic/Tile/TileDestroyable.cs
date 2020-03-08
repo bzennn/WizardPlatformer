@@ -22,7 +22,7 @@ namespace WizardPlatformer {
 		}
 
 		public void Destroy() {
-
+			this.Collapse();
 		}
 	}
 }
