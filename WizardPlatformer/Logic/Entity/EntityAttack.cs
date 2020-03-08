@@ -42,7 +42,13 @@ namespace WizardPlatformer {
 					}
 				}
 
-				this.Collapse();
+				if (tile.Collision == Tile.CollisionType.PLATFORM) {
+					this.FallThrough(false);
+				}
+
+				if (tile.Collision == Tile.CollisionType.IMPASSABLE) {
+					this.Collapse();
+				}
 			}
 		}
 
