@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace WizardPlatformer {
+namespace WizardPlatformer.Logic.UI {
 	public class Cursor {
 		private Texture2D sprite;
 		private Vector2 cursorPosition;
@@ -18,7 +18,7 @@ namespace WizardPlatformer {
 			this.tileSideSize = Display.TileSideSize;
 			this.color = color;
 
-			this.drawDebugInfo = true;
+			this.drawDebugInfo = false;
 		}
 
 		public void LoadContent(ContentManager contentManager) {

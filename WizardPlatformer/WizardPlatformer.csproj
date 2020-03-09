@@ -58,7 +58,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Logic\Core\Animator.cs" />
-    <Compile Include="Logic\Core\Cursor.cs" />
+    <Compile Include="Logic\UI\Cursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />
     <Compile Include="Logic\Core\InputManager.cs" />
     <Compile Include="Logic\Core\Display.cs" />
@@ -95,6 +95,7 @@
     <Compile Include="Logic\Screen\ScreenMainMenu.cs" />
     <Compile Include="Logic\Screen\ScreenManager.cs" />
     <Compile Include="Logic\Screen\ScreenPause.cs" />
+    <Compile Include="Logic\UI\HUD.cs" />
     <Compile Include="WizardPlatformer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -79,7 +79,7 @@ namespace WizardPlatformer.Logic.Level {
 				}
 			}
 
-			player = new EntityPlayer(5, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
+			player = new EntityPlayer(9, 10, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
 			SpawnEntity(player);
 
 			LoadEntitiesContent(contentManager);
@@ -302,6 +302,10 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
+		public Entity GetEntity(int entityID) {
+			return entities.Find((entity1) => { return entity1.EntityID == entityID; });
+		}
+
 		public List<Entity> EntitiesList {
 			get { return entities; }
 		}
@@ -361,6 +365,10 @@ namespace WizardPlatformer.Logic.Level {
 
 		public int RoomSizeId {
 			get { return roomSizeId; }
+		}
+
+		public EntityPlayer Player {
+			get { return player; }
 		}
 	}
 }

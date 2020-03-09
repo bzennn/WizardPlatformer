@@ -181,6 +181,18 @@
 /processorParam:TextureFormat=Color
 /build:entity/ice_arrow_sprite.png
 
+#begin entity/melee_attack_sprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:entity/melee_attack_sprite.png
+
 #begin entity/wizard_sprite.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -232,6 +244,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:gui/cursor.png
+
+#begin gui/hud_sprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:gui/hud_sprite.png
 
 #begin gui/pause_background.png
 /importer:TextureImporter

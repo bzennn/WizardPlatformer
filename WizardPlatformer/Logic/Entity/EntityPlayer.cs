@@ -8,13 +8,15 @@ using System;
 namespace WizardPlatformer {
 	public class EntityPlayer : EntityLiving {
 		private static int playerID;
+		private int maxHealth;
 		private int coins;
 
-		public EntityPlayer(int health, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
+		public EntityPlayer(int health, int maxHealth, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
 			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
 
 			playerID = this.id;
 
+			this.maxHealth = maxHealth;
 			this.coins = coins;
 			this.drawDebugInfo = true;
 		}
@@ -61,7 +63,7 @@ namespace WizardPlatformer {
 
 				spriteBatch.DrawString(debugFont, "Angle:\n angle = " + angle +
 					"\nCos = " + angleCos +
-					"\nSin = " + angleSin, Display.GetZeroScreenPositionOnLevel() + new Vector2(60, 0), Color.AntiqueWhite);
+					"\nSin = " + angleSin, Display.GetZeroScreenPositionOnLevel() + new Vector2(10, 750), Color.AntiqueWhite);
 			}
 		}
 
@@ -99,6 +101,10 @@ namespace WizardPlatformer {
 			if (InputManager.GetInstance().IsMouseLeftButtonPressed() && this.IsAlive) {
 				this.level.SpawnEntity(new EntityRangeAttack(3000, this.id, this.damage, 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
 			}
+
+			if (InputManager.GetInstance().IsMouseRightButtonPressed() && this.IsAlive) {
+				this.level.SpawnEntity(new EntityMeleeAttack(450, this.id, (int)(this.damage * 1.5f), 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+			}
 		}
 
 		protected override void HandleExtraTile(Tile tile) {
@@ -118,16 +124,16 @@ namespace WizardPlatformer {
 			}
 		}
 
-		public Vector2 Position {
-			get { return this.heatBox.Center.ToVector2(); }
-		}
-
-		public Vector2 Velocity {
-			get { return this.currentVelocity; }
-		}
-
 		public static int PlayerID {
 			get { return playerID; }
+		}
+
+		public int MaxHealth {
+			get { return maxHealth; }
+		}
+
+		public int Coins {
+			get { return coins; }
 		}
 	}
 }

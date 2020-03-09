@@ -16,6 +16,7 @@ namespace WizardPlatformer {
 		protected int health;
 		protected int damage;
 		private bool isAlive;
+		protected bool isCollapsing;
 
 		protected Level level;
 		protected Tile[] surroundingTiles;
@@ -49,6 +50,7 @@ namespace WizardPlatformer {
 		protected float spriteRotation;
 		protected Vector2 spriteRotationOrigin;
 		protected bool isSpriteFlipping;
+		protected bool isSpriteFlipped;
 		protected bool hasAcceleration;
 		private int scaleFactor;
 
@@ -74,6 +76,7 @@ namespace WizardPlatformer {
 			this.health = health;
 			this.damage = damage;
 			this.isAlive = true;
+			this.isCollapsing = false;
 
 			this.level = level;
 			this.surroundingTiles = new Tile[10];
@@ -98,6 +101,7 @@ namespace WizardPlatformer {
 			this.isOnMovingPlatform = false;
 			this.isCollides = false;
 			this.isSpriteFlipping = true;
+			this.isSpriteFlipped = false;
 			this.hasAcceleration = true;
 
 			this.spriteFlip = SpriteEffects.None;
@@ -135,9 +139,16 @@ namespace WizardPlatformer {
 				UpdatePhysics(gameTime);
 			}
 
+			if (isCollapsing) {
+				Collapse();
+			}
+
 			HandleEntities();
 			HandleExtraTiles();
 			HandleFuctionalTiles();
+
+			UpdateSpriteFlipped();
+			UpdateSpriteFlip();
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
@@ -177,8 +188,56 @@ namespace WizardPlatformer {
 			}
 		}
 
+		private void UpdateSpriteFlip() {
+			if (isSpriteFlipped) {
+				spriteFlip = SpriteEffects.FlipHorizontally;
+				return;
+			}
+
+			if (!isSpriteFlipped) {
+				spriteFlip = SpriteEffects.None;
+				return;
+			}
+		}
+
+		private void UpdateSpriteFlipped() {
+			if (currentVelocity.X < 0) {
+				isSpriteFlipped = true;
+				return;
+			}
+
+			if (currentVelocity.X > 10e-4f) {
+				isSpriteFlipped = false;
+				return;
+			}
+		}
+		protected void UpdateSpritePosition() {
+			spritePosition = entityPosition - spriteOffset;
+			if (isRotatable) {
+				spritePosition += spriteRotationOrigin * scaleFactor;
+			}
+		}
+
+		#region Properties
+
 		public int EntityID {
 			get { return id; }
+		}
+
+		public bool IsAlive {
+			get { return isAlive; }
+		}
+
+		public int Health {
+			get { return health; }
+		}
+
+		public Vector2 Position {
+			get { return heatBox.Center.ToVector2(); }
+		}
+
+		public Vector2 Velocity {
+			get { return currentVelocity; }
 		}
 
 		protected Vector2 EntityPosition {
@@ -191,16 +250,7 @@ namespace WizardPlatformer {
 			}
 		}
 
-		protected void UpdateSpritePosition() {
-			spritePosition = entityPosition - spriteOffset;
-			if (isRotatable) {
-				spritePosition += spriteRotationOrigin * scaleFactor;
-			}
-		}
-
-		public bool IsAlive {
-			get { return isAlive; }
-		}
+		#endregion
 
 		#region Moving
 
@@ -228,7 +278,7 @@ namespace WizardPlatformer {
 				if (heatBox.Right < movingPlatform.HeatBox.Left ||
 					heatBox.Left > movingPlatform.HeatBox.Right) {
 					isOnGround = false;
-				} else if (!isJumping && isOnGround) {
+				}else if (!isJumping && isOnGround) {
 					EntityPosition += (movingPlatform as TileMovingPlatform).Velocity;
 				}
 			}
@@ -279,13 +329,14 @@ namespace WizardPlatformer {
 			}
 
 			if (acceleration < 0 && !crearAcceleration) {
-				currentAcceleration.X = acceleration;
-				movingTime.X++;
+				if (currentAcceleration.X > 10e-4f ||
+					Math.Abs(currentAcceleration.X) < 10e-4f) {
 
-				if (spriteFlip != SpriteEffects.FlipHorizontally) {
-					spriteFlip = SpriteEffects.FlipHorizontally;
 					movingTime.X = 0;
 				}
+
+				currentAcceleration.X = acceleration;
+				movingTime.X++;
 
 				return;
 			}
@@ -300,13 +351,13 @@ namespace WizardPlatformer {
 			}
 
 			if (acceleration > 10e-4f && !clearAcceleration) {
+				if (currentAcceleration.X <= 0) {
+					movingTime.X = 0;
+				}
+
 				currentAcceleration.X = acceleration;
 				movingTime.X++;
 
-				if (spriteFlip != SpriteEffects.None) {
-					spriteFlip = SpriteEffects.None;
-					movingTime.X = 0;
-				}
 				return;
 			}
 		}
@@ -441,18 +492,17 @@ namespace WizardPlatformer {
 
 			if (EntityPosition.X < 0) {
 				EntityPosition = new Vector2(0, EntityPosition.Y);
+				isCollides = true;
 			}
 
 			if (EntityPosition.X + heatBox.Width > level.RoomWidth * Display.TileSideSize) {
 				EntityPosition = new Vector2(level.RoomWidth * Display.TileSideSize - heatBox.Width, EntityPosition.Y);
+				isCollides = true;
 			}
-
-			/*if (EntityPosition.Y < -heatBox.Height) {
-				EntityPosition = new Vector2(EntityPosition.X, -heatBox.Height);
-			}*/
 
 			if (EntityPosition.Y + heatBox.Height > level.RoomHeigth * Display.TileSideSize + heatBox.Height) {
 				EntityPosition = new Vector2(EntityPosition.X, level.RoomHeigth * Display.TileSideSize + heatBox.Height);
+				isCollides = true;
 			}
 
 			for (int i = 0; i < surroundingTiles.Length; i++) {
@@ -540,7 +590,7 @@ namespace WizardPlatformer {
 			}
 		}
 
-		protected bool HandleEntity(Entity entity) {
+		protected virtual bool HandleEntity(Entity entity) {
 			if (entity is EntityAttack && entity != this) {
 				if (this is EntityLiving) {
 					EntityAttack attack = (EntityAttack)entity;
@@ -560,6 +610,7 @@ namespace WizardPlatformer {
 		#endregion
 
 		public virtual void Collapse() {
+			isCollapsing = true;
 			health = 0;
 			isAlive = false;
 		}

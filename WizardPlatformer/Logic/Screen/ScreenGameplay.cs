@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using WizardPlatformer.Logic.Level.LevelLoading;
 using WizardPlatformer.Logic.Level;
+using WizardPlatformer.Logic.UI;
 
 namespace WizardPlatformer {
 	public class ScreenGameplay : Screen {
@@ -16,6 +17,8 @@ namespace WizardPlatformer {
 
 		Level currentLevel;
 		ContentManager contentManager;
+
+		HUD hud;
 
 		#endregion
 
@@ -31,9 +34,12 @@ namespace WizardPlatformer {
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
 			levelLoader = new LevelLoader(tileSet, tileSetSize);
-			//currentLevel = new Level(0, 2, levelLoader, new Point(100, 4000));
-			currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
+			currentLevel = new Level(0, 1, levelLoader, new Point(100, 300));
+			//currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
 			currentLevel.LoadContent(contentManager);
+
+			hud = new HUD(currentLevel.Player);
+			hud.LoadContent(contentManager);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -70,6 +76,7 @@ namespace WizardPlatformer {
 
 			if (currentLevel != null) {
 				currentLevel.Update(gameTime);
+				hud.Update(gameTime);
 			}
 		}
 
@@ -78,6 +85,7 @@ namespace WizardPlatformer {
 
 			if (currentLevel != null) {
 				currentLevel.Draw(spriteBatch, gameTime);
+				hud.Draw(spriteBatch, gameTime);
 			}
 		}
 	}
