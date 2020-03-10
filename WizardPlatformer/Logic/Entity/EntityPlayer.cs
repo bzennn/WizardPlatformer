@@ -8,17 +8,47 @@ using System;
 namespace WizardPlatformer {
 	public class EntityPlayer : EntityLiving {
 		private static int playerID;
+		
 		private int maxHealth;
+
+		private int mana;
+		private int maxMana;
+		private int manaRegenCounter;
+		private int manaRegenSpeed;
+
+		private int stamina;
+		private int maxStamina;
+		private int staminaRegenCounter;
+		private int staminaRegenSpeed;
+
 		private int coins;
 
-		public EntityPlayer(int health, int maxHealth, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
+		private int rangeAttackCost;
+		private int meleeAttackCost;
+
+		public EntityPlayer(int health, int maxHealth, int mana, int maxMana, int stamina, int maxStamina, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
 			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
 
 			playerID = this.id;
 
 			this.maxHealth = maxHealth;
+
+			this.mana = mana;
+			this.maxMana = maxMana;
+			this.manaRegenCounter = 0;
+			this.manaRegenSpeed = 100;
+
+			this.stamina = stamina;
+			this.maxStamina = maxStamina;
+			this.staminaRegenCounter = 0;
+			this.staminaRegenSpeed = 10;
+
 			this.coins = coins;
-			this.drawDebugInfo = true;
+
+			this.rangeAttackCost = 30;
+			this.meleeAttackCost = 25;
+
+			this.drawDebugInfo = false;
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
@@ -47,6 +77,11 @@ namespace WizardPlatformer {
 				}  
 			} else {
 				Animator.Animate(5, 0, 4, false, frameTimeCounter, ref currentFrame);
+			}
+
+			if (this.IsAlive) {
+				RegenMana(gameTime);
+				RegenStamina(gameTime);
 			}
 		}
 
@@ -99,11 +134,17 @@ namespace WizardPlatformer {
 			}
 
 			if (InputManager.GetInstance().IsMouseLeftButtonPressed() && this.IsAlive) {
-				this.level.SpawnEntity(new EntityRangeAttack(3000, this.id, this.damage, 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+				if (mana - rangeAttackCost >= 0) {
+					this.level.SpawnEntity(new EntityRangeAttack(3000, this.id, this.damage, 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+					ConsumeMana(rangeAttackCost);
+				}
 			}
 
 			if (InputManager.GetInstance().IsMouseRightButtonPressed() && this.IsAlive) {
-				this.level.SpawnEntity(new EntityMeleeAttack(450, this.id, (int)(this.damage * 1.5f), 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+				if (stamina - meleeAttackCost >= 0) {
+					this.level.SpawnEntity(new EntityMeleeAttack(450, this.id, (int)(this.damage * 1.5f), 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+					ConsumeStamina(meleeAttackCost);
+				}
 			}
 		}
 
@@ -124,12 +165,74 @@ namespace WizardPlatformer {
 			}
 		}
 
+		public void AddMana(int mana) {
+			this.mana += mana;
+			if (this.mana > maxMana) {
+				this.mana = maxMana;
+			}
+		}
+
+		public void ConsumeMana(int mana) {
+			this.mana -= mana;
+			if (this.mana < 0) {
+				this.mana = 0;
+			}
+		}
+
+		public void AddStamina(int stamina) {
+			this.stamina += stamina;
+			if (this.stamina > maxStamina) {
+				this.stamina = maxStamina;
+			}
+		}
+
+		public void ConsumeStamina(int stamina) {
+			this.stamina -= stamina;
+			if (this.stamina < 0) {
+				this.stamina = 0;
+			}
+		}
+
+		public void RegenMana(GameTime gameTime) {
+			manaRegenCounter += gameTime.ElapsedGameTime.Milliseconds;
+
+			if (manaRegenCounter > manaRegenSpeed) {
+				manaRegenCounter = 0;
+				AddMana(1);
+			}
+		}
+
+		public void RegenStamina(GameTime gameTime) {
+			staminaRegenCounter += gameTime.ElapsedGameTime.Milliseconds;
+
+			if (staminaRegenCounter > staminaRegenSpeed) {
+				staminaRegenCounter = 0;
+				AddStamina(1);
+			}
+		}
+
 		public static int PlayerID {
 			get { return playerID; }
 		}
 
 		public int MaxHealth {
 			get { return maxHealth; }
+		}
+
+		public int Mana {
+			get { return mana; }
+		}
+
+		public int MaxMana {
+			get { return maxMana; }
+		}
+
+		public int Stamina {
+			get { return stamina; }
+		}
+
+		public int MaxStamina {
+			get { return maxStamina; }
 		}
 
 		public int Coins {

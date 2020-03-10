@@ -17,6 +17,7 @@ namespace WizardPlatformer.Logic.UI {
 
 		private Rectangle heart;
 		private Rectangle heartHalf;
+		private Rectangle heartDead;
 
 		private Rectangle coin;
 		private string coinInfo;
@@ -30,6 +31,7 @@ namespace WizardPlatformer.Logic.UI {
 		private int staminaBarWidth;
 
 		private Vector2[] heartsPositions;
+		private Vector2 heartDeadPosition;
 		private Vector2 coinPosition;
 		private Vector2 coinInfoPosition;
 		private Vector2 manaBarPosition;
@@ -48,6 +50,7 @@ namespace WizardPlatformer.Logic.UI {
 
 			heart = new Rectangle(0, 24, 13, 12);
 			heartHalf = new Rectangle(13, 24, 9, 12);
+			heartDead = new Rectangle(32, 24, 8, 12);
 			coin = new Rectangle(22, 24, 10, 10);
 
 			manaFrame = new Rectangle(0, 0, 96, 6);
@@ -63,6 +66,8 @@ namespace WizardPlatformer.Logic.UI {
 			UpdateHudPosition();
 			UpdateHearts();
 			UpdateCoins();
+			UpdateManaBar();
+			UpdateStaminaBar();
 		}
 
 		private void UpdateHudPosition() {
@@ -79,6 +84,8 @@ namespace WizardPlatformer.Logic.UI {
 			if (health % 2 != 0) {
 				heartsPositions[health / 2] = new Vector2(hudPosition.X + (health / 2) * (heart.Width * scaleFactor + scaleFactor), hudPosition.Y);
 			}
+
+			heartDeadPosition = new Vector2(hudPosition.X, hudPosition.Y);
 		}
 
 		private void UpdateCoins() {
@@ -87,12 +94,30 @@ namespace WizardPlatformer.Logic.UI {
 			coinInfo = "X " + player.Coins;
 		}
 
+		private void UpdateManaBar() {
+			manaBarPosition = new Vector2(hudPosition.X, coinPosition.Y + coin.Height * scaleFactor + scaleFactor * 2);
+
+			int manaPercent = player.Mana * 100 / player.MaxMana;
+			manaBar.Width = manaPercent * manaBarWidth / 100;
+		}
+
+		private void UpdateStaminaBar() {
+			staminaBarPosition = new Vector2(hudPosition.X, manaBarPosition.Y + manaBar.Height * scaleFactor + scaleFactor);
+
+			int staminaPercent = player.Stamina * 100 / player.MaxStamina;
+			staminaBar.Width = staminaPercent * staminaBarWidth / 100;
+		}
+
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
 			DrawHearts(spriteBatch, gameTime);
 			DrawCoins(spriteBatch, gameTime);
+			DrawManaBar(spriteBatch, gameTime);
+			DrawStaminaBar(spriteBatch, gameTime);
 		}
 
 		private void DrawHearts(SpriteBatch spriteBatch, GameTime gameTime) {
+			DrawHudPart(spriteBatch, heartDead, heartDeadPosition);
+			
 			int i;
 			for (i = 0; i < player.Health / 2; i++) {
 				if (heartsPositions[i] != null) {
@@ -108,6 +133,16 @@ namespace WizardPlatformer.Logic.UI {
 		private void DrawCoins(SpriteBatch spriteBatch, GameTime gameTime) {
 			DrawHudPart(spriteBatch, coin, coinPosition);
 			spriteBatch.DrawString(smallFont, coinInfo, coinInfoPosition, Color.AntiqueWhite);
+		}
+
+		private void DrawManaBar(SpriteBatch spriteBatch, GameTime gameTime) {
+			DrawHudPart(spriteBatch, manaFrame, manaBarPosition);
+			DrawHudPart(spriteBatch, manaBar, manaBarPosition);
+		}
+
+		private void DrawStaminaBar(SpriteBatch spriteBatch, GameTime gameTime) {
+			DrawHudPart(spriteBatch, staminaFrame, staminaBarPosition);
+			DrawHudPart(spriteBatch, staminaBar, staminaBarPosition);
 		}
 
 		private void DrawHudPart(SpriteBatch spriteBatch, Rectangle hudPart, Vector2 position) {

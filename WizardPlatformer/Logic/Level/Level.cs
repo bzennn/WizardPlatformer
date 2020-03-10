@@ -79,7 +79,7 @@ namespace WizardPlatformer.Logic.Level {
 				}
 			}
 
-			player = new EntityPlayer(9, 10, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
+			player = new EntityPlayer(10, 10, 100, 100, 30, 30, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
 			SpawnEntity(player);
 
 			LoadEntitiesContent(contentManager);

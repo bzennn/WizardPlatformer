@@ -34,8 +34,8 @@ namespace WizardPlatformer {
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
 			levelLoader = new LevelLoader(tileSet, tileSetSize);
-			currentLevel = new Level(0, 1, levelLoader, new Point(100, 300));
-			//currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
+			//currentLevel = new Level(0, 1, levelLoader, new Point(100, 300));
+			currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
 			currentLevel.LoadContent(contentManager);
 
 			hud = new HUD(currentLevel.Player);
