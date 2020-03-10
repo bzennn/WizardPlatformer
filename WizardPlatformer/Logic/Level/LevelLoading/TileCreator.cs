@@ -34,10 +34,20 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					return new Tile(tileSet, tilePosOnTexture, Tile.CollisionType.PLATFORM, Tile.PassType.REGULAR, calcTileSideSize, 8, 0, 0, tilePosX, tilePosY);
 				case "hostile":
 					return new Tile(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.HOSTILE, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+				case "hostile_lava":
+					return new TileLiquid(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.HOSTILE, TileLiquid.LiquidType.LAVA, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "destroyable":
 					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
-				case "collectable":
-					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, 8, 8, 8, 8, tilePosX, tilePosY);
+				case "collectable_coin":
+					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.COIN, 8, 8, 8, 8, tilePosX, tilePosY);
+				case "collectable_heart":
+					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.HEART, 8, 8, 8, 8, tilePosX, tilePosY);
+				case "collectable_stamina":
+					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.STAMINA_CRYSTAL, 8, 8, 8, 8, tilePosX, tilePosY);
+				case "collectable_mana":
+					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.MANA_CRYSTAL, 8, 8, 8, 8, tilePosX, tilePosY);
+				case "collectable_health":
+					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.HEALTH_CRYSTAL, 8, 8, 8, 8, tilePosX, tilePosY);
 				case "destroy_collect":
 					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "moving_plat_st":

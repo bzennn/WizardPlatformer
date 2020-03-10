@@ -35,11 +35,11 @@ namespace WizardPlatformer {
 
 			levelLoader = new LevelLoader(tileSet, tileSetSize);
 			//currentLevel = new Level(0, 1, levelLoader, new Point(100, 300));
-			currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
-			currentLevel.LoadContent(contentManager);
+			//currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
+			//currentLevel.LoadContent(contentManager);
 
-			hud = new HUD(currentLevel.Player);
-			hud.LoadContent(contentManager);
+			//hud = new HUD(currentLevel.Player);
+			//hud.LoadContent(contentManager);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -49,30 +49,43 @@ namespace WizardPlatformer {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenPause(this), false);
 			}
 
-			/*if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad1)) {
+			// For debug
+			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad1)) {
 				currentLevel = new Level(0, 0, levelLoader, new Point(100, 300));
 				currentLevel.LoadContent(contentManager);
+				hud = new HUD(currentLevel.Player);
+				hud.LoadContent(contentManager);
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad2)) {
 				currentLevel = new Level(0, 1, levelLoader, new Point(100, 300));
 				currentLevel.LoadContent(contentManager);
+				hud = new HUD(currentLevel.Player);
+				hud.LoadContent(contentManager);
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad3)) {
 				currentLevel = new Level(0, 2, levelLoader, new Point(100, 4000));
 				currentLevel.LoadContent(contentManager);
+				hud = new HUD(currentLevel.Player);
+				hud.LoadContent(contentManager);
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad4)) {
 				currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
 				currentLevel.LoadContent(contentManager);
+				hud = new HUD(currentLevel.Player);
+				hud.LoadContent(contentManager);
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad5)) {
 				currentLevel = new Level(0, 4, levelLoader, new Point(100, 300));
 				currentLevel.LoadContent(contentManager);
-			}*/
+				hud = new HUD(currentLevel.Player);
+				hud.LoadContent(contentManager);
+			}
+
+			// end debug
 
 			if (currentLevel != null) {
 				currentLevel.Update(gameTime);

@@ -161,7 +161,7 @@ namespace WizardPlatformer {
 				spriteRotation,
 				spriteRotationOrigin,
 				Display.DrawScale,
-				(isSpriteFlipping) ? spriteFlip: SpriteEffects.None,
+				(isSpriteFlipping) ? spriteFlip : SpriteEffects.None,
 				0.5f);
 		}
 
@@ -181,7 +181,7 @@ namespace WizardPlatformer {
 
 				spriteBatch.DrawString(debugFont, "Entity (ID = " + id + "):\nX= " + heatBox.Left + " " + heatBox.Right +
 					"\nHP = " + health +
-					"\nY = " + heatBox.Top + " " + heatBox.Bottom + 
+					"\nY = " + heatBox.Top + " " + heatBox.Bottom +
 					"\nVel = " + currentVelocity +
 					"\nAcc = " + currentAcceleration +
 					"\nIsFallingThrough = " + isFallingThrough, entityPosition - new Vector2(0, 140), Color.AntiqueWhite);
@@ -240,6 +240,10 @@ namespace WizardPlatformer {
 			get { return currentVelocity; }
 		}
 
+		public Rectangle HeatBox {
+			get { return heatBox; }
+		}
+
 		protected Vector2 EntityPosition {
 			get { return entityPosition; }
 			set {
@@ -265,7 +269,7 @@ namespace WizardPlatformer {
 					currentVelocity.Y = 0;
 				}
 			}
-			
+
 			Tile bottomTileL = level.GetTile(heatBox.Left + heatBox.Width / 2 - 10, heatBox.Bottom);
 			Tile bottomTileR = level.GetTile(heatBox.Left + heatBox.Width / 2 + 10, heatBox.Bottom);
 			if ((bottomTileL == null || bottomTileL.Collision == Tile.CollisionType.PASSABLE) &&
@@ -278,7 +282,7 @@ namespace WizardPlatformer {
 				if (heatBox.Right < movingPlatform.HeatBox.Left ||
 					heatBox.Left > movingPlatform.HeatBox.Right) {
 					isOnGround = false;
-				}else if (!isJumping && isOnGround) {
+				} else if (!isJumping && isOnGround) {
 					EntityPosition += (movingPlatform as TileMovingPlatform).Velocity;
 				}
 			}
@@ -290,7 +294,7 @@ namespace WizardPlatformer {
 					currentVelocity.X = Math.Max(currentAcceleration.X * movingTime.X, -maxVelocity.X);
 				}
 			}
-			
+
 
 			if (!isJumping && hasAcceleration) {
 				if (!isOnGround && isGravityOn) {
@@ -402,7 +406,7 @@ namespace WizardPlatformer {
 			bool isTopTileLImpassable = (topTileL != null) && (topTileL.Collision == Tile.CollisionType.IMPASSABLE);
 			bool isTopTileRImpassable = (topTileR != null) && (topTileR.Collision == Tile.CollisionType.IMPASSABLE);
 
-			if ((currentVelocity.Y < 0 && clearAcceleration) || movingTime.Y >= maxJumpTime || 
+			if ((currentVelocity.Y < 0 && clearAcceleration) || movingTime.Y >= maxJumpTime ||
 				(isTopTileLImpassable || isTopTileRImpassable) ||
 				(movingPlatform != null && heatBox.Top <= movingPlatform.HeatBox.Bottom && heatBox.Top >= movingPlatform.HeatBox.Top)) {
 				currentAcceleration.Y = 0;
@@ -518,12 +522,12 @@ namespace WizardPlatformer {
 						isCollides = true;
 
 						if (collisionDepthY < collisionDepthX || surroundingTiles[i].Collision == Tile.CollisionType.PLATFORM) {
-							
+
 							if (previousEntityBottom <= surroundingTiles[i].HeatBox.Top) {
 								isOnGround = true;
 							}
 
-							if (surroundingTiles[i].Collision == Tile.CollisionType.IMPASSABLE || 
+							if (surroundingTiles[i].Collision == Tile.CollisionType.IMPASSABLE ||
 								(previousEntityBottom <= surroundingTiles[i].HeatBox.Top)) {
 
 								EntityPosition = new Vector2(EntityPosition.X, EntityPosition.Y + collisionDepth.Y);
@@ -574,6 +578,17 @@ namespace WizardPlatformer {
 
 		protected virtual void HandleExtraTile(Tile tile) {
 			if (tile.Pass == Tile.PassType.HOSTILE) {
+				if (tile is TileLiquid) {
+					TileLiquid liquid = (TileLiquid)tile;
+
+					if (liquid.Liquid == TileLiquid.LiquidType.LAVA) {
+						maxVelocity.Y *= 0.65f;
+					}
+
+					if (liquid.Liquid == TileLiquid.LiquidType.WATER) {
+						maxVelocity.Y *= 0.9f;
+					}
+				}
 				Collapse();
 			}
 		}
@@ -584,8 +599,10 @@ namespace WizardPlatformer {
 
 		private void HandleEntities() {
 			foreach (Entity entity in level.EntitiesList) {
-				if (HandleEntity(entity)) {
-					break;
+				if (entity != null && entity.HeatBox.Intersects(this.HeatBox)) {
+					if (HandleEntity(entity)) {
+						break;
+					}
 				}
 			}
 		}

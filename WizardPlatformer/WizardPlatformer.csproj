@@ -58,6 +58,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Logic\Core\Animator.cs" />
+    <Compile Include="Logic\Core\RandomManager.cs" />
+    <Compile Include="Logic\Entity\EntityCollectable.cs" />
+    <Compile Include="Logic\Tile\TileLiquid.cs" />
     <Compile Include="Logic\UI\Cursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />
     <Compile Include="Logic\Core\InputManager.cs" />

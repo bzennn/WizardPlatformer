@@ -10,7 +10,7 @@
   <tile id="8" map_value="platform"/>
   <tile id="9" map_value="platform"/>
   <tile id="10" map_value="hostile"/>
-  <tile id="11" map_value="hostile"/>
+  <tile id="11" map_value="hostile_lava"/>
   <tile id="12" map_value="hostile"/>
   <tile id="13" map_value="solid"/>
   <tile id="14" map_value="solid"/>
@@ -22,7 +22,7 @@
   <tile id="20" map_value="platform"/>
   <tile id="21" map_value="platform"/>
   <tile id="22" map_value="destroy_collect"/>
-  <tile id="23" map_value="hostile"/>
+  <tile id="23" map_value="hostile_lava"/>
   <tile id="24" map_value="hostile"/>
   <tile id="25" map_value="solid"/>
   <tile id="26" map_value="solid"/>
@@ -33,8 +33,8 @@
   <tile id="31" map_value="destroyable"/>
   <tile id="32" map_value="destroy_collect"/>
   <tile id="33" map_value="destroy_collect"/>
-  <tile id="34" map_value="collectable"/>
-  <tile id="35" map_value="hostile"/>
+  <tile id="34" map_value="collectable_coin"/>
+  <tile id="35" map_value="hostile_lava"/>
   <tile id="36" map_value="hostile"/>
   <tile id="37" map_value="solid"/>
   <tile id="38" map_value="solid"/>
@@ -45,7 +45,7 @@
   <tile id="43" map_value="platform"/>
   <tile id="44" map_value="platform"/>
   <tile id="45" map_value="platform"/>
-  <tile id="46" map_value="collectable"/>
+  <tile id="46" map_value="collectable_heart"/>
   <tile id="47" map_value="air"/>
   <tile id="48" map_value="air"/>
   <tile id="49" map_value="solid"/>
@@ -76,9 +76,9 @@
   <tile id="74" map_value="chest"/>
   <tile id="75" map_value="chest"/>
   <tile id="76" map_value="chest"/>
-  <tile id="77" map_value="collectable"/>
-  <tile id="78" map_value="collectable"/>
-  <tile id="79" map_value="collectable"/>
+  <tile id="77" map_value="collectable_stamina"/>
+  <tile id="78" map_value="collectable_mana"/>
+  <tile id="79" map_value="collectable_health"/>
   <tile id="80" map_value="destroyable"/>
   <tile id="81" map_value="destroyable"/>
   <tile id="82" map_value="destroyable"/>
