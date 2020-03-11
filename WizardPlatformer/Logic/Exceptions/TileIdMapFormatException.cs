@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WizardPlatformer.Logic.Exceptions {
-	class TileIdMapFormatException : FormatException {
-		public TileIdMapFormatException(string message) : base(message) {
+	class IdMapFormatException : FormatException {
+		public IdMapFormatException(string message) : base(message) {
 		}
 
-		public TileIdMapFormatException(string message, Exception innerException) : base(message, innerException) {
+		public IdMapFormatException(string message, Exception innerException) : base(message, innerException) {
 		}
 	}
 }

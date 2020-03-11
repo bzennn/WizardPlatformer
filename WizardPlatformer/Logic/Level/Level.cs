@@ -24,6 +24,7 @@ namespace WizardPlatformer.Logic.Level {
 
 		private ContentManager levelContentManager;
 		private LevelLoader levelLoader;
+		private EntityCreator entityCreator;
 		private int tileSideSize;
 
 		private Tile[,] backLayer;
@@ -44,10 +45,11 @@ namespace WizardPlatformer.Logic.Level {
 
 		#endregion
 
-		public Level(int levelId, int roomId, LevelLoader levelLoader, Point playerStartPosition) {
+		public Level(int levelId, int roomId, LevelLoader levelLoader, EntityCreator entityCreator, Point playerStartPosition) {
 			this.levelId = levelId;
 			this.roomId = roomId;
 			this.levelLoader = levelLoader;
+			this.entityCreator = entityCreator;
 			this.playerStartPosition = playerStartPosition;
 			this.tileSideSize = Display.TileSideSize;
 			this.entities = new List<Entity>();
@@ -79,7 +81,8 @@ namespace WizardPlatformer.Logic.Level {
 				}
 			}
 
-			player = new EntityPlayer(10, 10, 100, 100, 30, 30, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
+			player = (EntityPlayer) entityCreator.CreateEntity(1, playerStartPosition.X, playerStartPosition.Y);
+			//player = new EntityPlayer(10, 10, 100, 100, 30, 30, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
 			SpawnEntity(player);
 
 			LoadEntitiesContent(contentManager);
@@ -369,6 +372,10 @@ namespace WizardPlatformer.Logic.Level {
 
 		public EntityPlayer Player {
 			get { return player; }
+		}
+
+		public EntityCreator EntityCreator {
+			get { return entityCreator; }
 		}
 	}
 }

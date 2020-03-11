@@ -7,7 +7,7 @@ using WizardPlatformer.Logic.Exceptions;
 
 namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public static class XMLTileIdMapLoader {
-		private static TileIdMapFormatException tileIdMapFormatException = new TileIdMapFormatException("Unacceptable tile ids map format!");
+		private static IdMapFormatException tileIdMapFormatException = new IdMapFormatException("Unacceptable tile ids map format!");
 
 		public static Dictionary<int, string> XMLLoadTileIdMap(Point tileSetSize) {
 			string filePath = "Content/tile/tile_id_map.dat";
@@ -22,7 +22,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 
 			if (!File.Exists(filePath)) {
-				throw new FileNotFoundException("Level not found! \nFile: \"" + filePath + "\" not exist!");
+				throw new FileNotFoundException("Tiles ids map not found! \nFile: \"" + filePath + "\" not exist!");
 			}
 
 			XmlDocument tileIdMap = new XmlDocument();

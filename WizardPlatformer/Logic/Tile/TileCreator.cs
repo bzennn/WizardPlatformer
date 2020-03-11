@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace WizardPlatformer.Logic.Level.LevelLoading {
+namespace WizardPlatformer {
 	public class TileCreator {
 		private int calcTileSideSize;
 		private Dictionary<int, string> tileIdMap;
@@ -20,6 +20,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public Tile CreateTile(int tileId, int tilePosX, int tilePosY) {
 			tilePosOnTexture = GetTilePosOnTextureById(tileId);
+			TileDestroyable.DropType[] drops;
 
 			switch (tileIdMap[tileId]) {
 				default:
@@ -37,7 +38,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				case "hostile_lava":
 					return new TileLiquid(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.HOSTILE, TileLiquid.LiquidType.LAVA, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "destroyable":
-					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, null, 0, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "collectable_coin":
 					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.COIN, 8, 8, 8, 8, tilePosX, tilePosY);
 				case "collectable_heart":
@@ -48,8 +49,18 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.MANA_CRYSTAL, 8, 8, 8, 8, tilePosX, tilePosY);
 				case "collectable_health":
 					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.HEALTH_CRYSTAL, 8, 8, 8, 8, tilePosX, tilePosY);
-				case "destroy_collect":
-					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+				case "destroyable_jar":
+					drops = new TileDestroyable.DropType[] { TileDestroyable.DropType.COIN, TileDestroyable.DropType.HEALTH_CRYSTAL, TileDestroyable.DropType.STAMINA_CRYSTAL };
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 5, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+				case "destroyable_stone":
+					drops = new TileDestroyable.DropType[] { TileDestroyable.DropType.COIN, TileDestroyable.DropType.MANA_CRYSTAL, TileDestroyable.DropType.STAMINA_CRYSTAL };
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 3, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+				case "destroyable_crate":
+					drops = new TileDestroyable.DropType[] { TileDestroyable.DropType.COIN, TileDestroyable.DropType.HEALTH_CRYSTAL, TileDestroyable.DropType.STAMINA_CRYSTAL};
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 10, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+				case "destroyable_barrel":
+					drops = new TileDestroyable.DropType[] { TileDestroyable.DropType.COIN, TileDestroyable.DropType.HEALTH_CRYSTAL, TileDestroyable.DropType.MANA_CRYSTAL };
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 10, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "moving_plat_st":
 					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, 2.00f, calcTileSideSize, 8, 0, 0, tilePosX, tilePosY);
 				case "moving_plat_gr":

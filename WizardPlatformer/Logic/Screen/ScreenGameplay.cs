@@ -11,6 +11,7 @@ namespace WizardPlatformer {
 
 		#region Fields
 		LevelLoader levelLoader;
+		EntityCreator entityCreator;
 
 		Texture2D tileSet;
 		Point tileSetSize = new Point(12, 20);
@@ -33,13 +34,16 @@ namespace WizardPlatformer {
 			tileSet = screenContent.Load<Texture2D>("tile/tileset_export");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
+			entityCreator = new EntityCreator(XMLEntityIdMapLoader.XMLLoadTileIdMap(20), null);
 			levelLoader = new LevelLoader(tileSet, tileSetSize);
-			//currentLevel = new Level(0, 1, levelLoader, new Point(100, 300));
+			currentLevel = new Level(0, 1, levelLoader, entityCreator, new Point(100, 300));
 			//currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
-			//currentLevel.LoadContent(contentManager);
 
-			//hud = new HUD(currentLevel.Player);
-			//hud.LoadContent(contentManager);
+			entityCreator.AddLevel(currentLevel);
+			currentLevel.LoadContent(contentManager);
+
+			hud = new HUD(currentLevel.Player);
+			hud.LoadContent(contentManager);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -50,7 +54,8 @@ namespace WizardPlatformer {
 			}
 
 			// For debug
-			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad1)) {
+
+			/*if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad1)) {
 				currentLevel = new Level(0, 0, levelLoader, new Point(100, 300));
 				currentLevel.LoadContent(contentManager);
 				hud = new HUD(currentLevel.Player);
@@ -83,7 +88,7 @@ namespace WizardPlatformer {
 				currentLevel.LoadContent(contentManager);
 				hud = new HUD(currentLevel.Player);
 				hud.LoadContent(contentManager);
-			}
+			}*/
 
 			// end debug
 

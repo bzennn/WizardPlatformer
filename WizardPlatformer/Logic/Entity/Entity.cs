@@ -232,6 +232,10 @@ namespace WizardPlatformer {
 			get { return health; }
 		}
 
+		public int Damage {
+			get { return damage; }
+		}
+
 		public Vector2 Position {
 			get { return heatBox.Center.ToVector2(); }
 		}

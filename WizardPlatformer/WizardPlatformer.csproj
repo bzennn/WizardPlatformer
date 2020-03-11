@@ -60,6 +60,8 @@
     <Compile Include="Logic\Core\Animator.cs" />
     <Compile Include="Logic\Core\RandomManager.cs" />
     <Compile Include="Logic\Entity\EntityCollectable.cs" />
+    <Compile Include="Logic\Entity\EntityCreator.cs" />
+    <Compile Include="Logic\Level\LevelLoading\XMLEntityIdMapLoader.cs" />
     <Compile Include="Logic\Tile\TileLiquid.cs" />
     <Compile Include="Logic\UI\Cursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />
@@ -79,7 +81,7 @@
     <Compile Include="Logic\Level\LevelLoading\LevelLoader.cs" />
     <Compile Include="Logic\Level\LevelLoading\LevelMapper.cs" />
     <Compile Include="Logic\Level\LevelLoading\MappedLevelParts.cs" />
-    <Compile Include="Logic\Level\LevelLoading\TileCreator.cs" />
+    <Compile Include="Logic\Tile\TileCreator.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLLevelLoader.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLLevelParts.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLTileIdMapLoader.cs" />
@@ -181,6 +183,9 @@
     <EmbeddedResource Include="Content\level\level_0_4.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Content\entity\entity_id_map.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -193,6 +198,15 @@
     <Folder Include="Content\tile\background\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\entity\coin_sprite.png" />
+    <Content Include="Content\entity\debug_sprite.png" />
+    <Content Include="Content\entity\health_sprite.png" />
+    <Content Include="Content\entity\heart_sprite.png" />
+    <Content Include="Content\entity\ice_arrow_sprite.png" />
+    <Content Include="Content\entity\mana_sprite.png" />
+    <Content Include="Content\entity\melee_attack_sprite.png" />
+    <Content Include="Content\entity\stamina_sprite.png" />
+    <Content Include="Content\entity\wizard_sprite.png" />
     <Content Include="Content\tile\tileset_export.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>

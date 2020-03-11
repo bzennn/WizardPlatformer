@@ -142,7 +142,7 @@ namespace WizardPlatformer {
 	
 			if (InputManager.GetInstance().IsMouseLeftButtonPressed() && this.IsAlive && coolDown == 0) {
 				if (mana - rangeAttackCost >= 0) {
-					this.level.SpawnEntity(new EntityRangeAttack(3000, this.id, this.damage, 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+					this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(2, (int)Position.X, (int)Position.Y, this.EntityID));
 					ConsumeMana(rangeAttackCost);
 					coolDown = coolDownMax;
 				}
@@ -150,7 +150,7 @@ namespace WizardPlatformer {
 
 			if (InputManager.GetInstance().IsMouseRightButtonPressed() && this.IsAlive && coolDown == 0) {
 				if (stamina - meleeAttackCost >= 0) {
-					this.level.SpawnEntity(new EntityMeleeAttack(450, this.id, (int)(this.damage * 1.5f), 7.0f, true, 4, 4, 44, 40, (int)Position.X, (int)Position.Y, this.level.RoomSizeId, this.level, InputManager.GetInstance().GetMousePosition()));
+					this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(3, (int)Position.X, (int)Position.Y, this.EntityID));
 					ConsumeStamina(meleeAttackCost);
 					coolDown = coolDownMax;
 				}
@@ -159,17 +159,17 @@ namespace WizardPlatformer {
 			// For debug
 			if (InputManager.GetInstance().IsKeyPressed(Keys.D1)) {
 				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(new EntityCollectable(50, TileCollectable.CollectableType.COIN, 7.0f, true, 8, 8, 32, 32, (int)pos.X, (int)pos.Y, this.level.RoomSizeId, this.level));
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(4, (int)pos.X, (int)pos.Y));
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.D2)) {
 				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(new EntityCollectable(50, TileCollectable.CollectableType.MANA_CRYSTAL, 7.0f, true, 6, 6, 36, 32, (int)pos.X, (int)pos.Y, this.level.RoomSizeId, this.level));
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(5, (int)pos.X, (int)pos.Y));
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.D3)) {
 				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(new EntityCollectable(50, TileCollectable.CollectableType.STAMINA_CRYSTAL, 7.0f, true, 6, 8, 36, 28, (int)pos.X, (int)pos.Y, this.level.RoomSizeId, this.level));
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(6, (int)pos.X, (int)pos.Y));
 			}
 		}
 
