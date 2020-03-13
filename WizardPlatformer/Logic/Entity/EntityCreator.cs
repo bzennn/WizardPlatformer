@@ -31,13 +31,13 @@ namespace WizardPlatformer {
 				case "collectable_stamina_crystal":
 					return new EntityCollectable(50, TileCollectable.CollectableType.STAMINA_CRYSTAL, 7.0f, true, 6, 8, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_health_crystal":
-					return null;
+					return new EntityCollectable(50, TileCollectable.CollectableType.HEALTH_CRYSTAL, 7.0f, true, 6, 8, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_mana_upgrade":
-					return null;
+					return new EntityCollectable(50, TileCollectable.CollectableType.MANA_UPGRADE, 7.0f, true, 10, 10, 7 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_stamina_upgrade":
-					return null;
+					return new EntityCollectable(50, TileCollectable.CollectableType.STAMINA_UPGRADE, 7.0f, true, 6, 10, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_health_upgrade":
-					return null;
+					return new EntityCollectable(50, TileCollectable.CollectableType.HEART, 7.0f, true, 7, 10, 8 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_damage_upgrade":
 					return null;
 			}

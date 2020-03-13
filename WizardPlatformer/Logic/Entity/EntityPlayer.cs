@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using WizardPlatformer.Logic.Level;
 using System;
+using WizardPlatformer.Logic.Save;
 
 namespace WizardPlatformer {
 	public class EntityPlayer : EntityLiving {
@@ -171,6 +172,16 @@ namespace WizardPlatformer {
 				Vector2 pos = InputManager.GetInstance().GetMousePosition();
 				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(6, (int)pos.X, (int)pos.Y));
 			}
+
+			if (InputManager.GetInstance().IsKeyPressed(Keys.D4)) {
+				Vector2 pos = InputManager.GetInstance().GetMousePosition();
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(7, (int)pos.X, (int)pos.Y));
+			}
+
+			if (InputManager.GetInstance().IsKeyPressed(Keys.D5)) {
+				Vector2 pos = InputManager.GetInstance().GetMousePosition();
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(10, (int)pos.X, (int)pos.Y));
+			}
 		}
 
 		private void UpdateCoolDown(GameTime gameTime) {
@@ -215,8 +226,10 @@ namespace WizardPlatformer {
 					coins++;
 					break;
 				case TileCollectable.CollectableType.HEALTH_CRYSTAL:
+					AddHealth(1);
 					break;
 				case TileCollectable.CollectableType.HEART:
+					UpgradeHealth();
 					break;
 				case TileCollectable.CollectableType.MANA_CRYSTAL:
 					AddMana(40);
@@ -255,6 +268,22 @@ namespace WizardPlatformer {
 			}
 		}
 
+		public void AddHealth(int health) {
+			this.health += health;
+			if (this.health > maxHealth) {
+				this.health = maxHealth;
+			}
+		}
+
+		public void UpgradeHealth() {
+			this.maxHealth += 2;
+			this.health = this.maxHealth;
+		}
+
+		public void UpgradeDamage() {
+			this.damage += 1;
+		}
+
 		public void RegenMana(GameTime gameTime) {
 			manaRegenCounter += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -271,6 +300,39 @@ namespace WizardPlatformer {
 				staminaRegenCounter = 0;
 				AddStamina(1);
 			}
+		}
+
+		public SnapshotPlayer GetSnapshot() {
+			return new SnapshotPlayer(
+				this.EntityPosition,
+				this.health,
+				this.maxHealth,
+				this.damage,
+				this.mana,
+				this.maxMana,
+				this.manaRegenSpeed,
+				this.stamina,
+				this.maxStamina,
+				this.staminaRegenSpeed,
+				this.coins,
+				this.rangeAttackCost,
+				this.meleeAttackCost); 
+		}
+
+		public void RestoreSnapshot(SnapshotPlayer snapshot) {
+			this.EntityPosition = snapshot.PlayerPosition;
+			this.health = snapshot.Health;
+			this.maxHealth = snapshot.MaxHealth;
+			this.damage = snapshot.Damage;
+			this.mana = snapshot.Mana;
+			this.maxMana = snapshot.MaxMana;
+			this.manaRegenSpeed = snapshot.ManaRegenSpeed;
+			this.stamina = snapshot.Stamina;
+			this.maxStamina = snapshot.MaxStamina;
+			this.staminaRegenSpeed = snapshot.StaminaRegenSpeed;
+			this.coins = snapshot.Coins;
+			this.rangeAttackCost = snapshot.RangeAttackCost;
+			this.meleeAttackCost = snapshot.MeleeAttackCost;
 		}
 
 		public static int PlayerID {

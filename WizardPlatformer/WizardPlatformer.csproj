@@ -62,6 +62,7 @@
     <Compile Include="Logic\Entity\EntityCollectable.cs" />
     <Compile Include="Logic\Entity\EntityCreator.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLEntityIdMapLoader.cs" />
+    <Compile Include="Logic\Save\SnapshotPlayer.cs" />
     <Compile Include="Logic\Tile\TileLiquid.cs" />
     <Compile Include="Logic\UI\Cursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />

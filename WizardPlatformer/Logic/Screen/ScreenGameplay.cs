@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using WizardPlatformer.Logic.Level.LevelLoading;
 using WizardPlatformer.Logic.Level;
 using WizardPlatformer.Logic.UI;
+using WizardPlatformer.Logic.Save;
 
 namespace WizardPlatformer {
 	public class ScreenGameplay : Screen {
@@ -31,16 +32,18 @@ namespace WizardPlatformer {
 			base.LoadContent(contentManager);
 
 			this.contentManager = contentManager;
+
+			SnapshotPlayer snapshot = new SnapshotPlayer(new Vector2(100, 4000), 7, 20, 2, 200, 300, 10, 100, 100, 10, 100, 50, 50);
 			tileSet = screenContent.Load<Texture2D>("tile/tileset_export");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
-			entityCreator = new EntityCreator(XMLEntityIdMapLoader.XMLLoadTileIdMap(20), null);
-			levelLoader = new LevelLoader(tileSet, tileSetSize);
-			currentLevel = new Level(0, 1, levelLoader, entityCreator, new Point(100, 300));
+			currentLevel = new Level(0, 2, new Point(100, 300));
+			levelLoader = new LevelLoader(tileSet, tileSetSize, currentLevel);
+			currentLevel.AddLevelLoader(levelLoader);
 			//currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
 
-			entityCreator.AddLevel(currentLevel);
 			currentLevel.LoadContent(contentManager);
+			currentLevel.Player.RestoreSnapshot(snapshot);
 
 			hud = new HUD(currentLevel.Player);
 			hud.LoadContent(contentManager);
@@ -56,35 +59,40 @@ namespace WizardPlatformer {
 			// For debug
 
 			/*if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad1)) {
-				currentLevel = new Level(0, 0, levelLoader, new Point(100, 300));
+				currentLevel = new Level(0, 0, levelLoader, entityCreator, new Point(100, 300));
+				entityCreator.AddLevel(currentLevel);
 				currentLevel.LoadContent(contentManager);
 				hud = new HUD(currentLevel.Player);
 				hud.LoadContent(contentManager);
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad2)) {
-				currentLevel = new Level(0, 1, levelLoader, new Point(100, 300));
+				currentLevel = new Level(0, 1, levelLoader, entityCreator, new Point(100, 300));
+				entityCreator.AddLevel(currentLevel);
 				currentLevel.LoadContent(contentManager);
 				hud = new HUD(currentLevel.Player);
 				hud.LoadContent(contentManager);
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad3)) {
-				currentLevel = new Level(0, 2, levelLoader, new Point(100, 4000));
+				currentLevel = new Level(0, 2, levelLoader, entityCreator, new Point(100, 4000));
+				entityCreator.AddLevel(currentLevel);
 				currentLevel.LoadContent(contentManager);
 				hud = new HUD(currentLevel.Player);
 				hud.LoadContent(contentManager);
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad4)) {
-				currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
+				currentLevel = new Level(0, 3, levelLoader, entityCreator, new Point(100, 1300));
+				entityCreator.AddLevel(currentLevel);
 				currentLevel.LoadContent(contentManager);
 				hud = new HUD(currentLevel.Player);
 				hud.LoadContent(contentManager);
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad5)) {
-				currentLevel = new Level(0, 4, levelLoader, new Point(100, 300));
+				currentLevel = new Level(0, 4, levelLoader, entityCreator, new Point(100, 300));
+				entityCreator.AddLevel(currentLevel);
 				currentLevel.LoadContent(contentManager);
 				hud = new HUD(currentLevel.Player);
 				hud.LoadContent(contentManager);

@@ -18,6 +18,7 @@ namespace WizardPlatformer.Logic.UI {
 		private Rectangle heart;
 		private Rectangle heartHalf;
 		private Rectangle heartDead;
+		private Rectangle heartEmpty;
 
 		private Rectangle coin;
 		private string coinInfo;
@@ -31,6 +32,7 @@ namespace WizardPlatformer.Logic.UI {
 		private int staminaBarWidth;
 
 		private Vector2[] heartsPositions;
+		private Vector2[] emptyHeartPositions;
 		private Vector2 heartDeadPosition;
 		private Vector2 coinPosition;
 		private Vector2 coinInfoPosition;
@@ -41,6 +43,7 @@ namespace WizardPlatformer.Logic.UI {
 			this.scaleFactor = (int)Display.DrawScale.X;
 			this.player = player;
 			this.heartsPositions = new Vector2[player.MaxHealth / 2];
+			this.emptyHeartPositions = new Vector2[player.MaxHealth / 2];
 			this.coinInfo = "";
 		}
 
@@ -51,6 +54,7 @@ namespace WizardPlatformer.Logic.UI {
 			heart = new Rectangle(0, 24, 13, 12);
 			heartHalf = new Rectangle(13, 24, 9, 12);
 			heartDead = new Rectangle(32, 24, 8, 12);
+			heartEmpty = new Rectangle(40, 24, 13, 12);
 			coin = new Rectangle(22, 24, 10, 10);
 
 			manaFrame = new Rectangle(0, 0, 96, 6);
@@ -77,6 +81,15 @@ namespace WizardPlatformer.Logic.UI {
 		private void UpdateHearts() {
 			int health = player.Health;
 
+			if (player.MaxHealth / 2 > heartsPositions.Length) {
+				this.heartsPositions = new Vector2[player.MaxHealth / 2];
+				this.emptyHeartPositions = new Vector2[player.MaxHealth / 2];
+			}
+
+			for (int i = 0; i < emptyHeartPositions.Length; i++) {
+				emptyHeartPositions[i] = new Vector2(hudPosition.X + i * (heartEmpty.Width * scaleFactor + scaleFactor), hudPosition.Y);
+			}
+
 			for (int i = 0; i < health / 2; i++) {
 				heartsPositions[i] = new Vector2(hudPosition.X + i * (heart.Width * scaleFactor + scaleFactor), hudPosition.Y);
 			}
@@ -85,7 +98,7 @@ namespace WizardPlatformer.Logic.UI {
 				heartsPositions[health / 2] = new Vector2(hudPosition.X + (health / 2) * (heart.Width * scaleFactor + scaleFactor), hudPosition.Y);
 			}
 
-			heartDeadPosition = new Vector2(hudPosition.X, hudPosition.Y);
+			heartDeadPosition = heartsPositions[0];
 		}
 
 		private void UpdateCoins() {
@@ -116,17 +129,23 @@ namespace WizardPlatformer.Logic.UI {
 		}
 
 		private void DrawHearts(SpriteBatch spriteBatch, GameTime gameTime) {
-			DrawHudPart(spriteBatch, heartDead, heartDeadPosition);
-			
-			int i;
-			for (i = 0; i < player.Health / 2; i++) {
-				if (heartsPositions[i] != null) {
-					DrawHudPart(spriteBatch, heart, heartsPositions[i]);
+			for (int i = 0; i < heartsPositions.Length; i++) {
+				DrawHudPart(spriteBatch, heartEmpty, emptyHeartPositions[i]);
+			}
+
+			if (!player.IsAlive) {
+				DrawHudPart(spriteBatch, heartDead, heartDeadPosition);
+			}
+
+			int j;
+			for (j = 0; j < player.Health / 2; j++) {
+				if (heartsPositions[j] != null) {
+					DrawHudPart(spriteBatch, heart, heartsPositions[j]);
 				}
 			}
 
 			if (player.Health % 2 != 0) {
-				DrawHudPart(spriteBatch, heartHalf, heartsPositions[i]);
+				DrawHudPart(spriteBatch, heartHalf, heartsPositions[j]);
 			}
 		}
 

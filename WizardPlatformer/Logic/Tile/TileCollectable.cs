@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 
 namespace WizardPlatformer {
 	public class TileCollectable : Tile {
-		public enum CollectableType { 
+		public enum CollectableType {
+			NONE,
 			COIN,
 			MANA_CRYSTAL,
 			STAMINA_CRYSTAL,
 			HEALTH_CRYSTAL,
+			STAMINA_UPGRADE,
+			MANA_UPGRADE,
+			DAMAGE_UPGRADE,
 			HEART
 		}
 

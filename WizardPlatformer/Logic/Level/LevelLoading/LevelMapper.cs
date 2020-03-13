@@ -7,12 +7,15 @@ using WizardPlatformer.Logic.Exceptions;
 namespace WizardPlatformer.Logic.Level.LevelLoading {
 	class LevelMapper {
 		private TileCreator tileCreator;
+		private EntityCreator entityCreator;
+
 		private int tileSideSize;
 
-		public LevelMapper(Texture2D tileSet, Point tileSetSize) {
+		public LevelMapper(Texture2D tileSet, Point tileSetSize, Level level) {
 			this.tileSideSize = Display.TileSideSize;
 
-			this.tileCreator = new TileCreator(XMLTileIdMapLoader.XMLLoadTileIdMap(tileSetSize), tileSet, tileSetSize);
+			this.tileCreator = new TileCreator(XMLTileIdMapLoader.XMLLoadTileIdMap(tileSetSize), tileSet, tileSetSize, level);
+			this.entityCreator = new EntityCreator(XMLEntityIdMapLoader.XMLLoadTileIdMap(20), level);
 		}
 
 		public MappedLevelParts MapUnmappedLevelParts(UnmappedLevelParts unmappedLevelParts) {
@@ -90,6 +93,10 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public TileCreator TileCreator {
 			get { return tileCreator; }
+		}
+
+		public EntityCreator EntityCreator {
+			get { return entityCreator; }
 		}
 	}
 }

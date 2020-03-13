@@ -20,7 +20,7 @@ namespace WizardPlatformer {
 			this.TTL = TTL;
 			this.collectableForm = collectableForm;
 
-			this.maxJumpTime = 25;
+			this.maxJumpTime = 10;
 			this.maxMovementDuration = 300;
 			this.startDurationJump = RandomManager.GetRandom().Next(1, maxJumpTime);
 			this.startDurationMove = RandomManager.GetRandom().Next(maxJumpTime, maxMovementDuration);
@@ -55,6 +55,16 @@ namespace WizardPlatformer {
 				case TileCollectable.CollectableType.STAMINA_CRYSTAL:
 					this.sprite = contentManager.Load<Texture2D>("entity/stamina_sprite");
 					this.spriteSize = new Point(1, 1);
+					break;
+				case TileCollectable.CollectableType.MANA_UPGRADE:
+					this.sprite = contentManager.Load<Texture2D>("entity/mana_upgrade_sprite");
+					this.spriteSize = new Point(1, 1);
+					break;
+				case TileCollectable.CollectableType.STAMINA_UPGRADE:
+					this.sprite = contentManager.Load<Texture2D>("entity/stamina_upgrade_sprite");
+					this.spriteSize = new Point(1, 1);
+					break;
+				case TileCollectable.CollectableType.DAMAGE_UPGRADE:
 					break;
 			}
 		}

@@ -11,8 +11,8 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class LevelLoader {
 		LevelMapper levelMapper;
 
-		public LevelLoader(Texture2D tileSet, Point tileSetSize) {
-			this.levelMapper = new LevelMapper(tileSet, tileSetSize);
+		public LevelLoader(Texture2D tileSet, Point tileSetSize, Level level) {
+			this.levelMapper = new LevelMapper(tileSet, tileSetSize, level);
 		}
 
 		public MappedLevelParts LoadLevel(int levelId, int roomId) {
@@ -23,6 +23,10 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public TileCreator GetTileCreator() {
 			return levelMapper.TileCreator;
+		}
+
+		public EntityCreator GetEntityCreator() {
+			return levelMapper.EntityCreator;
 		}
 	}
 }

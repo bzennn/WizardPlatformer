@@ -24,7 +24,6 @@ namespace WizardPlatformer.Logic.Level {
 
 		private ContentManager levelContentManager;
 		private LevelLoader levelLoader;
-		private EntityCreator entityCreator;
 		private int tileSideSize;
 
 		private Tile[,] backLayer;
@@ -40,19 +39,19 @@ namespace WizardPlatformer.Logic.Level {
 		private Point playerStartPosition;
 		private EntityPlayer player;
 		private List<Entity> entities;
+		private List<KeyValuePair<Tile, Entity>> entitiesSchedule;
 
 		private List<Tile> tileEntities;
 
 		#endregion
 
-		public Level(int levelId, int roomId, LevelLoader levelLoader, EntityCreator entityCreator, Point playerStartPosition) {
+		public Level(int levelId, int roomId, Point playerStartPosition) {
 			this.levelId = levelId;
 			this.roomId = roomId;
-			this.levelLoader = levelLoader;
-			this.entityCreator = entityCreator;
 			this.playerStartPosition = playerStartPosition;
 			this.tileSideSize = Display.TileSideSize;
 			this.entities = new List<Entity>();
+			this.entitiesSchedule = new List<KeyValuePair<Tile, Entity>>();
 			this.tileEntities = new List<Tile>();
 
 			this.isTriggerOn = false;
@@ -81,8 +80,7 @@ namespace WizardPlatformer.Logic.Level {
 				}
 			}
 
-			player = (EntityPlayer) entityCreator.CreateEntity(1, playerStartPosition.X, playerStartPosition.Y);
-			//player = new EntityPlayer(10, 10, 100, 100, 30, 30, 2, 5.0f, 0, true, 8, 20, 32, 16, playerStartPosition.X, playerStartPosition.Y, roomSizeId, this);
+			player = (EntityPlayer)EntityCreator.CreateEntity(1, playerStartPosition.X, playerStartPosition.Y);
 			SpawnEntity(player);
 
 			LoadEntitiesContent(contentManager);
@@ -96,6 +94,7 @@ namespace WizardPlatformer.Logic.Level {
 
 			UpdateTileEntities(gameTime);
 
+			SpawnEntitiesScheduled();
 			UpdateEntities(gameTime);
 
 			UpdateTileLayer(gameTime, decoLayer, roomSizeId);
@@ -189,7 +188,9 @@ namespace WizardPlatformer.Logic.Level {
 		#region TileEntities
 
 		public void SpawnTileEntity(Tile tile) {
-			tileEntities.Add(tile);
+			if (tile != null) {
+				tileEntities.Add(tile);
+			}
 		}
 
 		public void DespawnTileEntity(Tile tile) {
@@ -253,9 +254,30 @@ namespace WizardPlatformer.Logic.Level {
 
 		#region Entities
 
+		private void SpawnEntitiesScheduled() {
+			for (int i = 0; i < entitiesSchedule.Count; i++) {
+				Tile tile = entitiesSchedule[i].Key;
+				Entity entity = entitiesSchedule[i].Value;
+
+				if (GetTile(tile.TilePosition.X, tile.TilePosition.Y) == null) {
+					SpawnEntity(entity);
+
+					entitiesSchedule.RemoveAt(i);
+					i--;
+				}
+			}
+		}
+
+		public void SpawnEntityScheduled(Entity entity, Tile tileTrigger) {
+			entitiesSchedule.Add(new KeyValuePair<Tile, Entity>(tileTrigger, entity));
+		}
+
+
 		public void SpawnEntity(Entity entity) {
-			entities.Add(entity);
-			entity.LoadContent(levelContentManager);
+			if (entity != null) {
+				entities.Add(entity);
+				entity.LoadContent(levelContentManager);
+			}
 		}
 
 		public void DespawnEntity(Entity entity) {
@@ -358,6 +380,10 @@ namespace WizardPlatformer.Logic.Level {
 			Display.GameMatrix = (cameraOffsetX * cameraOffsetY) * Display.ScreenScale;
 		}
 
+		public void AddLevelLoader(LevelLoader levelLoader) {
+			this.levelLoader = levelLoader;
+		}
+
 		public int RoomWidth {
 			get { return roomWidth; }
 		}
@@ -375,7 +401,7 @@ namespace WizardPlatformer.Logic.Level {
 		}
 
 		public EntityCreator EntityCreator {
-			get { return entityCreator; }
+			get { return levelLoader.GetEntityCreator(); }
 		}
 	}
 }
