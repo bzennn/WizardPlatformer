@@ -60,9 +60,10 @@
     <Compile Include="Logic\Core\Animator.cs" />
     <Compile Include="Logic\Core\RandomManager.cs" />
     <Compile Include="Logic\Entity\EntityCollectable.cs" />
-    <Compile Include="Logic\Entity\EntityCreator.cs" />
+    <Compile Include="Logic\Level\LevelLoading\EntityCreator.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLEntityIdMapLoader.cs" />
     <Compile Include="Logic\Save\SnapshotPlayer.cs" />
+    <Compile Include="Logic\Screen\ScreenLoading.cs" />
     <Compile Include="Logic\Tile\TileLiquid.cs" />
     <Compile Include="Logic\UI\Cursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Logic\Level\LevelLoading\LevelLoader.cs" />
     <Compile Include="Logic\Level\LevelLoading\LevelMapper.cs" />
     <Compile Include="Logic\Level\LevelLoading\MappedLevelParts.cs" />
-    <Compile Include="Logic\Tile\TileCreator.cs" />
+    <Compile Include="Logic\Level\LevelLoading\TileCreator.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLLevelLoader.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLLevelParts.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLTileIdMapLoader.cs" />

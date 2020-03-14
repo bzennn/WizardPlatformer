@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WizardPlatformer.Logic.Level;
+using WizardPlatformer.Logic.Level.LevelLoading;
 
 namespace WizardPlatformer {
 	public class TileDestroyable : Tile {

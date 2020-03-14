@@ -16,6 +16,9 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			string filePath = "Content/level/level_" + levelId + "_" + roomId + ".dat";
 			string backgroundId = "";
 			string roomSize = "";
+			string saveOnEntrance = "";
+			string playerPosX = "";
+			string playerPosY = "";
 			string layerBase = "";
 			string layerBack = "";
 			string layerDeco = "";
@@ -33,7 +36,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			XmlElement xLevel = room.DocumentElement;
 			foreach (XmlNode xPart in xLevel) {
 				if (xPart.Name.Equals("room")) {
-					if (xPart.Attributes.Count == 2) {
+					if (xPart.Attributes.Count == 5) {
 						XmlNode attribute = xPart.Attributes.GetNamedItem("backgroundId");
 						if (attribute == null) {
 							throw levelFormatException;
@@ -46,6 +49,27 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 							throw levelFormatException;
 						} else {
 							roomSize = attribute.Value;
+						}
+
+						attribute = xPart.Attributes.GetNamedItem("saveOnEntrance");
+						if (attribute == null) {
+							throw levelFormatException;
+						} else {
+							saveOnEntrance = attribute.Value;
+						}
+
+						attribute = xPart.Attributes.GetNamedItem("playerPosX");
+						if (attribute == null) {
+							throw levelFormatException;
+						} else {
+							playerPosX = attribute.Value;
+						}
+
+						attribute = xPart.Attributes.GetNamedItem("playerPosY");
+						if (attribute == null) {
+							throw levelFormatException;
+						} else {
+							playerPosY = attribute.Value;
 						}
 					}
 
@@ -132,22 +156,22 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					}
 				}
 			}
-			/*catch (Exception e) {
-			   Exception levelE = new Exception("Level load error:\n" + e.Message);
-			   ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
-		   }*/
 
-			return new XMLLevelParts(backgroundId, roomSize, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities);
+			return new XMLLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosX, playerPosY, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities);
 		}
 
 		private static UnmappedLevelParts PrepareRawLevel(XMLLevelParts levelParts) {
 			string backgroundId = "";
 			int roomSize = 0;
+			bool saveOnEntrance = false;
+			int[] playerPosition = new int[2];
 			int[] layerBase = null;
 			int[] layerBack = null;
 			int[] layerDeco = null;
 			int[] layerFunctional = null;
 			List<int[]> movingPlatforms = new List<int[]>();
+
+			int tmpValue = 0;
 
 			try {
 				backgroundId = levelParts.BackgroundId;
@@ -156,13 +180,32 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					throw levelFormatException;
 				}
 
+				if (roomSize < 0 || roomSize > Level.RoomSize.Count - 1) {
+					throw levelFormatException;
+				}
+
 				if (backgroundId.Length != 5) {
 					throw levelFormatException;
 				}
 
-				if (roomSize < 0 || roomSize > Level.RoomSize.Count - 1) {
+				if (!int.TryParse(levelParts.SaveOnEntrance, out tmpValue)) {
 					throw levelFormatException;
 				}
+
+				if (tmpValue < 0 || tmpValue > 1) {
+					throw levelFormatException;
+				}
+				saveOnEntrance = (tmpValue == 1) ? true : false;
+
+				if (!int.TryParse(levelParts.PlayerPosX, out tmpValue)) {
+					throw levelFormatException;
+				}
+				playerPosition[0] = tmpValue;
+
+				if (!int.TryParse(levelParts.PlayerPosY, out tmpValue)) {
+					throw levelFormatException;
+				}
+				playerPosition[1] = tmpValue;
 
 				int roomTilesQuantity = Level.RoomSize[roomSize][0] * Level.RoomSize[roomSize][1];
 				if (levelParts.LayerBase.Length > 0) {
@@ -231,7 +274,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
 			}
 
-			return new UnmappedLevelParts(backgroundId, roomSize, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms);
+			return new UnmappedLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosition, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms);
 		}
 	}
 }

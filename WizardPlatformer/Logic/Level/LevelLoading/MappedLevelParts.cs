@@ -5,17 +5,21 @@ using System.Collections.Generic;
 
 namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class MappedLevelParts {
-		string backgroundId;
-		int roomSize;
-		Tile[,] layerBase;
-		Tile[,] layerBack;
-		Tile[,] layerDeco;
-		Tile[,] layerFunctional;
-		List<TileMovingPlatform> movingPlatforms;
+		private string backgroundId;
+		private int roomSize;
+		private bool saveOnEntrance;
+		private Vector2 playerPosition;
+		private Tile[,] layerBase;
+		private Tile[,] layerBack;
+		private Tile[,] layerDeco;
+		private Tile[,] layerFunctional;
+		private List<TileMovingPlatform> movingPlatforms;
 
-		public MappedLevelParts(string backgroundId, int roomSize, Tile[,] layerBase, Tile[,] layerBack, Tile[,] layerDeco, Tile[,] layerFunctional, List<TileMovingPlatform> movingPlatforms) {
+		public MappedLevelParts(string backgroundId, int roomSize, bool saveOnEntrance, Vector2 playerPosition, Tile[,] layerBase, Tile[,] layerBack, Tile[,] layerDeco, Tile[,] layerFunctional, List<TileMovingPlatform> movingPlatforms) {
 			this.backgroundId = backgroundId;
 			this.roomSize = roomSize;
+			this.saveOnEntrance = saveOnEntrance;
+			this.playerPosition = playerPosition;
 			this.layerBase = layerBase;
 			this.layerBack = layerBack;
 			this.layerDeco = layerDeco;
@@ -29,6 +33,14 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public int RoomSize {
 			get { return roomSize; }
+		}
+
+		public bool SaveOnEntrance {
+			get { return saveOnEntrance; }
+		}
+
+		public Vector2 PlayerPosition {
+			get { return playerPosition; }
 		}
 
 		public Tile[,] LayerBase {

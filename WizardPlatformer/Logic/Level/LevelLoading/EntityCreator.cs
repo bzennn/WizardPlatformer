@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WizardPlatformer.Logic.Level;
 
-namespace WizardPlatformer {
+namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class EntityCreator {
 		private Dictionary<int, string> entityIdMap;
 		private Level level;
@@ -39,7 +39,7 @@ namespace WizardPlatformer {
 				case "collectable_health_upgrade":
 					return new EntityCollectable(50, TileCollectable.CollectableType.HEART, 7.0f, true, 7, 10, 8 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_damage_upgrade":
-					return null;
+					return new EntityCollectable(50, TileCollectable.CollectableType.DAMAGE_UPGRADE, 7.0f, true, 12, 12, 6 * scaleFactor, 6 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 			}
 		}
 

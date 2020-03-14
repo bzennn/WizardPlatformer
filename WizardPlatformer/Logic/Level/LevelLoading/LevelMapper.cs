@@ -22,6 +22,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			int roomSizeWidth = Level.RoomSize[unmappedLevelParts.RoomSize][0];
 			int roomSizeHeigth = Level.RoomSize[unmappedLevelParts.RoomSize][1];
 
+			Vector2 playerPosition = new Vector2(unmappedLevelParts.PlayerPosition[0], unmappedLevelParts.PlayerPosition[1]);
 			Tile[,] backLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] baseLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] decoLayer = new Tile[roomSizeWidth, roomSizeHeigth];
@@ -88,7 +89,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				movingPlatforms.Add(platform);
 			}
 
-			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, baseLayer, backLayer, decoLayer, functionalLayer, movingPlatforms);
+			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, unmappedLevelParts.SaveOnEntrance, playerPosition, baseLayer, backLayer, decoLayer, functionalLayer, movingPlatforms);
 		}
 
 		public TileCreator TileCreator {

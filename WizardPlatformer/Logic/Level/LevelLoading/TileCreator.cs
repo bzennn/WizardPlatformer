@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using WizardPlatformer.Logic.Level;
 
-namespace WizardPlatformer {
+namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class TileCreator {
 		private int calcTileSideSize;
 		private Dictionary<int, string> tileIdMap;
@@ -83,7 +83,8 @@ namespace WizardPlatformer {
 				case "rail_down_left":
 					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.DOWN_LEFT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "chest":
-					return new TileChest(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					drops = new TileCollectable.CollectableType[] { TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.MANA_CRYSTAL }; ;
+					return new TileChest(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, drops, -1, 100, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "checkpoint":
 					return new TileCheckpoint(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "entrance":

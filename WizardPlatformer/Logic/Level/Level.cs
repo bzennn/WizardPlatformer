@@ -16,6 +16,8 @@ namespace WizardPlatformer.Logic.Level {
 
 		#region Fields
 
+		private bool isLevelLoaded;
+
 		private int levelId;
 		private int roomId;
 		private int roomSizeId;
@@ -36,7 +38,7 @@ namespace WizardPlatformer.Logic.Level {
 		private bool isTriggerOn;
 		private float currentOpacity;
 
-		private Point playerStartPosition;
+		//private Point playerStartPosition;
 		private EntityPlayer player;
 		private List<Entity> entities;
 		private List<KeyValuePair<Tile, Entity>> entitiesSchedule;
@@ -45,10 +47,10 @@ namespace WizardPlatformer.Logic.Level {
 
 		#endregion
 
-		public Level(int levelId, int roomId, Point playerStartPosition) {
+		public Level(int levelId, int roomId) {
+			this.isLevelLoaded = false;
 			this.levelId = levelId;
 			this.roomId = roomId;
-			this.playerStartPosition = playerStartPosition;
 			this.tileSideSize = Display.TileSideSize;
 			this.entities = new List<Entity>();
 			this.entitiesSchedule = new List<KeyValuePair<Tile, Entity>>();
@@ -80,10 +82,12 @@ namespace WizardPlatformer.Logic.Level {
 				}
 			}
 
-			player = (EntityPlayer)EntityCreator.CreateEntity(1, playerStartPosition.X, playerStartPosition.Y);
+			player = (EntityPlayer)EntityCreator.CreateEntity(1, (int)mappedLevelParts.PlayerPosition.X, (int)mappedLevelParts.PlayerPosition.Y);
 			SpawnEntity(player);
 
 			LoadEntitiesContent(contentManager);
+
+			isLevelLoaded = true;
 		}
 
 		public void Update(GameTime gameTime) {
@@ -402,6 +406,10 @@ namespace WizardPlatformer.Logic.Level {
 
 		public EntityCreator EntityCreator {
 			get { return levelLoader.GetEntityCreator(); }
+		}
+
+		public bool IsLevelLoaded {
+			get { return isLevelLoaded; }
 		}
 	}
 }

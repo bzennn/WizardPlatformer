@@ -158,7 +158,7 @@ namespace WizardPlatformer {
 			}
 
 			// For debug
-			if (InputManager.GetInstance().IsKeyPressed(Keys.D1)) {
+			/*if (InputManager.GetInstance().IsKeyPressed(Keys.D1)) {
 				Vector2 pos = InputManager.GetInstance().GetMousePosition();
 				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(4, (int)pos.X, (int)pos.Y));
 			}
@@ -170,18 +170,18 @@ namespace WizardPlatformer {
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.D3)) {
 				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(6, (int)pos.X, (int)pos.Y));
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(8, (int)pos.X, (int)pos.Y));
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.D4)) {
 				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(7, (int)pos.X, (int)pos.Y));
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(9, (int)pos.X, (int)pos.Y));
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.D5)) {
 				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(10, (int)pos.X, (int)pos.Y));
-			}
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(11, (int)pos.X, (int)pos.Y));
+			}*/
 		}
 
 		private void UpdateCoolDown(GameTime gameTime) {
@@ -198,6 +198,13 @@ namespace WizardPlatformer {
 				TileCollectable collectable = (TileCollectable)tile;
 				Collect(collectable.CollectableForm);
 				tile.Collapse();
+			}
+
+			if (tile is TileChest) {
+				if (InputManager.GetInstance().IsKeyPressed(Keys.E)) {
+					TileChest chest = (TileChest)tile;
+					chest.Open();
+				}
 			}
 		}
 
@@ -229,13 +236,22 @@ namespace WizardPlatformer {
 					AddHealth(1);
 					break;
 				case TileCollectable.CollectableType.HEART:
-					UpgradeHealth();
+					UpgradeHealth(1);
 					break;
 				case TileCollectable.CollectableType.MANA_CRYSTAL:
 					AddMana(40);
 					break;
 				case TileCollectable.CollectableType.STAMINA_CRYSTAL:
 					AddStamina(50);
+					break;
+				case TileCollectable.CollectableType.MANA_UPGRADE:
+					UpgradeMana(50);
+					break;
+				case TileCollectable.CollectableType.STAMINA_UPGRADE:
+					UpgradeStamina(10);
+					break;
+				case TileCollectable.CollectableType.DAMAGE_UPGRADE:
+					UpgradeDamage(1);
 					break;
 			}	
 		}
@@ -254,6 +270,10 @@ namespace WizardPlatformer {
 			}
 		}
 
+		public void UpgradeMana(int mana) {
+			this.maxMana += mana;
+		}
+
 		public void AddStamina(int stamina) {
 			this.stamina += stamina;
 			if (this.stamina > maxStamina) {
@@ -268,6 +288,10 @@ namespace WizardPlatformer {
 			}
 		}
 
+		public void UpgradeStamina(int stamina) {
+			this.maxStamina += stamina;
+		}
+
 		public void AddHealth(int health) {
 			this.health += health;
 			if (this.health > maxHealth) {
@@ -275,13 +299,13 @@ namespace WizardPlatformer {
 			}
 		}
 
-		public void UpgradeHealth() {
-			this.maxHealth += 2;
+		public void UpgradeHealth(int hearts) {
+			this.maxHealth += 2 * hearts;
 			this.health = this.maxHealth;
 		}
 
-		public void UpgradeDamage() {
-			this.damage += 1;
+		public void UpgradeDamage(int damage) {
+			this.damage += damage;
 		}
 
 		public void RegenMana(GameTime gameTime) {

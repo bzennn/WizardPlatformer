@@ -5,18 +5,24 @@ using System.Collections.Generic;
 
 namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class UnmappedLevelParts {
-		string backgroundId;
-		int roomSize;
-		int[] layerBase;
-		int[] layerBack;
-		int[] layerDeco;
-		int[] layerFunctional;
-		List<int[]> movingPlatforms;
-		List<int[]> entities;
+		private string backgroundId;
+		private int roomSize;
+		private bool saveOnEntrance;
 
-		public UnmappedLevelParts(string backgroundId, int roomSize, int[] layerBase, int[] layerBack, int[] layerDeco, int[] layerFunctional, List<int[]> movingPlatforms) {
+		private int[] playerPosition;
+
+		private int[] layerBase;
+		private int[] layerBack;
+		private int[] layerDeco;
+		private int[] layerFunctional;
+		private List<int[]> movingPlatforms;
+		private List<int[]> entities;
+
+		public UnmappedLevelParts(string backgroundId, int roomSize, bool saveOnEntrance, int[] playerPosition, int[] layerBase, int[] layerBack, int[] layerDeco, int[] layerFunctional, List<int[]> movingPlatforms) {
 			this.backgroundId = backgroundId;
 			this.roomSize = roomSize;
+			this.saveOnEntrance = saveOnEntrance;
+			this.playerPosition = playerPosition;
 			this.layerBase = layerBase;
 			this.layerBack = layerBack;
 			this.layerDeco = layerDeco;
@@ -30,6 +36,14 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public int RoomSize {
 			get { return roomSize; }
+		}
+
+		public bool SaveOnEntrance {
+			get { return saveOnEntrance; }
+		}
+
+		public int[] PlayerPosition {
+			get { return playerPosition; }
 		}
 
 		public int[] LayerBase {

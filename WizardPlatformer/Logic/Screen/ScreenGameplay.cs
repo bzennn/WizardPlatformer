@@ -11,16 +11,17 @@ namespace WizardPlatformer {
 	public class ScreenGameplay : Screen {
 
 		#region Fields
-		LevelLoader levelLoader;
-		EntityCreator entityCreator;
 
-		Texture2D tileSet;
-		Point tileSetSize = new Point(12, 20);
+		private LevelLoader levelLoader;
+		private EntityCreator entityCreator;
 
-		Level currentLevel;
-		ContentManager contentManager;
+		private Texture2D tileSet;
+		private Point tileSetSize = new Point(12, 20);
 
-		HUD hud;
+		private Level currentLevel;
+		private bool isLevelLoaded;
+
+		private HUD hud;
 
 		#endregion
 
@@ -31,22 +32,12 @@ namespace WizardPlatformer {
 		public override void LoadContent(ContentManager contentManager) {
 			base.LoadContent(contentManager);
 
-			this.contentManager = contentManager;
-
-			SnapshotPlayer snapshot = new SnapshotPlayer(new Vector2(100, 4000), 7, 20, 2, 200, 300, 10, 100, 100, 10, 100, 50, 50);
+			//SnapshotPlayer snapshot = new SnapshotPlayer(new Vector2(100, 4000), 7, 20, 2, 200, 300, 10, 100, 100, 10, 100, 50, 50);
 			tileSet = screenContent.Load<Texture2D>("tile/tileset_export");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
-			currentLevel = new Level(0, 2, new Point(100, 300));
-			levelLoader = new LevelLoader(tileSet, tileSetSize, currentLevel);
-			currentLevel.AddLevelLoader(levelLoader);
-			//currentLevel = new Level(0, 3, levelLoader, new Point(100, 1300));
-
-			currentLevel.LoadContent(contentManager);
-			currentLevel.Player.RestoreSnapshot(snapshot);
-
-			hud = new HUD(currentLevel.Player);
-			hud.LoadContent(contentManager);
+			LoadLevel(0, 1);
+			//currentLevel.Player.RestoreSnapshot(snapshot);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -103,6 +94,10 @@ namespace WizardPlatformer {
 			if (currentLevel != null) {
 				currentLevel.Update(gameTime);
 				hud.Update(gameTime);
+
+				if (currentLevel.IsLevelLoaded) {
+					isLevelLoaded = true;
+				}
 			}
 		}
 
@@ -113,6 +108,20 @@ namespace WizardPlatformer {
 				currentLevel.Draw(spriteBatch, gameTime);
 				hud.Draw(spriteBatch, gameTime);
 			}
+		}
+
+		private void LoadLevel(int levelId, int roomId) {
+			currentLevel = new Level(levelId, roomId);
+			levelLoader = new LevelLoader(tileSet, tileSetSize, currentLevel);
+			currentLevel.AddLevelLoader(levelLoader);
+			currentLevel.LoadContent(screenContent);
+
+			hud = new HUD(currentLevel.Player);
+			hud.LoadContent(screenContent);
+		}
+
+		public bool IsLevelLoaded {
+			get { return isLevelLoaded; }
 		}
 	}
 }

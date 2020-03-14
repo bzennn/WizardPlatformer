@@ -8,6 +8,9 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class XMLLevelParts {
 		private string backgroundId;
 		private string roomSize;
+		private string saveOnEntrance;
+		private string playerPosX;
+		private string playerPosY;
 		private string layerBase;
 		private string layerBack;
 		private string layerDeco;
@@ -15,9 +18,12 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		private List<string> movingPlatforms;
 		private List<string> entities;
 
-		public XMLLevelParts(string backgroundId, string roomSize, string layerBase, string layerBack, string layerDeco, string layerFunctional, List<string> movingPlatforms, List<string> entities) {
+		public XMLLevelParts(string backgroundId, string roomSize, string saveOnEntrance, string playerPosX, string playerPosY, string layerBase, string layerBack, string layerDeco, string layerFunctional, List<string> movingPlatforms, List<string> entities) {
 			this.backgroundId = backgroundId;
 			this.roomSize = roomSize;
+			this.saveOnEntrance = saveOnEntrance;
+			this.playerPosX = playerPosX;
+			this.playerPosY = playerPosY;
 			this.layerBase = layerBase;
 			this.layerBack = layerBack;
 			this.layerDeco = layerDeco;
@@ -32,6 +38,18 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public string RoomSize {
 			get { return roomSize; }
+		}
+
+		public string SaveOnEntrance {
+			get { return saveOnEntrance; }
+		}
+
+		public string PlayerPosX {
+			get { return playerPosX; }
+		}
+
+		public string PlayerPosY {
+			get { return playerPosY; }
 		}
 
 		public string LayerBase {

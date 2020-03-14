@@ -130,10 +130,7 @@ namespace WizardPlatformer {
 		}
 
 		public virtual void Update(GameTime gameTime) {
-			frameTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
-			if (frameTimeCounter > frameUpdateMillis) {
-				frameTimeCounter = 0;
-			}
+			UpdateFrameCounter(gameTime);
 
 			if (emulatePhysics) {
 				UpdatePhysics(gameTime);
@@ -185,6 +182,13 @@ namespace WizardPlatformer {
 					"\nVel = " + currentVelocity +
 					"\nAcc = " + currentAcceleration +
 					"\nIsFallingThrough = " + isFallingThrough, entityPosition - new Vector2(0, 140), Color.AntiqueWhite);
+			}
+		}
+
+		private void UpdateFrameCounter(GameTime gameTime) {
+			frameTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
+			if (frameTimeCounter > frameUpdateMillis) {
+				frameTimeCounter = 0;
 			}
 		}
 

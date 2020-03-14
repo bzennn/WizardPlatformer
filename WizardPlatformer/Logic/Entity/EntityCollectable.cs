@@ -65,6 +65,8 @@ namespace WizardPlatformer {
 					this.spriteSize = new Point(1, 1);
 					break;
 				case TileCollectable.CollectableType.DAMAGE_UPGRADE:
+					this.sprite = contentManager.Load<Texture2D>("entity/damage_upgrade_sprite");
+					this.spriteSize = new Point(1, 1);
 					break;
 			}
 		}
