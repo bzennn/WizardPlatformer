@@ -6,6 +6,7 @@ using WizardPlatformer.Logic.Level.LevelLoading;
 using WizardPlatformer.Logic.Level;
 using WizardPlatformer.Logic.UI;
 using WizardPlatformer.Logic.Save;
+using System.Collections.Generic;
 
 namespace WizardPlatformer {
 	public class ScreenGameplay : Screen {
@@ -18,6 +19,7 @@ namespace WizardPlatformer {
 		private Texture2D tileSet;
 		private Point tileSetSize = new Point(12, 20);
 
+		private List<int[]> levelsList;
 		private int levelId;
 		private int roomId;
 		private Level currentLevel;
@@ -34,14 +36,14 @@ namespace WizardPlatformer {
 		public override void LoadContent(ContentManager contentManager) {
 			base.LoadContent(contentManager);
 
-			//SnapshotPlayer snapshot = new SnapshotPlayer(new Vector2(100, 4000), 7, 20, 2, 200, 300, 10, 100, 100, 10, 100, 50, 50);
 			tileSet = screenContent.Load<Texture2D>("tile/tileset_export");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
+			levelsList = XMLLevelListLoader.LoadLevelsList();
+			
 
 			levelId = 0;
-			roomId = 3;
+			roomId = 0;
 			LoadLevel(levelId, roomId);
-			//currentLevel.Player.RestoreSnapshot(snapshot);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -49,10 +51,6 @@ namespace WizardPlatformer {
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenPause(this), false);
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.D0)) {
-			//	snapshotLevel = currentLevel.GetSnapshot();
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.P)) {
@@ -63,49 +61,7 @@ namespace WizardPlatformer {
 				RestoreSnapshot(BINSaveDeserializer.Deserialize());
 			}
 
-			// For debug
-
-			/*if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad1)) {
-				currentLevel = new Level(0, 0, levelLoader, entityCreator, new Point(100, 300));
-				entityCreator.AddLevel(currentLevel);
-				currentLevel.LoadContent(contentManager);
-				hud = new HUD(currentLevel.Player);
-				hud.LoadContent(contentManager);
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad2)) {
-				currentLevel = new Level(0, 1, levelLoader, entityCreator, new Point(100, 300));
-				entityCreator.AddLevel(currentLevel);
-				currentLevel.LoadContent(contentManager);
-				hud = new HUD(currentLevel.Player);
-				hud.LoadContent(contentManager);
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad3)) {
-				currentLevel = new Level(0, 2, levelLoader, entityCreator, new Point(100, 4000));
-				entityCreator.AddLevel(currentLevel);
-				currentLevel.LoadContent(contentManager);
-				hud = new HUD(currentLevel.Player);
-				hud.LoadContent(contentManager);
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad4)) {
-				currentLevel = new Level(0, 3, levelLoader, entityCreator, new Point(100, 1300));
-				entityCreator.AddLevel(currentLevel);
-				currentLevel.LoadContent(contentManager);
-				hud = new HUD(currentLevel.Player);
-				hud.LoadContent(contentManager);
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.NumPad5)) {
-				currentLevel = new Level(0, 4, levelLoader, entityCreator, new Point(100, 300));
-				entityCreator.AddLevel(currentLevel);
-				currentLevel.LoadContent(contentManager);
-				hud = new HUD(currentLevel.Player);
-				hud.LoadContent(contentManager);
-			}*/
-
-			// end debug
+			UpdateLevelSwitchQuery();
 
 			if (currentLevel != null) {
 				currentLevel.Update(gameTime);
@@ -127,7 +83,19 @@ namespace WizardPlatformer {
 		}
 
 		private void LoadLevel(int levelId, int roomId) {
-			currentLevel = new Level(levelId, roomId);
+			int[] previousLevel = null;
+			if (currentLevel != null) {
+				int prevLevelId = currentLevel.LevelId;
+				int prevRoomId = currentLevel.RoomId;
+
+				if ((prevLevelId == levelId && prevRoomId != roomId) ||
+					(prevLevelId != levelId && prevRoomId == roomId)) {
+					previousLevel = new int[] { prevLevelId, prevRoomId };
+				}
+				currentLevel.UnloadContent();
+			}
+
+			currentLevel = new Level(levelId, roomId, previousLevel);
 			levelLoader = new LevelLoader(tileSet, tileSetSize, currentLevel);
 			currentLevel.AddLevelLoader(levelLoader);
 			currentLevel.LoadContent(screenContent);
@@ -136,8 +104,14 @@ namespace WizardPlatformer {
 			hud.LoadContent(screenContent);
 		}
 
-		public bool IsLevelLoaded {
-			get { return isLevelLoaded; }
+		private void UpdateLevelSwitchQuery() {
+			if (currentLevel != null) {
+				if (currentLevel.HasLevelSwitchQuery) {
+					SnapshotPlayer snapshotPlayer = currentLevel.Player.GetSnapshot();
+					LoadLevel(currentLevel.SwitchLevel[0], currentLevel.SwitchLevel[1]);
+					currentLevel.Player.RestoreSnapshot(snapshotPlayer, false);
+				}
+			}
 		}
 
 		public SnapshotGameplay GetSnapshot() {
@@ -156,6 +130,10 @@ namespace WizardPlatformer {
 				this.currentLevel.RestoreSnapshot(snapshot.SnapshotLevel);
 				this.currentLevel.Player.RestoreSnapshot(snapshot.SnapshotPlayer);
 			}
+		}
+
+		public bool IsLevelLoaded {
+			get { return isLevelLoaded; }
 		}
 	}
 }

@@ -17,8 +17,9 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		private int[] layerFunctional;
 		private List<int[]> movingPlatforms;
 		private List<int[]> entities;
+		private Dictionary<string, int[]> exits;
 
-		public UnmappedLevelParts(string backgroundId, int roomSize, bool saveOnEntrance, int[] playerPosition, int[] layerBase, int[] layerBack, int[] layerDeco, int[] layerFunctional, List<int[]> movingPlatforms) {
+		public UnmappedLevelParts(string backgroundId, int roomSize, bool saveOnEntrance, int[] playerPosition, int[] layerBase, int[] layerBack, int[] layerDeco, int[] layerFunctional, List<int[]> movingPlatforms, List<int[]> entities, Dictionary<string, int[]> exits) {
 			this.backgroundId = backgroundId;
 			this.roomSize = roomSize;
 			this.saveOnEntrance = saveOnEntrance;
@@ -28,6 +29,8 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			this.layerDeco = layerDeco;
 			this.layerFunctional = layerFunctional;
 			this.movingPlatforms = movingPlatforms;
+			this.entities = entities;
+			this.exits = exits;
 		}
 
 		public string BackgroundId {
@@ -62,6 +65,14 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public List<int[]> MovingPlatforms {
 			get { return movingPlatforms; }
+		}
+
+		public List<int[]> Exntities {
+			get { return entities; }
+		}
+
+		public Dictionary<string, int[]> Exits {
+			get { return exits; }
 		}
 	}
 }

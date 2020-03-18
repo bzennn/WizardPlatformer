@@ -157,4 +157,10 @@
   <moving_platforms>
     <platform type="0" right="1" left="1" x="37" y="29"></platform>
   </moving_platforms>
+  <exits>
+    <exit levelId="0" roomId="4" x="63" y="28"></exit>
+    <exit levelId="0" roomId="4" x="63" y="27"></exit>
+    <exit levelId="0" roomId="4" x="63" y="26"></exit>
+    <exit levelId="0" roomId="4" x="63" y="25"></exit>
+  </exits>
 </level>

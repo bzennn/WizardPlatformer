@@ -25,21 +25,21 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				case "melee_melee_attack":
 					return new EntityMeleeAttack(450, sourceEntityId, (int)(level.GetEntity(sourceEntityId).Damage * 1.5f), 7.0f, true, 4, 4, 11 * scaleFactor, 10 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level, InputManager.GetInstance().GetMousePosition());
 				case "collectable_coin":
-					return new EntityCollectable(50, TileCollectable.CollectableType.COIN, 7.0f, true, 8, 8, 8 * scaleFactor, 8 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityCollectable(10000, TileCollectable.CollectableType.COIN, 7.0f, true, 8, 8, 8 * scaleFactor, 8 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_mana_crystal":
-					return new EntityCollectable(50, TileCollectable.CollectableType.MANA_CRYSTAL, 7.0f, true, 6, 6, 9 * scaleFactor, 8 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityCollectable(10000, TileCollectable.CollectableType.MANA_CRYSTAL, 7.0f, true, 6, 6, 9 * scaleFactor, 8 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_stamina_crystal":
-					return new EntityCollectable(50, TileCollectable.CollectableType.STAMINA_CRYSTAL, 7.0f, true, 6, 8, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityCollectable(10000, TileCollectable.CollectableType.STAMINA_CRYSTAL, 7.0f, true, 6, 8, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_health_crystal":
-					return new EntityCollectable(50, TileCollectable.CollectableType.HEALTH_CRYSTAL, 7.0f, true, 6, 8, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityCollectable(10000, TileCollectable.CollectableType.HEALTH_CRYSTAL, 7.0f, true, 6, 8, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_mana_upgrade":
-					return new EntityCollectable(50, TileCollectable.CollectableType.MANA_UPGRADE, 7.0f, true, 10, 10, 7 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityCollectable(10000, TileCollectable.CollectableType.MANA_UPGRADE, 7.0f, true, 10, 10, 7 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_stamina_upgrade":
-					return new EntityCollectable(50, TileCollectable.CollectableType.STAMINA_UPGRADE, 7.0f, true, 6, 10, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityCollectable(10000, TileCollectable.CollectableType.STAMINA_UPGRADE, 7.0f, true, 6, 10, 9 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_health_upgrade":
-					return new EntityCollectable(50, TileCollectable.CollectableType.HEART, 7.0f, true, 7, 10, 8 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityCollectable(10000, TileCollectable.CollectableType.HEART, 7.0f, true, 7, 10, 8 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_damage_upgrade":
-					return new EntityCollectable(50, TileCollectable.CollectableType.DAMAGE_UPGRADE, 7.0f, true, 12, 12, 6 * scaleFactor, 6 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityCollectable(10000, TileCollectable.CollectableType.DAMAGE_UPGRADE, 7.0f, true, 12, 12, 6 * scaleFactor, 6 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 			}
 		}
 

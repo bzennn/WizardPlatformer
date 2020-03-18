@@ -142,7 +142,7 @@ namespace WizardPlatformer {
 
 			HandleEntities();
 			HandleExtraTiles();
-			HandleFuctionalTiles();
+			HandleFuctionalTiles(gameTime);
 
 			UpdateSpriteFlipped();
 			UpdateSpriteFlip();
@@ -557,17 +557,18 @@ namespace WizardPlatformer {
 
 		#region FunctionalTilesHandling
 
-		private void HandleFuctionalTiles() {
+		private void HandleFuctionalTiles(GameTime gameTime) {
 			surroundingTiles = GetSurrondingTiles("functional");
 
 			foreach (Tile tile in surroundingTiles) {
 				if (tile is TileFunctional) {
-					HandleFunctionalTile((TileFunctional)tile);
+					HandleFunctionalTile((TileFunctional)tile, gameTime);
+					break;
 				}
 			}
 		}
 
-		protected virtual void HandleFunctionalTile(TileFunctional tile) {
+		protected virtual void HandleFunctionalTile(TileFunctional tile, GameTime gameTime) {
 			if (tile.Type == TileFunctional.FunctionType.DEADLY) {
 				Collapse();
 			}

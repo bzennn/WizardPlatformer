@@ -13,6 +13,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		private Point tilePosOnTexture;
 
 		private Level level;
+		private Dictionary<string, int[]> exits;
 
 		public TileCreator(Dictionary<int, string> tileIdMap, Texture2D tileSet, Point tileSetSize, Level level) {
 			this.calcTileSideSize = Display.CalcTileSideSize;
@@ -43,7 +44,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				case "hostile_lava":
 					return new TileLiquid(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.HOSTILE, TileLiquid.LiquidType.LAVA, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "destroyable":
-					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, null, 0, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, null, 0, 0, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "collectable_coin":
 					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.COIN, 8, 8, 8, 8, tilePosX, tilePosY);
 				case "collectable_heart":
@@ -56,16 +57,16 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					return new TileCollectable(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileCollectable.CollectableType.HEALTH_CRYSTAL, 8, 8, 8, 8, tilePosX, tilePosY);
 				case "destroyable_jar":
 					drops = new TileCollectable.CollectableType[] { TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.HEALTH_CRYSTAL, TileCollectable.CollectableType.STAMINA_CRYSTAL };
-					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 2, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 2, 70, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "destroyable_stone":
 					drops = new TileCollectable.CollectableType[] { TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.MANA_CRYSTAL, TileCollectable.CollectableType.STAMINA_CRYSTAL };
-					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 1, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 1, 50, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "destroyable_crate":
 					drops = new TileCollectable.CollectableType[] { TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.HEALTH_CRYSTAL, TileCollectable.CollectableType.STAMINA_CRYSTAL};
-					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 3, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 3, 90, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "destroyable_barrel":
 					drops = new TileCollectable.CollectableType[] { TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.HEALTH_CRYSTAL, TileCollectable.CollectableType.MANA_CRYSTAL };
-					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 5, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
+					return new TileDestroyable(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, drops, 5, 85, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "moving_plat_st":
 					return new TileMovingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, 2.00f, calcTileSideSize, 8, 0, 0, tilePosX, tilePosY);
 				case "moving_plat_gr":
@@ -84,13 +85,19 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.DOWN_LEFT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "chest":
 					drops = new TileCollectable.CollectableType[] { TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.MANA_CRYSTAL }; ;
-					return new TileChest(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, drops, -1, 100, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
+					return new TileChest(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, drops, -1, 100, 100, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "checkpoint":
 					return new TileCheckpoint(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "entrance":
 					return new TileFunctional(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileFunctional.FunctionType.ENTRANCE, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "exit":
-					return new TileFunctional(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileFunctional.FunctionType.EXIT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					TileFunctional exit = new TileFunctional(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileFunctional.FunctionType.EXIT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					if (exits.ContainsKey(tilePosX + "-" + tilePosY)) {
+						int[] exitLevel = exits[tilePosX + "-" + tilePosY];
+						exit.LevelId = exitLevel[0];
+						exit.RoomId = exitLevel[1];
+					}
+					return exit;
 				case "trigger":
 					return new TileFunctional(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileFunctional.FunctionType.TRIGGER, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "death":
@@ -105,6 +112,10 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			int y = (int)System.Math.Floor((double)(tileId - 1) / tileSetSize.X); // Calc tile y pos by tile id
 
 			return new Point(x, y);
+		}
+
+		public void AddExitsDictionary(Dictionary<string, int[]> exits) {
+			this.exits = exits;
 		}
 	}
 }

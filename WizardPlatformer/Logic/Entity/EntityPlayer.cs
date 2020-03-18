@@ -30,6 +30,9 @@ namespace WizardPlatformer {
 		private int coolDownMax;
 		private int coolDown;
 
+		private int levelSwitchDelay;
+		private int levelSwitchCounter;
+
 		public EntityPlayer(int health, int maxHealth, int mana, int maxMana, int stamina, int maxStamina, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
 			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
 
@@ -56,6 +59,9 @@ namespace WizardPlatformer {
 			this.coolDown = 0;
 
 			this.drawDebugInfo = false;
+
+			this.levelSwitchDelay = 1000;
+			this.levelSwitchCounter = this.levelSwitchDelay;
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
@@ -156,32 +162,6 @@ namespace WizardPlatformer {
 					coolDown = coolDownMax;
 				}
 			}
-
-			// For debug
-			/*if (InputManager.GetInstance().IsKeyPressed(Keys.D1)) {
-				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(4, (int)pos.X, (int)pos.Y));
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.D2)) {
-				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(5, (int)pos.X, (int)pos.Y));
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.D3)) {
-				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(8, (int)pos.X, (int)pos.Y));
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.D4)) {
-				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(9, (int)pos.X, (int)pos.Y));
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.D5)) {
-				Vector2 pos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(11, (int)pos.X, (int)pos.Y));
-			}*/
 		}
 
 		private void UpdateCoolDown(GameTime gameTime) {
@@ -208,11 +188,37 @@ namespace WizardPlatformer {
 			}
 		}
 
-		protected override void HandleFunctionalTile(TileFunctional tile) {
-			base.HandleFunctionalTile(tile);
+		protected override void HandleFunctionalTile(TileFunctional tile, GameTime gameTime) {
+			base.HandleFunctionalTile(tile, gameTime);
 
 			if (tile.Type == TileFunctional.FunctionType.TRIGGER) {
 				level.HandleTrigger();
+			}
+
+			if (tile.Type == TileFunctional.FunctionType.ENTRANCE) {
+				if (levelSwitchCounter == 0) {
+					this.level.HasLevelSwitchQuery = true;
+				} else {
+					UpdateLevelSwitchCounter(gameTime);
+				}
+			} else if (tile.Type == TileFunctional.FunctionType.EXIT) {
+				if (levelSwitchCounter == 0) {
+					this.level.HasLevelSwitchQuery = true;
+					this.level.SwitchLevel = new int[] { tile.LevelId, tile.RoomId };
+				} else {
+					UpdateLevelSwitchCounter(gameTime);
+				}
+			} else {
+				if (levelSwitchCounter != levelSwitchDelay) {
+					levelSwitchCounter = levelSwitchDelay;
+				}
+			}
+		}
+
+		private void UpdateLevelSwitchCounter(GameTime gameTime) {
+			levelSwitchCounter -= gameTime.ElapsedGameTime.Milliseconds;
+			if (levelSwitchCounter < 0) {
+				levelSwitchCounter = 0;
 			}
 		}
 
@@ -344,8 +350,10 @@ namespace WizardPlatformer {
 				this.meleeAttackCost); 
 		}
 
-		public void RestoreSnapshot(SnapshotPlayer snapshot) {
-			this.EntityPosition = new Vector2(snapshot.PlayerPositionX, snapshot.PlayerPositionY);
+		public void RestoreSnapshot(SnapshotPlayer snapshot, bool restorePosition = true) {
+			if (restorePosition) {
+				this.EntityPosition = new Vector2(snapshot.PlayerPositionX, snapshot.PlayerPositionY);
+			}
 			this.health = snapshot.Health;
 			this.maxHealth = snapshot.MaxHealth;
 			this.damage = snapshot.Damage;

@@ -22,6 +22,8 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			int roomSizeWidth = Level.RoomSize[unmappedLevelParts.RoomSize][0];
 			int roomSizeHeigth = Level.RoomSize[unmappedLevelParts.RoomSize][1];
 
+			tileCreator.AddExitsDictionary(unmappedLevelParts.Exits);
+
 			Vector2 playerPosition = new Vector2(unmappedLevelParts.PlayerPosition[0], unmappedLevelParts.PlayerPosition[1]);
 			Tile[,] backLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] baseLayer = new Tile[roomSizeWidth, roomSizeHeigth];

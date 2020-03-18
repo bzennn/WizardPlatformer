@@ -16,11 +16,15 @@ namespace WizardPlatformer {
 		}
 
 		private FunctionType type;
+		private int switchLevelId;
+		private int swithcRoomId;
 
 		public TileFunctional(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, FunctionType type, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY) 
 			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
 
 			this.type = type;
+			this.switchLevelId = 0;
+			this.swithcRoomId = 0;
 		}
 
 		public override void Update(GameTime gameTime) { }
@@ -31,6 +35,16 @@ namespace WizardPlatformer {
 
 		public FunctionType Type {
 			get { return type; }
+		}
+
+		public int LevelId {
+			get { return switchLevelId; }
+			set { this.switchLevelId = value; }
+		}
+
+		public int RoomId {
+			get { return swithcRoomId; }
+			set { this.swithcRoomId = value; }
 		}
 	}
 }

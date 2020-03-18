@@ -62,8 +62,10 @@
     <Compile Include="Logic\Entity\EntityCollectable.cs" />
     <Compile Include="Logic\Level\LevelLoading\EntityCreator.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLEntityIdMapLoader.cs" />
+    <Compile Include="Logic\Level\LevelLoading\XMLLevelListLoader.cs" />
     <Compile Include="Logic\Save\BINSaveDeserializer.cs" />
     <Compile Include="Logic\Save\BINSaveSerializer.cs" />
+    <Compile Include="Logic\Save\SaveManager.cs" />
     <Compile Include="Logic\Save\SnapshotBackground.cs" />
     <Compile Include="Logic\Save\SnapshotGameplay.cs" />
     <Compile Include="Logic\Save\SnapshotLevel.cs" />
@@ -193,6 +195,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Content\entity\entity_id_map.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\levels_list.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

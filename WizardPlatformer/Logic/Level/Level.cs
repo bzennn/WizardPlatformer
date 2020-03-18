@@ -18,6 +18,8 @@ namespace WizardPlatformer.Logic.Level {
 		#region Fields
 
 		private bool isLevelLoaded;
+		private int[] switchLevel;
+		private bool hasLevelSwitchQuery;
 
 		private int levelId;
 		private int roomId;
@@ -47,10 +49,11 @@ namespace WizardPlatformer.Logic.Level {
 
 		#endregion
 
-		public Level(int levelId, int roomId) {
+		public Level(int levelId, int roomId, int[] previousLevel) {
 			this.isLevelLoaded = false;
 			this.levelId = levelId;
 			this.roomId = roomId;
+			this.switchLevel = previousLevel;
 			this.tileSideSize = Display.TileSideSize;
 			this.entities = new List<Entity>();
 			this.entitiesSchedule = new List<KeyValuePair<Tile, Entity>>();
@@ -61,7 +64,7 @@ namespace WizardPlatformer.Logic.Level {
 		}
 
 		public void LoadContent(ContentManager contentManager) {
-			levelContentManager = contentManager;
+			this.levelContentManager = new ContentManager(contentManager.ServiceProvider, "Content");
 			MappedLevelParts mappedLevelParts = levelLoader.LoadLevel(levelId, roomId);
 
 			backLayer = mappedLevelParts.LayerBack;
@@ -73,7 +76,7 @@ namespace WizardPlatformer.Logic.Level {
 			roomHeigth = RoomSize[roomSizeId][1];
 
 			background = new Background(roomWidth, roomHeigth);
-			background.LoadContent(contentManager, mappedLevelParts.BackgoundId);
+			background.LoadContent(levelContentManager, mappedLevelParts.BackgoundId);
 
 			foreach (TileMovingPlatform platform in mappedLevelParts.MovingPlatforms) {
 				if (platform != null) {
@@ -85,9 +88,13 @@ namespace WizardPlatformer.Logic.Level {
 			player = (EntityPlayer)EntityCreator.CreateEntity(1, (int)mappedLevelParts.PlayerPosition.X, (int)mappedLevelParts.PlayerPosition.Y);
 			SpawnEntity(player);
 
-			LoadEntitiesContent(contentManager);
+			LoadEntitiesContent(levelContentManager);
 
 			isLevelLoaded = true;
+		}
+
+		public void UnloadContent() {
+			levelContentManager.Unload();
 		}
 
 		public void Update(GameTime gameTime) {
@@ -410,6 +417,31 @@ namespace WizardPlatformer.Logic.Level {
 
 		public bool IsLevelLoaded {
 			get { return isLevelLoaded; }
+		}
+
+		public int LevelId { 
+			get { return levelId; }
+		}
+
+		public int RoomId {
+			get { return roomId; }
+		}
+
+		public bool HasLevelSwitchQuery {
+			get { return hasLevelSwitchQuery; }
+			set { hasLevelSwitchQuery = value; }
+		}
+
+		public int[] SwitchLevel {
+			get { 
+				if (!hasLevelSwitchQuery) {
+					return null;
+				} else {
+					return switchLevel;
+				}
+			}
+
+			set { switchLevel = value; }
 		}
 
 		public SnapshotLevel GetSnapshot() {

@@ -12,15 +12,22 @@ namespace WizardPlatformer {
 	public class TileDestroyable : Tile {
 		private TileCollectable.CollectableType[] drop;
 		private int maxDropQuantity;
+		private int dropChance;
 
 		private Level level;
 		private EntityCreator entityCreator;
 
-		public TileDestroyable(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, TileCollectable.CollectableType[] drop, int maxDropQuantity, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY, Level level)
+		public TileDestroyable(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, TileCollectable.CollectableType[] drop, int maxDropQuantity, int dropChance, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY, Level level)
 			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
 
 			this.drop = drop;
 			this.maxDropQuantity = maxDropQuantity;
+			if (dropChance < 0 || dropChance > 100) {
+				this.dropChance = 0;
+				throw new ArgumentException();
+			} else {
+				this.dropChance = dropChance;
+			}
 
 			this.level = level;
 			this.entityCreator = this.level.EntityCreator;
@@ -37,7 +44,9 @@ namespace WizardPlatformer {
 		private void SpawnAllDrop() {
 			for (int i = 0; i < drop.Length; i++) {
 				for (int j = 0; j < GetDropQuantity(); j++) {
-					SpawnDrop(drop[i]);
+					if (Roll()) {
+						SpawnDrop(drop[i]);
+					}
 				}
 			}
 		} 
@@ -76,6 +85,12 @@ namespace WizardPlatformer {
 
 		private int GetDropQuantity() {
 			return RandomManager.GetRandom().Next(0, maxDropQuantity + 1);
+		}
+
+		private bool Roll() {
+			int roll = RandomManager.GetRandom().Next(0, 101);
+
+			return roll <= dropChance; 
 		}
 
 		public void Destroy() {

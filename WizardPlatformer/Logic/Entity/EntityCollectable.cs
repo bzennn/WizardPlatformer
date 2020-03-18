@@ -74,8 +74,20 @@ namespace WizardPlatformer {
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
+			UpdateTTL(gameTime);
 			UpdateMovement(gameTime);
 			UpdateMovementCounters(gameTime);
+
+			if (TTL == 0) {
+				Collapse();
+			}
+		}
+
+		private void UpdateTTL(GameTime gameTime) {
+			TTL -= gameTime.ElapsedGameTime.Milliseconds;
+			if (TTL < 0) {
+				TTL = 0;
+			}
 		}
 
 		private void UpdateMovement(GameTime gameTime) {

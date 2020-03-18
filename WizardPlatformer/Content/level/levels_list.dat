@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<levels_list>
+  <level id="0">
+    <room id="0"></room>
+    <room id="1"></room>
+    <room id="2"></room>
+    <room id="3"></room>
+    <room id="4"></room>
+  </level>
+</levels_list>
