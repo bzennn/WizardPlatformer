@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WizardPlatformer {
 	public class ScreenLoading : Screen {
-		//private Task task;
+		// private Task task;
 		private ScreenGameplay screenGameplay;
 		private Texture2D background;
 

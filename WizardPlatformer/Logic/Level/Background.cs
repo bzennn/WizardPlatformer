@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WizardPlatformer.Logic.Save;
 
 namespace WizardPlatformer.Logic.Level {
 	class Background {
@@ -206,6 +207,32 @@ namespace WizardPlatformer.Logic.Level {
 		private Vector2 GetBackgroundOffset(float baseVelocity, float velocityCoefficientX, float velocityCoefficientY, Vector2 playerPosition, bool hasTransition, float transitionOffset) {
 			return new Vector2(playerPosition.X * baseVelocity * velocityCoefficientX - (hasTransition ? 0 : transitionOffset),
 							playerPosition.Y * baseVelocity * velocityCoefficientY);
+		}
+
+		public SnapshotBackground GetSnapshot() {
+			return new SnapshotBackground(
+				currentPositionOffset.X,
+				currentPositionOffset.Y,
+				offsetL1,
+				offsetL2,
+				offsetL3,
+				offsetR1,
+				offsetR2,
+				offsetR3,
+				velocityCoefficientX,
+				velocityCoefficientY);
+		}
+
+		public void RestoreSnapshot(SnapshotBackground snapshot) {
+			this.currentPositionOffset = new Vector2(snapshot.CurrentPositionOffsetX, snapshot.CurrentPositionOffsetY);
+			this.offsetL1 = snapshot.OffsetL1;
+			this.offsetL2 = snapshot.OffsetL2;
+			this.offsetL3 = snapshot.OffsetL3;
+			this.offsetR1 = snapshot.OffsetR1;
+			this.offsetR2 = snapshot.OffsetR2;
+			this.offsetR3 = snapshot.OffsetR3;
+			this.velocityCoefficientX = snapshot.VelocityCoefficientX;
+			this.velocityCoefficientY = snapshot.VelocityCoefficientY;
 		}
 	}
 }

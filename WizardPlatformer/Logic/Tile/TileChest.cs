@@ -147,5 +147,8 @@ namespace WizardPlatformer {
 			return RandomManager.GetRandom().Next(0, maxDropQuantity + 1);
 		}
 
+		public bool IsClosed {
+			get { return isClosed; }
+		}
 	}
 }

@@ -114,9 +114,9 @@ namespace WizardPlatformer {
 			}
 		}
 
-		public int Damage {
+		/*public int Damage {
 			get { return this.damage; }
-		}
+		}*/
 
 		public int SourceID {
 			get { return sourceId; }

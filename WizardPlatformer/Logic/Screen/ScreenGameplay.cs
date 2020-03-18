@@ -18,6 +18,8 @@ namespace WizardPlatformer {
 		private Texture2D tileSet;
 		private Point tileSetSize = new Point(12, 20);
 
+		private int levelId;
+		private int roomId;
 		private Level currentLevel;
 		private bool isLevelLoaded;
 
@@ -36,7 +38,9 @@ namespace WizardPlatformer {
 			tileSet = screenContent.Load<Texture2D>("tile/tileset_export");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 
-			LoadLevel(0, 1);
+			levelId = 0;
+			roomId = 3;
+			LoadLevel(levelId, roomId);
 			//currentLevel.Player.RestoreSnapshot(snapshot);
 		}
 
@@ -45,6 +49,18 @@ namespace WizardPlatformer {
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenPause(this), false);
+			}
+
+			if (InputManager.GetInstance().IsKeyPressed(Keys.D0)) {
+			//	snapshotLevel = currentLevel.GetSnapshot();
+			}
+
+			if (InputManager.GetInstance().IsKeyPressed(Keys.P)) {
+				BINSaveSerializer.Serialize(GetSnapshot());
+			}
+
+			if (InputManager.GetInstance().IsKeyPressed(Keys.O)) {
+				RestoreSnapshot(BINSaveDeserializer.Deserialize());
 			}
 
 			// For debug
@@ -122,6 +138,24 @@ namespace WizardPlatformer {
 
 		public bool IsLevelLoaded {
 			get { return isLevelLoaded; }
+		}
+
+		public SnapshotGameplay GetSnapshot() {
+			return new SnapshotGameplay(
+				currentLevel.Player.GetSnapshot(),
+				currentLevel.GetSnapshot(),
+				levelId,
+				roomId);
+		}
+
+		public void RestoreSnapshot(SnapshotGameplay snapshot) {
+			if (snapshot != null) {
+				this.levelId = snapshot.LevelId;
+				this.roomId = snapshot.RoomId;
+				this.LoadLevel(this.levelId, this.roomId);
+				this.currentLevel.RestoreSnapshot(snapshot.SnapshotLevel);
+				this.currentLevel.Player.RestoreSnapshot(snapshot.SnapshotPlayer);
+			}
 		}
 	}
 }

@@ -5,8 +5,6 @@ using System;
 
 namespace WizardPlatformer {
 	public static class Geometry {
-        private static float correctionAngle = MathHelper.Pi / 2;
-
 		public static Vector2 GetCollisionDepth(Rectangle heatBoxA, Rectangle heatBoxB) {
 			Vector2 centerA = heatBoxA.Center.ToVector2();
 			Vector2 centerB = heatBoxB.Center.ToVector2();

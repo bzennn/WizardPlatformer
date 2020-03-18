@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using WizardPlatformer.Logic.Level.LevelLoading;
+using WizardPlatformer.Logic.Save;
 
 namespace WizardPlatformer.Logic.Level {
 	public class Level {
@@ -38,7 +39,6 @@ namespace WizardPlatformer.Logic.Level {
 		private bool isTriggerOn;
 		private float currentOpacity;
 
-		//private Point playerStartPosition;
 		private EntityPlayer player;
 		private List<Entity> entities;
 		private List<KeyValuePair<Tile, Entity>> entitiesSchedule;
@@ -341,7 +341,7 @@ namespace WizardPlatformer.Logic.Level {
 
 		#endregion
 
-		public void UpdateCameraPosition() {
+		private void UpdateCameraPosition() {
 			int roomWidthPixels = roomWidth * Display.TileSideSize;
 			int roomHeigthPixels = roomHeigth * Display.TileSideSize;
 			int halfScreenWidth = (int)Display.BaseResolution.X / 2;
@@ -410,6 +410,40 @@ namespace WizardPlatformer.Logic.Level {
 
 		public bool IsLevelLoaded {
 			get { return isLevelLoaded; }
+		}
+
+		public SnapshotLevel GetSnapshot() {
+			bool[,] baseLayeMask = new bool[baseLayer.GetLength(0), baseLayer.GetLength(1)];
+			for (int i = 0; i < baseLayer.GetLength(0); i++) {
+				for (int j = 0; j < baseLayer.GetLength(1); j++) {
+					Tile tile = baseLayer[i, j];
+					if (tile != null) {
+						baseLayeMask[i, j] = true;
+					}
+
+					if (tile != null && tile is TileChest) {
+						if (!((TileChest)tile).IsClosed) {
+							baseLayeMask[i, j] = false;
+						}
+					}
+				}
+			}
+
+			return new SnapshotLevel(
+				baseLayeMask,
+				background.GetSnapshot());
+		}
+
+		public void RestoreSnapshot(SnapshotLevel snapshot) {
+			for (int i = 0; i < snapshot.BaseLayerMask.GetLength(0); i++) {
+				for (int j = 0; j < snapshot.BaseLayerMask.GetLength(1); j++) {
+					if (!snapshot.BaseLayerMask[i, j]) {
+						baseLayer[i, j] = null;
+					}
+				}
+			}
+
+			background.RestoreSnapshot(snapshot.SnapshotBackground);
 		}
 	}
 }

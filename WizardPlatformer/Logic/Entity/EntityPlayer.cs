@@ -328,7 +328,8 @@ namespace WizardPlatformer {
 
 		public SnapshotPlayer GetSnapshot() {
 			return new SnapshotPlayer(
-				this.EntityPosition,
+				this.EntityPosition.X,
+				this.EntityPosition.Y,
 				this.health,
 				this.maxHealth,
 				this.damage,
@@ -344,7 +345,7 @@ namespace WizardPlatformer {
 		}
 
 		public void RestoreSnapshot(SnapshotPlayer snapshot) {
-			this.EntityPosition = snapshot.PlayerPosition;
+			this.EntityPosition = new Vector2(snapshot.PlayerPositionX, snapshot.PlayerPositionY);
 			this.health = snapshot.Health;
 			this.maxHealth = snapshot.MaxHealth;
 			this.damage = snapshot.Damage;
