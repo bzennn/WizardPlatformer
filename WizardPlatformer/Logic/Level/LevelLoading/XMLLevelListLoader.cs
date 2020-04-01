@@ -10,7 +10,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class XMLLevelListLoader {
 		private static Exception levelsListFormatException = new Exception("Unacceptable ids map format!");
 
-		public static List<int[]> LoadLevelsList() {
+		public static List<RoomIdentifier> LoadLevelsList() {
 			return PrepareLoadedLevelsList(XMLLoadLevelsList());
 		}
 
@@ -61,8 +61,8 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			return levelsList;
 		}
 
-		private static List<int[]> PrepareLoadedLevelsList(List<string[]> unpreparedLevelsList) {
-			List<int[]> levelsList = new List<int[]>();
+		private static List<RoomIdentifier> PrepareLoadedLevelsList(List<string[]> unpreparedLevelsList) {
+			List<RoomIdentifier> levelsList = new List<RoomIdentifier>();
 
 			int levelId = 0;
 			int roomId = 0;
@@ -76,7 +76,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					throw levelsListFormatException;
 				}
 
-				levelsList.Add(new int[] { levelId, roomId });
+				levelsList.Add(new RoomIdentifier(levelId, roomId));
 			}
 
 			return levelsList;

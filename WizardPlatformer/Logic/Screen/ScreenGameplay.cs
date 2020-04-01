@@ -19,7 +19,7 @@ namespace WizardPlatformer {
 		private Texture2D tileSet;
 		private Point tileSetSize = new Point(12, 20);
 
-		private List<int[]> levelsList;
+		private List<RoomIdentifier> levelsList;
 		private int levelId;
 		private int roomId;
 		private Level currentLevel;
@@ -39,11 +39,10 @@ namespace WizardPlatformer {
 			tileSet = screenContent.Load<Texture2D>("tile/tileset_export");
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 			levelsList = XMLLevelListLoader.LoadLevelsList();
-			
 
 			levelId = 0;
 			roomId = 0;
-			LoadLevel(levelId, roomId);
+			LoadLevel(levelId, roomId, false);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -54,11 +53,11 @@ namespace WizardPlatformer {
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.P)) {
-				BINSaveSerializer.Serialize(GetSnapshot());
+				SaveGame();
 			}
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.O)) {
-				RestoreSnapshot(BINSaveDeserializer.Deserialize());
+				RestoreGame();
 			}
 
 			UpdateLevelSwitchQuery();
@@ -82,20 +81,36 @@ namespace WizardPlatformer {
 			}
 		}
 
-		private void LoadLevel(int levelId, int roomId) {
+		private void LoadLevel(int levelId, int roomId, bool savePreviousLevelSnapshot) {
+			if (!levelsList.Contains(new RoomIdentifier(levelId, roomId))) {
+				throw new System.ArgumentException("Level " + levelId + "-" + roomId + " does not exist!");
+			}
+
 			int[] previousLevel = null;
+			SnapshotLevel previousLevelSnapshot = null;
+
 			if (currentLevel != null) {
 				int prevLevelId = currentLevel.LevelId;
 				int prevRoomId = currentLevel.RoomId;
+				int playerXPos = (int)currentLevel.Player.HeatBox.X;
+				int playerYPos = (int)currentLevel.Player.HeatBox.Y;
 
 				if ((prevLevelId == levelId && prevRoomId != roomId) ||
 					(prevLevelId != levelId && prevRoomId == roomId)) {
-					previousLevel = new int[] { prevLevelId, prevRoomId };
+					previousLevel = new int[] { prevLevelId, prevRoomId, playerXPos, playerYPos };
+					previousLevelSnapshot = currentLevel.GetSnapshot();
 				}
 				currentLevel.UnloadContent();
 			}
 
-			currentLevel = new Level(levelId, roomId, previousLevel);
+			this.levelId = levelId;
+			this.roomId = roomId;
+			if (savePreviousLevelSnapshot) {
+				currentLevel = new Level(levelId, roomId, previousLevel, previousLevelSnapshot);
+			} else {
+				currentLevel = new Level(levelId, roomId, null, null);
+			}
+			
 			levelLoader = new LevelLoader(tileSet, tileSetSize, currentLevel);
 			currentLevel.AddLevelLoader(levelLoader);
 			currentLevel.LoadContent(screenContent);
@@ -107,9 +122,29 @@ namespace WizardPlatformer {
 		private void UpdateLevelSwitchQuery() {
 			if (currentLevel != null) {
 				if (currentLevel.HasLevelSwitchQuery) {
-					SnapshotPlayer snapshotPlayer = currentLevel.Player.GetSnapshot();
-					LoadLevel(currentLevel.SwitchLevel[0], currentLevel.SwitchLevel[1]);
-					currentLevel.Player.RestoreSnapshot(snapshotPlayer, false);
+					if (currentLevel.SwitchLevel != null) {
+						int levelId = currentLevel.SwitchLevel[0];
+						int roomId = currentLevel.SwitchLevel[1];
+
+						if ((levelId > this.levelId || roomId > this.roomId) ||
+							((levelId < this.levelId || roomId < this.roomId) && currentLevel.SwitchLevelSnapshot != null)) {
+							SnapshotPlayer snapshotPlayer = currentLevel.Player.GetSnapshot();
+							SnapshotLevel snapshotLevel = currentLevel.SwitchLevelSnapshot;
+							bool restorePos = false;
+							if (currentLevel.SwitchLevel[2] != -1 && currentLevel.SwitchLevel[3] != -1) {
+								snapshotPlayer.PlayerPositionX = currentLevel.SwitchLevel[2];
+								snapshotPlayer.PlayerPositionY = currentLevel.SwitchLevel[3];
+								restorePos = true;
+							}
+
+							LoadLevel(levelId, roomId, true);
+							if (snapshotLevel != null) {
+								currentLevel.RestoreSnapshot(snapshotLevel);
+							}
+							currentLevel.Player.RestoreSnapshot(snapshotPlayer, restorePos);
+						}
+						
+					}
 				}
 			}
 		}
@@ -118,18 +153,26 @@ namespace WizardPlatformer {
 			return new SnapshotGameplay(
 				currentLevel.Player.GetSnapshot(),
 				currentLevel.GetSnapshot(),
-				levelId,
-				roomId);
+				currentLevel.LevelId,
+				currentLevel.RoomId);
 		}
 
 		public void RestoreSnapshot(SnapshotGameplay snapshot) {
 			if (snapshot != null) {
 				this.levelId = snapshot.LevelId;
 				this.roomId = snapshot.RoomId;
-				this.LoadLevel(this.levelId, this.roomId);
+				this.LoadLevel(this.levelId, this.roomId, false);
 				this.currentLevel.RestoreSnapshot(snapshot.SnapshotLevel);
 				this.currentLevel.Player.RestoreSnapshot(snapshot.SnapshotPlayer);
 			}
+		}
+
+		public void SaveGame() {
+			BINSaveSerializer.Serialize(GetSnapshot());
+		}
+
+		public void RestoreGame() {
+			RestoreSnapshot(BINSaveDeserializer.Deserialize());
 		}
 
 		public bool IsLevelLoaded {

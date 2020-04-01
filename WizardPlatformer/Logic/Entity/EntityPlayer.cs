@@ -30,8 +30,7 @@ namespace WizardPlatformer {
 		private int coolDownMax;
 		private int coolDown;
 
-		private int levelSwitchDelay;
-		private int levelSwitchCounter;
+		private int exitDeep;
 
 		public EntityPlayer(int health, int maxHealth, int mana, int maxMana, int stamina, int maxStamina, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
 			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
@@ -58,10 +57,9 @@ namespace WizardPlatformer {
 			this.coolDownMax = 100;
 			this.coolDown = 0;
 
-			this.drawDebugInfo = false;
+			this.exitDeep = 0;
 
-			this.levelSwitchDelay = 1000;
-			this.levelSwitchCounter = this.levelSwitchDelay;
+			this.drawDebugInfo = true;
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
@@ -104,7 +102,8 @@ namespace WizardPlatformer {
 
 			if (drawDebugInfo) {
 				spriteBatch.DrawString(debugFont, "Coins = " + coins +
-					"\nPosition = " + Position, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
+					"\nPosition = " + Position + 
+					"\nExit deep = " + exitDeep, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
 
 				float angle = Geometry.GetAngleBetweenVectors(this.EntityPosition, InputManager.GetInstance().GetMousePosition());
 				float angleCos = (float)Math.Cos(angle);
@@ -195,30 +194,19 @@ namespace WizardPlatformer {
 				level.HandleTrigger();
 			}
 
-			if (tile.Type == TileFunctional.FunctionType.ENTRANCE) {
-				if (levelSwitchCounter == 0) {
+			if (tile.Type == TileFunctional.FunctionType.ENTRANCE && exitDeep == 0) {
+				if (isCollidesEdge) {
 					this.level.HasLevelSwitchQuery = true;
-				} else {
-					UpdateLevelSwitchCounter(gameTime);
+					this.exitDeep++;
 				}
 			} else if (tile.Type == TileFunctional.FunctionType.EXIT) {
-				if (levelSwitchCounter == 0) {
+				if (isCollidesEdge) {
 					this.level.HasLevelSwitchQuery = true;
-					this.level.SwitchLevel = new int[] { tile.LevelId, tile.RoomId };
-				} else {
-					UpdateLevelSwitchCounter(gameTime);
+					this.level.SwitchLevel = new int[] { tile.LevelId, tile.RoomId, -1, -1 };
+					if (this.exitDeep > 0) {
+						this.exitDeep--;
+					}
 				}
-			} else {
-				if (levelSwitchCounter != levelSwitchDelay) {
-					levelSwitchCounter = levelSwitchDelay;
-				}
-			}
-		}
-
-		private void UpdateLevelSwitchCounter(GameTime gameTime) {
-			levelSwitchCounter -= gameTime.ElapsedGameTime.Milliseconds;
-			if (levelSwitchCounter < 0) {
-				levelSwitchCounter = 0;
 			}
 		}
 
@@ -347,7 +335,8 @@ namespace WizardPlatformer {
 				this.staminaRegenSpeed,
 				this.coins,
 				this.rangeAttackCost,
-				this.meleeAttackCost); 
+				this.meleeAttackCost,
+				this.exitDeep); 
 		}
 
 		public void RestoreSnapshot(SnapshotPlayer snapshot, bool restorePosition = true) {
@@ -366,10 +355,19 @@ namespace WizardPlatformer {
 			this.coins = snapshot.Coins;
 			this.rangeAttackCost = snapshot.RangeAttackCost;
 			this.meleeAttackCost = snapshot.MeleeAttackCost;
+			this.exitDeep = snapshot.ExitDeep;
+		}
+
+		public void RestorePosition(int xPos, int yPos) {
+			this.EntityPosition = new Vector2(xPos, yPos);
 		}
 
 		public static int PlayerID {
 			get { return playerID; }
+		}
+
+		public int ExitDeep {
+			get { return ExitDeep; }
 		}
 
 		public int MaxHealth {

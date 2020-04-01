@@ -19,6 +19,7 @@ namespace WizardPlatformer.Logic.Level {
 
 		private bool isLevelLoaded;
 		private int[] switchLevel;
+		private SnapshotLevel switchLevelSnapshot;
 		private bool hasLevelSwitchQuery;
 
 		private int levelId;
@@ -49,11 +50,12 @@ namespace WizardPlatformer.Logic.Level {
 
 		#endregion
 
-		public Level(int levelId, int roomId, int[] previousLevel) {
+		public Level(int levelId, int roomId, int[] previousLevel, SnapshotLevel previousLevelSnapshot) {
 			this.isLevelLoaded = false;
 			this.levelId = levelId;
 			this.roomId = roomId;
 			this.switchLevel = previousLevel;
+			this.switchLevelSnapshot = previousLevelSnapshot;
 			this.tileSideSize = Display.TileSideSize;
 			this.entities = new List<Entity>();
 			this.entitiesSchedule = new List<KeyValuePair<Tile, Entity>>();
@@ -442,6 +444,18 @@ namespace WizardPlatformer.Logic.Level {
 			}
 
 			set { switchLevel = value; }
+		}
+
+		public SnapshotLevel SwitchLevelSnapshot {
+			get {
+				if (!hasLevelSwitchQuery) {
+					return null;
+				} else {
+					return switchLevelSnapshot;
+				}
+			}
+
+			set { switchLevelSnapshot = value; }
 		}
 
 		public SnapshotLevel GetSnapshot() {

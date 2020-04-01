@@ -61,6 +61,7 @@
     <Compile Include="Logic\Core\RandomManager.cs" />
     <Compile Include="Logic\Entity\EntityCollectable.cs" />
     <Compile Include="Logic\Level\LevelLoading\EntityCreator.cs" />
+    <Compile Include="Logic\Level\LevelLoading\RoomIdentifier.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLEntityIdMapLoader.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLLevelListLoader.cs" />
     <Compile Include="Logic\Save\BINSaveDeserializer.cs" />

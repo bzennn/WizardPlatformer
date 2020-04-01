@@ -40,6 +40,7 @@ namespace WizardPlatformer {
 		protected bool isGravityOn;
 		protected bool isOnMovingPlatform;
 		protected bool isCollides;
+		protected bool isCollidesEdge;
 
 		protected Texture2D sprite;
 		protected Point spriteSize;
@@ -103,6 +104,7 @@ namespace WizardPlatformer {
 			this.isSpriteFlipping = true;
 			this.isSpriteFlipped = false;
 			this.hasAcceleration = true;
+			this.isCollidesEdge = false;
 
 			this.spriteFlip = SpriteEffects.None;
 			this.spritePosition = new Vector2(posX - heatBoxSpritePosX, posY - heatBoxSpritePosY);
@@ -501,20 +503,28 @@ namespace WizardPlatformer {
 			tileEntities.CopyTo(surroundingTiles, tiles.Length);
 
 			isCollides = false;
+			isCollidesEdge = false;
 
 			if (EntityPosition.X < 0) {
 				EntityPosition = new Vector2(0, EntityPosition.Y);
 				isCollides = true;
+				isCollidesEdge = true;
 			}
 
 			if (EntityPosition.X + heatBox.Width > level.RoomWidth * Display.TileSideSize) {
 				EntityPosition = new Vector2(level.RoomWidth * Display.TileSideSize - heatBox.Width, EntityPosition.Y);
 				isCollides = true;
+				isCollidesEdge = true;
 			}
 
 			if (EntityPosition.Y + heatBox.Height > level.RoomHeigth * Display.TileSideSize + heatBox.Height) {
 				EntityPosition = new Vector2(EntityPosition.X, level.RoomHeigth * Display.TileSideSize + heatBox.Height);
 				isCollides = true;
+				isCollidesEdge = true;
+			}
+
+			if (EntityPosition.Y < 0) {
+				isCollidesEdge = true;
 			}
 
 			for (int i = 0; i < surroundingTiles.Length; i++) {

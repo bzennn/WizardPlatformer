@@ -29,9 +29,11 @@ namespace WizardPlatformer.Logic.Save {
 		private int rangeAttackCost;
 		private int meleeAttackCost;
 
+		private int exitDeep;
+
 		//public SnapshotPlayer() { }
 
-		public SnapshotPlayer(float playerPositionX, float playerPositionY, int health, int maxHealth, int damage, int mana, int maxMana, int manaRegenSpeed, int stamina, int maxStamina, int staminaRegenSpeed, int coins, int rangeAttackCost, int meleeAttackCost) {
+		public SnapshotPlayer(float playerPositionX, float playerPositionY, int health, int maxHealth, int damage, int mana, int maxMana, int manaRegenSpeed, int stamina, int maxStamina, int staminaRegenSpeed, int coins, int rangeAttackCost, int meleeAttackCost, int exitDeep) {
 			this.playerPositionX = playerPositionX;
 			this.playerPositionY = playerPositionY;
 			this.health = health;
@@ -46,16 +48,17 @@ namespace WizardPlatformer.Logic.Save {
 			this.coins = coins;
 			this.rangeAttackCost = rangeAttackCost;
 			this.meleeAttackCost = meleeAttackCost;
+			this.exitDeep = exitDeep;
 		}
 
 		public float PlayerPositionX {
 			get { return playerPositionX; }
-			//set { this.playerPosition = value; }
+			set { this.playerPositionX = value; }
 		}
 
 		public float PlayerPositionY {
 			get { return playerPositionY; }
-			//set { this.playerPosition = value; }
+			set { this.playerPositionY = value; }
 		}
 
 		public int Health {
@@ -115,6 +118,11 @@ namespace WizardPlatformer.Logic.Save {
 
 		public int MeleeAttackCost {
 			get { return meleeAttackCost; }
+			//set { this.meleeAttackCost = value; }
+		}
+
+		public int ExitDeep {
+			get { return exitDeep; }
 			//set { this.meleeAttackCost = value; }
 		}
 	}
