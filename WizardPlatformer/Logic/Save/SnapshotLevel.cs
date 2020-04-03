@@ -9,10 +9,16 @@ namespace WizardPlatformer.Logic.Save {
 	public class SnapshotLevel {
 		private bool[,] baseLayerMask;
 		private SnapshotBackground snapshotBackground;
+		private bool isCheckpointActivated;
+		private int levelId;
+		private int roomId;
 
-		public SnapshotLevel(bool[,] baseLayerMask, SnapshotBackground snapshotBackground) {
+		public SnapshotLevel(bool[,] baseLayerMask, SnapshotBackground snapshotBackground, bool isCheckpointActivated, int levelId, int roomId) {
 			this.baseLayerMask = baseLayerMask;
 			this.snapshotBackground = snapshotBackground;
+			this.isCheckpointActivated = isCheckpointActivated;
+			this.levelId = levelId;
+			this.roomId = roomId;
 		}
 
 		public bool[,] BaseLayerMask {
@@ -21,6 +27,18 @@ namespace WizardPlatformer.Logic.Save {
 
 		public SnapshotBackground SnapshotBackground {
 			get { return snapshotBackground; }
+		}
+
+		public bool IsCheckpointActivated {
+			get { return isCheckpointActivated; }
+		}
+
+		public int LevelId {
+			get { return levelId; }
+		}
+
+		public int RoomId {
+			get { return roomId; }
 		}
 	}
 }

@@ -89,7 +89,7 @@
   <tile id="87" map_value="deco"/>
   <tile id="88" map_value="deco"/>
   <tile id="89" map_value="checkpoint"/>
-  <tile id="90" map_value="deco"/>
+  <tile id="90" map_value="checkpoint_fire"/>
   <tile id="91" map_value="air"/>
   <tile id="92" map_value="destroyable"/>
   <tile id="93" map_value="destroyable"/>

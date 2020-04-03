@@ -74,6 +74,7 @@
     <Compile Include="Logic\Save\XMLSaveDeserializer.cs" />
     <Compile Include="Logic\Save\XMLSaveSerializer.cs" />
     <Compile Include="Logic\Screen\ScreenLoading.cs" />
+    <Compile Include="Logic\Tile\TileCheckpointFire.cs" />
     <Compile Include="Logic\Tile\TileLiquid.cs" />
     <Compile Include="Logic\UI\Cursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />

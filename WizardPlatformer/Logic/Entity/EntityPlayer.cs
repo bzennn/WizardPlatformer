@@ -185,6 +185,27 @@ namespace WizardPlatformer {
 					chest.Open();
 				}
 			}
+
+			if (tile is TileCheckpoint) {
+				TileCheckpoint checkpoint = (TileCheckpoint)tile;
+				if (!checkpoint.IsActivated) {
+					checkpoint.Activate();
+				}
+			}
+
+			if (tile is TileCheckpointFire) {
+				TileCheckpointFire checkpoint_fire = (TileCheckpointFire)tile;
+				int x = checkpoint_fire.HeatBox.X;
+				int y = checkpoint_fire.HeatBox.Bottom + 1;
+
+				Tile tileCheckpoint = level.GetTile(x, y);
+				if (tileCheckpoint is TileCheckpoint) {
+					TileCheckpoint checkpoint = (TileCheckpoint) tileCheckpoint;
+					if (!checkpoint.IsActivated) {
+						checkpoint.Activate();
+					}
+				}
+			}
 		}
 
 		protected override void HandleFunctionalTile(TileFunctional tile, GameTime gameTime) {

@@ -88,6 +88,8 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					return new TileChest(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, drops, -1, 100, 100, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "checkpoint":
 					return new TileCheckpoint(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
+				case "checkpoint_fire":
+					return new TileCheckpointFire(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "entrance":
 					return new TileFunctional(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileFunctional.FunctionType.ENTRANCE, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "exit":

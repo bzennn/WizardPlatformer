@@ -21,6 +21,8 @@ namespace WizardPlatformer.Logic.Level {
 		private int[] switchLevel;
 		private SnapshotLevel switchLevelSnapshot;
 		private bool hasLevelSwitchQuery;
+		private bool hasGameSaveQuery;
+		private bool hasGameRestoreQuery;
 
 		private int levelId;
 		private int roomId;
@@ -45,8 +47,8 @@ namespace WizardPlatformer.Logic.Level {
 		private EntityPlayer player;
 		private List<Entity> entities;
 		private List<KeyValuePair<Tile, Entity>> entitiesSchedule;
-
 		private List<Tile> tileEntities;
+		private TileCheckpoint checkpoint;
 
 		#endregion
 
@@ -60,6 +62,7 @@ namespace WizardPlatformer.Logic.Level {
 			this.entities = new List<Entity>();
 			this.entitiesSchedule = new List<KeyValuePair<Tile, Entity>>();
 			this.tileEntities = new List<Tile>();
+			this.checkpoint = null;
 
 			this.isTriggerOn = false;
 			this.currentOpacity = 1.0f;
@@ -79,6 +82,8 @@ namespace WizardPlatformer.Logic.Level {
 
 			background = new Background(roomWidth, roomHeigth);
 			background.LoadContent(levelContentManager, mappedLevelParts.BackgoundId);
+
+			checkpoint = FindCheckpoint();
 
 			foreach (TileMovingPlatform platform in mappedLevelParts.MovingPlatforms) {
 				if (platform != null) {
@@ -228,6 +233,16 @@ namespace WizardPlatformer.Logic.Level {
 
 		public List<Tile> TileEntitiesList {
 			get { return tileEntities; }
+		}
+
+		private TileCheckpoint FindCheckpoint() {
+			foreach (Tile tile in baseLayer) {
+				if (tile is TileCheckpoint) {
+					return (TileCheckpoint)tile;
+				}
+			}
+
+			return null;
 		}
 
 		#endregion
@@ -458,6 +473,16 @@ namespace WizardPlatformer.Logic.Level {
 			set { switchLevelSnapshot = value; }
 		}
 
+		public bool HasGameSaveQuery {
+			get { return hasGameSaveQuery; }
+			set { hasGameSaveQuery = value; }
+		}
+
+		public bool HasGameRestoreQuery {
+			get { return hasGameRestoreQuery; }
+			set { hasGameRestoreQuery = value; }
+		}
+
 		public SnapshotLevel GetSnapshot() {
 			bool[,] baseLayeMask = new bool[baseLayer.GetLength(0), baseLayer.GetLength(1)];
 			for (int i = 0; i < baseLayer.GetLength(0); i++) {
@@ -475,21 +500,32 @@ namespace WizardPlatformer.Logic.Level {
 				}
 			}
 
+			bool isCheckpointActivated = checkpoint != null ? checkpoint.IsActivated : false;
+
 			return new SnapshotLevel(
 				baseLayeMask,
-				background.GetSnapshot());
+				background.GetSnapshot(),
+				isCheckpointActivated,
+				levelId,
+				roomId);
 		}
 
 		public void RestoreSnapshot(SnapshotLevel snapshot) {
-			for (int i = 0; i < snapshot.BaseLayerMask.GetLength(0); i++) {
-				for (int j = 0; j < snapshot.BaseLayerMask.GetLength(1); j++) {
-					if (!snapshot.BaseLayerMask[i, j]) {
-						baseLayer[i, j] = null;
+			if (snapshot.LevelId == levelId && snapshot.RoomId == roomId) {
+				for (int i = 0; i < snapshot.BaseLayerMask.GetLength(0); i++) {
+					for (int j = 0; j < snapshot.BaseLayerMask.GetLength(1); j++) {
+						if (!snapshot.BaseLayerMask[i, j]) {
+							baseLayer[i, j] = null;
+						}
 					}
 				}
-			}
 
-			background.RestoreSnapshot(snapshot.SnapshotBackground);
+				if (checkpoint != null) {
+					checkpoint.IsActivated = snapshot.IsCheckpointActivated;
+				}
+
+				background.RestoreSnapshot(snapshot.SnapshotBackground);
+			}
 		}
 	}
 }

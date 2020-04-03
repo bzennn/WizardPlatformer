@@ -61,6 +61,8 @@ namespace WizardPlatformer {
 			}
 
 			UpdateLevelSwitchQuery();
+			UpdateLevelSaveQuary();
+			UpdateLevelRestoreQuery();
 
 			if (currentLevel != null) {
 				currentLevel.Update(gameTime);
@@ -126,8 +128,8 @@ namespace WizardPlatformer {
 						int levelId = currentLevel.SwitchLevel[0];
 						int roomId = currentLevel.SwitchLevel[1];
 
-						if ((levelId > this.levelId || roomId > this.roomId) ||
-							((levelId < this.levelId || roomId < this.roomId) && currentLevel.SwitchLevelSnapshot != null)) {
+						//if ((levelId > this.levelId || roomId > this.roomId) ||
+						//	((levelId < this.levelId || roomId < this.roomId) && currentLevel.SwitchLevelSnapshot != null)) {
 							SnapshotPlayer snapshotPlayer = currentLevel.Player.GetSnapshot();
 							SnapshotLevel snapshotLevel = currentLevel.SwitchLevelSnapshot;
 							bool restorePos = false;
@@ -142,9 +144,26 @@ namespace WizardPlatformer {
 								currentLevel.RestoreSnapshot(snapshotLevel);
 							}
 							currentLevel.Player.RestoreSnapshot(snapshotPlayer, restorePos);
-						}
-						
+						//}
 					}
+				}
+			}
+		}
+
+		private void UpdateLevelSaveQuary() {
+			if (currentLevel != null) {
+				if (currentLevel.HasGameSaveQuery) {
+					currentLevel.HasGameSaveQuery = false;
+					SaveGame();
+				}
+			}
+		}
+
+		private void UpdateLevelRestoreQuery() {
+			if (currentLevel != null) {
+				if (currentLevel.HasGameRestoreQuery) {
+					currentLevel.HasGameRestoreQuery = false;
+					RestoreGame();
 				}
 			}
 		}

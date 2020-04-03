@@ -68,6 +68,7 @@ namespace WizardPlatformer.Logic.UI {
 
 		public void Update(GameTime gameTime) {
 			UpdateHudPosition();
+			UpdateDeadHeart();
 			UpdateHearts();
 			UpdateCoins();
 			UpdateManaBar();
@@ -97,8 +98,10 @@ namespace WizardPlatformer.Logic.UI {
 			if (health % 2 != 0) {
 				heartsPositions[health / 2] = new Vector2(hudPosition.X + (health / 2) * (heart.Width * scaleFactor + scaleFactor), hudPosition.Y);
 			}
+		}
 
-			heartDeadPosition = heartsPositions[0];
+		private void UpdateDeadHeart() {
+			heartDeadPosition = new Vector2(hudPosition.X, hudPosition.Y);
 		}
 
 		private void UpdateCoins() {

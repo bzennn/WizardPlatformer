@@ -25,7 +25,7 @@ namespace WizardPlatformer {
 		protected int frameUpdateMillis;
 		protected bool isAnimated;
 
-		private Texture2D sprite;
+		protected Texture2D sprite;
 		private Vector2 spritePosition;
 		private Vector2 spriteOffset;
 		private Rectangle spriteOnMap;
