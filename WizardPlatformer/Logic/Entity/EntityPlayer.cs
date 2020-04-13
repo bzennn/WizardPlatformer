@@ -30,6 +30,9 @@ namespace WizardPlatformer {
 		private int coolDownMax;
 		private int coolDown;
 
+		private int invulnerabilityTimer;
+		private int maxInvulnerabilityTime;
+
 		private int exitDeep;
 
 		public EntityPlayer(int health, int maxHealth, int mana, int maxMana, int stamina, int maxStamina, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
@@ -57,9 +60,12 @@ namespace WizardPlatformer {
 			this.coolDownMax = 100;
 			this.coolDown = 0;
 
+			this.maxInvulnerabilityTime = 500;
+			this.invulnerabilityTimer = 0;
+
 			this.exitDeep = 0;
 
-			this.drawDebugInfo = true;
+			this.drawDebugInfo = false;
 		}
 
 		public override void LoadContent(ContentManager contentManager) {
@@ -94,6 +100,7 @@ namespace WizardPlatformer {
 			if (this.IsAlive) {
 				RegenMana(gameTime);
 				RegenStamina(gameTime);
+				UpdateInvulnerabilityTimer(gameTime);
 			}
 		}
 
@@ -111,7 +118,8 @@ namespace WizardPlatformer {
 
 				spriteBatch.DrawString(debugFont, "Angle:\n angle = " + angle +
 					"\nCos = " + angleCos +
-					"\nSin = " + angleSin, Display.GetZeroScreenPositionOnLevel() + new Vector2(10, 750), Color.AntiqueWhite);
+					"\nSin = " + angleSin +
+					"\nCollide = " + isCollides, Display.GetZeroScreenPositionOnLevel() + new Vector2(10, 750), Color.AntiqueWhite);
 			}
 		}
 
@@ -160,6 +168,11 @@ namespace WizardPlatformer {
 					ConsumeStamina(meleeAttackCost);
 					coolDown = coolDownMax;
 				}
+			}
+
+			if (InputManager.GetInstance().IsKeyPressed(Keys.OemTilde)) {
+				Vector2 mousePos = InputManager.GetInstance().GetMousePosition();
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity("spider", (int)mousePos.X, (int)mousePos.Y));
 			}
 		}
 
@@ -236,6 +249,11 @@ namespace WizardPlatformer {
 				EntityCollectable collectable = (EntityCollectable)entity;
 				Collect(collectable.CollectableForm);
 				entity.Collapse();
+				return true;
+			}
+
+			if (entity is EntityEnemy) {
+				this.ConsumeHealth(entity.Damage);
 				return true;
 			}
 
@@ -381,6 +399,21 @@ namespace WizardPlatformer {
 
 		public void RestorePosition(int xPos, int yPos) {
 			this.EntityPosition = new Vector2(xPos, yPos);
+		}
+
+		private void UpdateInvulnerabilityTimer(GameTime gameTime) {
+			invulnerabilityTimer -= gameTime.ElapsedGameTime.Milliseconds;
+			
+			if (invulnerabilityTimer < 0) {
+				invulnerabilityTimer = 0;
+			}
+		}
+
+		public override void ConsumeHealth(int health) {
+			if (invulnerabilityTimer == 0) {
+				base.ConsumeHealth(health);
+				invulnerabilityTimer = maxInvulnerabilityTime;
+			}
 		}
 
 		public static int PlayerID {

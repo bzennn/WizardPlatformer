@@ -15,7 +15,11 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		}
 
 		public Entity CreateEntity(int entityID, int entityPosX, int entityPosY, int sourceEntityId = 0) {
-			switch (entityIdMap[entityID]) {
+			return CreateEntity(entityIdMap[entityID], entityPosX, entityPosY, sourceEntityId);
+		}
+
+		public Entity CreateEntity(string entityName, int entityPosX, int entityPosY, int sourceEntityId = 0) {
+			switch (entityName) {
 				default:
 					return null;
 				case "player":
@@ -40,6 +44,8 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					return new EntityCollectable(10000, TileCollectable.CollectableType.HEART, 7.0f, true, 7, 10, 8 * scaleFactor, 7 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "collectable_damage_upgrade":
 					return new EntityCollectable(10000, TileCollectable.CollectableType.DAMAGE_UPGRADE, 7.0f, true, 12, 12, 6 * scaleFactor, 6 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+				case "spider":
+					return new EntitySpider(10, 2, 5.0f, true, 12, 15, 6 * scaleFactor, 9 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 			}
 		}
 

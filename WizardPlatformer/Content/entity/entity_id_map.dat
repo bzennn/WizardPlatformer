@@ -11,7 +11,7 @@
   <tile id="9" map_value="collectable_stamina_upgrade"/>
   <tile id="10" map_value="collectable_health_upgrade"/>
   <tile id="11" map_value="collectable_damage_upgrade"/>
-  <tile id="12" map_value="null"/>
+  <tile id="12" map_value="spider"/>
   <tile id="13" map_value="null"/>
   <tile id="14" map_value="null"/>
   <tile id="15" map_value="null"/>

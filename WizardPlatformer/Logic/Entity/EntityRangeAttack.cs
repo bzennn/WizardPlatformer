@@ -33,7 +33,7 @@ namespace WizardPlatformer {
 			base.LoadContent(contentManager);
 
 			this.sprite = contentManager.Load<Texture2D>("entity/ice_arrow_sprite");
-			this.spriteSize = new Point(3, 5);
+			this.spriteSize = new Point(5, 3);
 			this.spriteRotationOrigin = new Vector2(12, 12);
 			this.UpdateSpritePosition();
 		}

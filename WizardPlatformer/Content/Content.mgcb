@@ -265,6 +265,18 @@
 /processorParam:TextureFormat=Color
 /build:entity/melee_attack_sprite.png
 
+#begin entity/spider_sprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:entity/spider_sprite.png
+
 #begin entity/stamina_sprite.png
 /importer:TextureImporter
 /processor:TextureProcessor

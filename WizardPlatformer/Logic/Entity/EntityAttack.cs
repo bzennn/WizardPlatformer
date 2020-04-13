@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WizardPlatformer.Logic.Level;
 
 namespace WizardPlatformer {
-	public class EntityAttack : Entity {
+	public abstract class EntityAttack : Entity {
 		private int sourceId;
 		
 		protected int TTL;

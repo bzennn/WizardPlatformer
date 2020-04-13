@@ -11,10 +11,10 @@ namespace WizardPlatformer {
 			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
 		}
 
-		public void ConsumeHealth(int health) {
+		public virtual void ConsumeHealth(int health) {
 			this.health -= health;
 
-			if (this.health < 0) {
+			if (this.health <= 0) {
 				this.health = 0;
 				this.Collapse();
 			}

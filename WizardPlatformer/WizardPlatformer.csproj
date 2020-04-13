@@ -60,6 +60,8 @@
     <Compile Include="Logic\Core\Animator.cs" />
     <Compile Include="Logic\Core\RandomManager.cs" />
     <Compile Include="Logic\Entity\EntityCollectable.cs" />
+    <Compile Include="Logic\Entity\EntityEnemy.cs" />
+    <Compile Include="Logic\Entity\EntitySpider.cs" />
     <Compile Include="Logic\Level\LevelLoading\EntityCreator.cs" />
     <Compile Include="Logic\Level\LevelLoading\RoomIdentifier.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLEntityIdMapLoader.cs" />
