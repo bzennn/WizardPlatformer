@@ -25,6 +25,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			string layerFunctional = "";
 			List<string> movingPlatforms = new List<string>();
 			List<string> entities = new List<string>();
+			List<string> chestsLoot = new List<string>();
 			List<string> exits = new List<string>();
 
 			if (!File.Exists(filePath)) {
@@ -156,7 +157,83 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 						}
 					}
 				} else if (xPart.Name.Equals("entities")) {
+					foreach (XmlNode xEntity in xPart) {
+						if (xEntity.Attributes.Count != 3) {
+							throw levelFormatException;
+						} else {
+							XmlNode attribute = xEntity.Attributes.GetNamedItem("entityId");
+							string entity = "";
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								entity += attribute.Value + ",";
+							}
 
+							attribute = xEntity.Attributes.GetNamedItem("x");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								entity += attribute.Value + ",";
+							}
+
+							attribute = xEntity.Attributes.GetNamedItem("y");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								entity += attribute.Value;
+							}
+
+							entities.Add(entity);
+						}
+					}
+				} else if (xPart.Name.Equals("chests_loot")) {
+					foreach (XmlNode xLoot in xPart) {
+						if (xLoot.Attributes.Count < 3) {
+							throw levelFormatException;
+						} else {
+							XmlNode attribute = xLoot.Attributes.GetNamedItem("x");
+							string loot = "";
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								loot += attribute.Value + ",";
+							}
+
+							attribute = xLoot.Attributes.GetNamedItem("y");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								loot += attribute.Value + ",";
+							}
+
+							attribute = xLoot.Attributes.GetNamedItem("quantity");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								loot += attribute.Value + ",";
+							}
+
+							int quantity = 0;
+							if (!int.TryParse(attribute.Value, out quantity)) {
+								throw levelFormatException;
+							}
+
+							for (int i = 0; i < quantity; i++) {
+								attribute = xLoot.Attributes.GetNamedItem("itm" + (i + 1));
+								if (attribute == null) {
+									throw levelFormatException;
+								} else {
+									loot += attribute.Value;
+
+									if (i != quantity - 1) {
+										loot += ",";
+									}
+								}
+							}
+
+							chestsLoot.Add(loot);
+						}
+					}
 				} else if (xPart.Name.Equals("exits")) {
 					foreach (XmlNode xExit in xPart) {
 						if (xExit.Attributes.Count != 4) {
@@ -197,7 +274,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				}
 			}
 
-			return new XMLLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosX, playerPosY, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities, exits);
+			return new XMLLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosX, playerPosY, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities, chestsLoot, exits);
 		}
 
 		private static UnmappedLevelParts PrepareRawLevel(XMLLevelParts levelParts) {
@@ -209,7 +286,9 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			int[] layerBack = null;
 			int[] layerDeco = null;
 			int[] layerFunctional = null;
+			List<int[]> entities = new List<int[]>(); 
 			List<int[]> movingPlatforms = new List<int[]>();
+			Dictionary<string, string[]> chestsLoot = new Dictionary<string, string[]>();
 			Dictionary<string, int[]> exits = new Dictionary<string, int[]>(); 
 
 			int tmpValue = 0;
@@ -330,12 +409,62 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 						exits.Add((exitData[2] * tileSideSize) + "-" + (exitData[3] * tileSideSize), new int[] { exitData[0], exitData[1] });
 					}
 				}
+
+				int[] entityData;
+				foreach (string entity in levelParts.Entities) {
+					entityData = Array.ConvertAll(entity.Split(','), int.Parse);
+
+					if (entityData.Length != 3) {
+						throw levelFormatException;
+					} else {
+						if (entityData[1] < 0 || entityData[1] > Level.RoomSize[roomSize][0]) {
+							throw levelFormatException;
+						}
+
+						if (entityData[2] < 0 || entityData[2] > Level.RoomSize[roomSize][1]) {
+							throw levelFormatException;
+						}
+
+						entities.Add(entityData);
+					}
+				}
+
+				string[] lootData;
+				foreach (string loot in levelParts.ChestsLoot) {
+					lootData = loot.Split(',');
+
+					int x = 0;
+					if (!int.TryParse(lootData[0], out x)) {
+						throw levelFormatException;
+					}
+
+					int y = 0;
+					if (!int.TryParse(lootData[1], out y)) {
+						throw levelFormatException;
+					}
+
+					int quantity = 0;
+					if (!int.TryParse(lootData[2], out quantity)) {
+						throw levelFormatException;
+					}
+
+					if (lootData.Length != 3 + quantity) {
+						throw levelFormatException;
+					}
+
+					string[] lootTypes = new string[quantity];
+					for (int i = 0; i < quantity; i++) {
+						lootTypes[i] = lootData[i + 3];
+					}
+
+					chestsLoot.Add(x + "-" + y, lootTypes);
+				}
 			} catch (Exception e) {
 				Exception levelE = new Exception("Level load error:\n" + e.Message);
 				ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
 			}
 
-			return new UnmappedLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosition, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, null, exits);
+			return new UnmappedLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosition, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities, chestsLoot, exits);
 		}
 	}
 }

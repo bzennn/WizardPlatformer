@@ -17,9 +17,10 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		private int[] layerFunctional;
 		private List<int[]> movingPlatforms;
 		private List<int[]> entities;
+		Dictionary<string, string[]> chestsLoot;
 		private Dictionary<string, int[]> exits;
 
-		public UnmappedLevelParts(string backgroundId, int roomSize, bool saveOnEntrance, int[] playerPosition, int[] layerBase, int[] layerBack, int[] layerDeco, int[] layerFunctional, List<int[]> movingPlatforms, List<int[]> entities, Dictionary<string, int[]> exits) {
+		public UnmappedLevelParts(string backgroundId, int roomSize, bool saveOnEntrance, int[] playerPosition, int[] layerBase, int[] layerBack, int[] layerDeco, int[] layerFunctional, List<int[]> movingPlatforms, List<int[]> entities, Dictionary<string, string[]> chestsLoot, Dictionary<string, int[]> exits) {
 			this.backgroundId = backgroundId;
 			this.roomSize = roomSize;
 			this.saveOnEntrance = saveOnEntrance;
@@ -30,6 +31,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			this.layerFunctional = layerFunctional;
 			this.movingPlatforms = movingPlatforms;
 			this.entities = entities;
+			this.chestsLoot = chestsLoot;
 			this.exits = exits;
 		}
 
@@ -67,8 +69,12 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			get { return movingPlatforms; }
 		}
 
-		public List<int[]> Exntities {
+		public List<int[]> Entities {
 			get { return entities; }
+		}
+
+		public Dictionary<string, string[]> ChestsLoot {
+			get { return chestsLoot; }
 		}
 
 		public Dictionary<string, int[]> Exits {

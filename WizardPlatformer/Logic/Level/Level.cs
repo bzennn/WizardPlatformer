@@ -85,6 +85,12 @@ namespace WizardPlatformer.Logic.Level {
 
 			checkpoint = FindCheckpoint();
 
+			foreach (Entity entity in mappedLevelParts.Entities) {
+				if (entity != null) {
+					SpawnEntity(entity);
+				}
+			}
+
 			foreach (TileMovingPlatform platform in mappedLevelParts.MovingPlatforms) {
 				if (platform != null) {
 					platform.SetLevel(this);

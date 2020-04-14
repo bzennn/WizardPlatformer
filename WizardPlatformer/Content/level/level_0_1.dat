@@ -82,6 +82,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,239,239,239,239,239,239,239,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</data>
 	</layer>
   </room>
+  <entities>
+    <entity entityId="12" x="11" y="11"></entity>
+    <entity entityId="12" x="23" y="11"></entity>
+    <entity entityId="12" x="32" y="13"></entity>
+    <entity entityId="12" x="36" y="13"></entity>
+    <entity entityId="12" x="42" y="13"></entity>
+  </entities>
+  <chests_loot>
+    <loot x="93" y="4" quantity="3" itm1="coin" itm2="coin" itm3="coin"></loot>
+  </chests_loot>
   <exits>
     <exit levelId="0" roomId="3" x="95" y="11"></exit>
     <exit levelId="0" roomId="3" x="95" y="10"></exit>

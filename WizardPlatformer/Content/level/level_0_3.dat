@@ -157,6 +157,23 @@
   <moving_platforms>
     <platform type="0" right="1" left="1" x="37" y="29"></platform>
   </moving_platforms>
+  <entities>
+    <entity entityId="12" x="21" y="6"></entity>
+    <entity entityId="12" x="61" y="27"></entity>
+  </entities>
+  <chests_loot>
+    <loot x="30" y="6" quantity="10" 
+          itm1="coin" 
+          itm2="coin" 
+          itm3="coin"
+          itm4="coin"
+          itm5="coin"
+          itm6="coin"
+          itm7="coin"
+          itm8="coin"
+          itm9="coin"
+          itm10="mana_upgrade"></loot>
+  </chests_loot>
   <exits>
     <exit levelId="0" roomId="2" x="63" y="28"></exit>
     <exit levelId="0" roomId="2" x="63" y="27"></exit>

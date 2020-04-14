@@ -52,7 +52,21 @@ namespace WizardPlatformer {
 		}
 
 		public override void Collapse() {
+			SpawnDrop();
 			base.Collapse();
+		}
+
+		private void SpawnDrop() {
+			int coinsCount = RandomManager.GetRandom().Next(10);
+			//int healthCount = RandomManager.GetRandom().Next(10) > 4 ? 1 : 0;
+
+			for (int i = 0; i < coinsCount; i++) {
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(4, (int)this.EntityPosition.X, (int)this.EntityPosition.Y));
+			}
+
+			/*for (int i = 0; i < healthCount; i++) {
+				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(7, (int)this.EntityPosition.X, (int)this.EntityPosition.Y));
+			}*/
 		}
 
 		private bool AITaskMove() {

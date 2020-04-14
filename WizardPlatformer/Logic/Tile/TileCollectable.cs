@@ -39,5 +39,30 @@ namespace WizardPlatformer {
 		public CollectableType CollectableForm {
 			get { return collectableForm; }
 		}
+
+		public static CollectableType CollectableTypeByString(string type) {
+			switch(type) {
+				default:
+					return TileCollectable.CollectableType.NONE;
+				case "none":
+					return TileCollectable.CollectableType.NONE;
+				case "coin":
+					return TileCollectable.CollectableType.COIN;
+				case "mana_crystal":
+					return TileCollectable.CollectableType.MANA_CRYSTAL;
+				case "stamina_crystal":
+					return TileCollectable.CollectableType.STAMINA_CRYSTAL;
+				case "health_crystal":
+					return TileCollectable.CollectableType.HEALTH_CRYSTAL;
+				case "stamina_upgrade":
+					return TileCollectable.CollectableType.STAMINA_UPGRADE;
+				case "mana_upgrade":
+					return TileCollectable.CollectableType.MANA_UPGRADE;
+				case "damage_upgrade":
+					return TileCollectable.CollectableType.DAMAGE_UPGRADE;
+				case "heart":
+					return TileCollectable.CollectableType.HEART;
+			}
+		}
 	}
 }

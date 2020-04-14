@@ -94,6 +94,17 @@
   </moving_platforms>
   <entities>
   </entities>
+  <chests_loot>
+    <loot x="27" y="1" quantity="8"
+          itm1="coin"
+          itm2="health_crystal"
+          itm3="coin"
+          itm4="coin"
+          itm5="coin"
+          itm6="coin"
+          itm7="coin"
+          itm8="coin"></loot>
+  </chests_loot>
   <exits>
     <exit levelId="0" roomId="1" x="31" y="11"></exit>
     <exit levelId="0" roomId="1" x="31" y="10"></exit>

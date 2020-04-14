@@ -6,6 +6,7 @@ using WizardPlatformer.Logic.Level;
 namespace WizardPlatformer.Logic.Level.LevelLoading {
 	public class TileCreator {
 		private int calcTileSideSize;
+		private int scaleFactor;
 		private Dictionary<int, string> tileIdMap;
 		private Texture2D tileSet;
 		private Point tileSetSize;
@@ -13,10 +14,12 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		private Point tilePosOnTexture;
 
 		private Level level;
+		private Dictionary<string, string[]> chestsLoot;
 		private Dictionary<string, int[]> exits;
 
 		public TileCreator(Dictionary<int, string> tileIdMap, Texture2D tileSet, Point tileSetSize, Level level) {
 			this.calcTileSideSize = Display.CalcTileSideSize;
+			this.scaleFactor = (int)Display.DrawScale.X;
 			this.tileIdMap = tileIdMap;
 			this.tileSet = tileSet;
 			this.tileSetSize = tileSetSize;
@@ -84,7 +87,19 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				case "rail_down_left":
 					return new TileMovingPlatformRail(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileMovingPlatformRail.Direction.DOWN_LEFT, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "chest":
-					drops = new TileCollectable.CollectableType[] { TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.COIN, TileCollectable.CollectableType.MANA_CRYSTAL }; ;
+					drops = new TileCollectable.CollectableType[0];
+					if (chestsLoot != null && chestsLoot.Count != 0) {
+						string key = tilePosX / calcTileSideSize / scaleFactor + "-" + tilePosY / calcTileSideSize / scaleFactor;
+						if (chestsLoot.ContainsKey(key)) {
+							string[] lootTypes = chestsLoot[key];
+							if (lootTypes != null) {
+								drops = new TileCollectable.CollectableType[lootTypes.Length];
+								for (int i = 0; i < lootTypes.Length; i++) {
+									drops[i] = TileCollectable.CollectableTypeByString(lootTypes[i]);
+								}
+							}
+						}
+					} 
 					return new TileChest(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, drops, -1, 100, 100, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "checkpoint":
 					return new TileCheckpoint(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
@@ -118,6 +133,10 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public void AddExitsDictionary(Dictionary<string, int[]> exits) {
 			this.exits = exits;
+		}
+
+		public void AddChestsLootTable(Dictionary<string, string[]> chestsLoot) {
+			this.chestsLoot = chestsLoot;
 		}
 	}
 }

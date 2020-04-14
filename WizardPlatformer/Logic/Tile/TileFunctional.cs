@@ -12,7 +12,8 @@ namespace WizardPlatformer {
 			EXIT,
 			ENTRANCE,
 			DEADLY,
-			TRIGGER
+			TRIGGER,
+			LEVEL_COMPLETE
 		}
 
 		private FunctionType type;

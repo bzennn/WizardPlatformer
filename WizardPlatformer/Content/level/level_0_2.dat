@@ -397,6 +397,28 @@
   <moving_platforms>
     <platform type="0" right="1" left="1" x="17" y="17"></platform>
   </moving_platforms>
+  <entities>
+    <entity entityId="12" x="11" y="32"></entity>
+    <entity entityId="12" x="20" y="32"></entity>
+  </entities>
+  <chests_loot>
+    <loot x="27" y="28" quantity="15"
+          itm1="coin"
+          itm2="mana_crystal"
+          itm3="coin"
+          itm4="coin"
+          itm5="stamina_upgrade"
+          itm6="coin"
+          itm7="mana_crystal"
+          itm8="coin"
+          itm9="coin"
+          itm10="coin"
+          itm11="coin"
+          itm12="coin"
+          itm13="mana_crystal"
+          itm14="coin"
+          itm15="coin"></loot>
+  </chests_loot>
   <exits>
     <exit levelId="0" roomId="4" x="31" y="7"></exit>
     <exit levelId="0" roomId="4" x="31" y="6"></exit>

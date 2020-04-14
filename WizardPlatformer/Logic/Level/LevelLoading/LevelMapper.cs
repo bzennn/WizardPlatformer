@@ -23,12 +23,14 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			int roomSizeHeigth = Level.RoomSize[unmappedLevelParts.RoomSize][1];
 
 			tileCreator.AddExitsDictionary(unmappedLevelParts.Exits);
+			tileCreator.AddChestsLootTable(unmappedLevelParts.ChestsLoot);
 
 			Vector2 playerPosition = new Vector2(unmappedLevelParts.PlayerPosition[0], unmappedLevelParts.PlayerPosition[1]);
 			Tile[,] backLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] baseLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] decoLayer = new Tile[roomSizeWidth, roomSizeHeigth];
 			Tile[,] functionalLayer = new Tile[roomSizeWidth, roomSizeHeigth];
+			List<Entity> entities = new List<Entity>();
 			List<TileMovingPlatform> movingPlatforms = new List<TileMovingPlatform>();
 
 			int currentTileId = 0;
@@ -57,6 +59,12 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				if (currentTileId != 0) {
 					functionalLayer[k, j] = tileCreator.CreateTile(currentTileId, k * tileSideSize, j * tileSideSize);
 				}
+			}
+
+			foreach (int[] entityData in unmappedLevelParts.Entities) {
+				Entity entity = entityCreator.CreateEntity(entityData[0], entityData[1] * tileSideSize + tileSideSize / 2, entityData[2] * tileSideSize + tileSideSize / 2);
+
+				entities.Add(entity);
 			}
 
 			foreach (int[] platformData in unmappedLevelParts.MovingPlatforms) {
@@ -91,7 +99,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				movingPlatforms.Add(platform);
 			}
 
-			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, unmappedLevelParts.SaveOnEntrance, playerPosition, baseLayer, backLayer, decoLayer, functionalLayer, movingPlatforms);
+			return new MappedLevelParts(unmappedLevelParts.BackgroundId, unmappedLevelParts.RoomSize, unmappedLevelParts.SaveOnEntrance, playerPosition, baseLayer, backLayer, decoLayer, functionalLayer, entities, movingPlatforms);
 		}
 
 		public TileCreator TileCreator {
