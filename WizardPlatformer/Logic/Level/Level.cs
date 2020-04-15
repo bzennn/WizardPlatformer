@@ -23,6 +23,7 @@ namespace WizardPlatformer.Logic.Level {
 		private bool hasLevelSwitchQuery;
 		private bool hasGameSaveQuery;
 		private bool hasGameRestoreQuery;
+		private bool hasLevelCompleteQuery;
 
 		private int levelId;
 		private int roomId;
@@ -324,6 +325,15 @@ namespace WizardPlatformer.Logic.Level {
 			}
 		}
 
+		public void DespawnAllEntitiesExceptPlayer() {
+			for (int i = 0; i < entities.Count; i++) {
+				Entity entity = entities[i];
+				if (!(entity is EntityPlayer)) {
+					entity.Collapse();
+				}
+			}
+		}
+
 		public void LoadEntitiesContent(ContentManager contentManager) {
 			Entity entity;
 			for (int i = 0; i < entities.Count; i++) {
@@ -455,9 +465,14 @@ namespace WizardPlatformer.Logic.Level {
 			set { hasLevelSwitchQuery = value; }
 		}
 
+		public bool HasLevelCompleteQuery {
+			get { return hasLevelCompleteQuery; }
+			set { hasLevelCompleteQuery = value; }
+		}
+
 		public int[] SwitchLevel {
 			get { 
-				if (!hasLevelSwitchQuery) {
+				if (!hasLevelSwitchQuery && !hasLevelCompleteQuery) {
 					return null;
 				} else {
 					return switchLevel;

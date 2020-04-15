@@ -24,7 +24,7 @@ namespace WizardPlatformer {
 			base.Update(gameTime);
 
 			if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
-				ScreenManager.GetInstance().ChangeScreen(new ScreenGameplay(), true);
+				ScreenManager.GetInstance().ChangeScreen(new ScreenGameplay(0, 0, false, null), true);
 			}
 		}
 

@@ -75,10 +75,13 @@
     <Compile Include="Logic\Save\SnapshotPlayer.cs" />
     <Compile Include="Logic\Save\XMLSaveDeserializer.cs" />
     <Compile Include="Logic\Save\XMLSaveSerializer.cs" />
+    <Compile Include="Logic\Screen\ScreenGameEnd.cs" />
+    <Compile Include="Logic\Screen\ScreenGameOver.cs" />
+    <Compile Include="Logic\Screen\ScreenLevelComplete.cs" />
     <Compile Include="Logic\Screen\ScreenLoading.cs" />
     <Compile Include="Logic\Tile\TileCheckpointFire.cs" />
     <Compile Include="Logic\Tile\TileLiquid.cs" />
-    <Compile Include="Logic\UI\Cursor.cs" />
+    <Compile Include="Logic\UI\UICursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />
     <Compile Include="Logic\Core\InputManager.cs" />
     <Compile Include="Logic\Core\Display.cs" />
@@ -116,6 +119,7 @@
     <Compile Include="Logic\Screen\ScreenManager.cs" />
     <Compile Include="Logic\Screen\ScreenPause.cs" />
     <Compile Include="Logic\UI\HUD.cs" />
+    <Compile Include="Logic\UI\UIButton.cs" />
     <Compile Include="WizardPlatformer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

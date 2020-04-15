@@ -8,13 +8,13 @@ namespace WizardPlatformer {
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
-		Cursor cursor;
+		UICursor cursor;
 
 		public WizardPlatformer() {
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 
-			cursor = new Cursor(Color.Multiply(Color.AliceBlue, 10));
+			cursor = new UICursor(Color.Multiply(Color.AliceBlue, 10));
 		}
 
 		protected override void Initialize() {

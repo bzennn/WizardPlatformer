@@ -234,7 +234,7 @@
   <tile id="232" map_value="air"/>
   <tile id="233" map_value="air"/>
   <tile id="234" map_value="air"/>
-  <tile id="235" map_value="air"/>
+  <tile id="235" map_value="level_complete"/>
   <tile id="236" map_value="entrance"/>
   <tile id="237" map_value="trigger"/>
   <tile id="238" map_value="exit"/>

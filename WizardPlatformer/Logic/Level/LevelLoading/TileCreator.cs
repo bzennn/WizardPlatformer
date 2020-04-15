@@ -16,6 +16,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 		private Level level;
 		private Dictionary<string, string[]> chestsLoot;
 		private Dictionary<string, int[]> exits;
+		private Dictionary<string, int[]> levelCompleteDict;
 
 		public TileCreator(Dictionary<int, string> tileIdMap, Texture2D tileSet, Point tileSetSize, Level level) {
 			this.calcTileSideSize = Display.CalcTileSideSize;
@@ -115,6 +116,14 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 						exit.RoomId = exitLevel[1];
 					}
 					return exit;
+				case "level_complete":
+					TileFunctional levelComplete = new TileFunctional(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileFunctional.FunctionType.LEVEL_COMPLETE, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+					if (levelCompleteDict.ContainsKey(tilePosX + "-" + tilePosY)) {
+						int[] exitLevel = levelCompleteDict[tilePosX + "-" + tilePosY];
+						levelComplete.LevelId = exitLevel[0];
+						levelComplete.RoomId = exitLevel[1];
+					}
+					return levelComplete;
 				case "trigger":
 					return new TileFunctional(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileFunctional.FunctionType.TRIGGER, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "death":
@@ -135,8 +144,12 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			this.exits = exits;
 		}
 
-		public void AddChestsLootTable(Dictionary<string, string[]> chestsLoot) {
+		public void AddChestsLootDictionary(Dictionary<string, string[]> chestsLoot) {
 			this.chestsLoot = chestsLoot;
+		}
+
+		public void AddLevelCompleteTileDictionary(Dictionary<string, int[]> levelComplete) {
+			this.levelCompleteDict = levelComplete;
 		}
 	}
 }

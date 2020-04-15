@@ -377,6 +377,18 @@
 /processorParam:TextureFormat=Color
 /build:gui/pause_background.png
 
+#begin gui/ui_button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:gui/ui_button.png
+
 #begin tile/tileset_export.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -22,12 +22,24 @@ namespace WizardPlatformer {
 		private List<RoomIdentifier> levelsList;
 		private int levelId;
 		private int roomId;
+		private bool saveOnStart;
+		private SnapshotPlayer snapshotPlayer;
 		private Level currentLevel;
 		private bool isLevelLoaded;
+
+		private bool isLevelComplete;
 
 		private HUD hud;
 
 		#endregion
+
+		public ScreenGameplay(int levelId, int roomId, bool saveOnStart, SnapshotPlayer snapshotPlayer = null) {
+			this.levelId = levelId;
+			this.roomId = roomId;
+			this.saveOnStart = saveOnStart;
+			this.snapshotPlayer = snapshotPlayer;
+			this.isLevelComplete = false;
+		}
 
 		public override void Initialize() {
 			base.Initialize();
@@ -40,29 +52,26 @@ namespace WizardPlatformer {
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 			levelsList = XMLLevelListLoader.LoadLevelsList();
 
-			levelId = 0;
-			roomId = 0;
-			LoadLevel(levelId, roomId, false);
+			LoadLevel(levelId, roomId, false, null, snapshotPlayer, false);
+
+			if (saveOnStart) {
+				SaveGame();
+			}
 		}
 
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
+			if (InputManager.GetInstance().IsKeyPressed(Keys.Enter) && !isLevelComplete) {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenPause(this), false);
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.P)) {
-				SaveGame();
-			}
-
-			if (InputManager.GetInstance().IsKeyPressed(Keys.O)) {
-				RestoreGame();
 			}
 
 			UpdateLevelSwitchQuery();
 			UpdateLevelSaveQuary();
 			UpdateLevelRestoreQuery();
+			if (!isLevelComplete) {
+				UpdateLevelCompleteQuery();
+			}
 
 			if (currentLevel != null) {
 				currentLevel.Update(gameTime);
@@ -71,6 +80,15 @@ namespace WizardPlatformer {
 				if (currentLevel.IsLevelLoaded) {
 					isLevelLoaded = true;
 				}
+			}
+
+			// Debug
+			if (InputManager.GetInstance().IsKeyPressed(Keys.P)) {
+				SaveGame();
+			}
+
+			if (InputManager.GetInstance().IsKeyPressed(Keys.O)) {
+				RestoreGame();
 			}
 		}
 
@@ -83,7 +101,7 @@ namespace WizardPlatformer {
 			}
 		}
 
-		private void LoadLevel(int levelId, int roomId, bool savePreviousLevelSnapshot) {
+		private void LoadLevel(int levelId, int roomId, bool savePreviousLevelSnapshot, SnapshotLevel snapshotLevel, SnapshotPlayer snapshotPlayer, bool restorePlayerPos) {
 			if (!levelsList.Contains(new RoomIdentifier(levelId, roomId))) {
 				throw new System.ArgumentException("Level " + levelId + "-" + roomId + " does not exist!");
 			}
@@ -117,6 +135,15 @@ namespace WizardPlatformer {
 			currentLevel.AddLevelLoader(levelLoader);
 			currentLevel.LoadContent(screenContent);
 
+			if (snapshotLevel != null) {
+				currentLevel.RestoreSnapshot(snapshotLevel);
+			}
+			
+			if (snapshotPlayer != null) {
+				currentLevel.Player.RestoreSnapshot(snapshotPlayer, restorePlayerPos);
+			}
+			
+
 			hud = new HUD(currentLevel.Player);
 			hud.LoadContent(screenContent);
 		}
@@ -139,11 +166,11 @@ namespace WizardPlatformer {
 								restorePos = true;
 							}
 
-							LoadLevel(levelId, roomId, true);
-							if (snapshotLevel != null) {
-								currentLevel.RestoreSnapshot(snapshotLevel);
-							}
-							currentLevel.Player.RestoreSnapshot(snapshotPlayer, restorePos);
+							LoadLevel(levelId, roomId, true, snapshotLevel, snapshotPlayer, restorePos);
+							//if (snapshotLevel != null) {
+							//	currentLevel.RestoreSnapshot(snapshotLevel);
+							//}
+							//currentLevel.Player.RestoreSnapshot(snapshotPlayer, restorePos);
 						//}
 					}
 				}
@@ -168,6 +195,25 @@ namespace WizardPlatformer {
 			}
 		}
 
+		private void UpdateLevelCompleteQuery() {
+			if (currentLevel != null) {
+				if (currentLevel.HasLevelCompleteQuery) {
+					if (currentLevel.SwitchLevel != null) {
+						int levelId = currentLevel.SwitchLevel[0];
+						int roomId = currentLevel.SwitchLevel[1];
+
+						isLevelComplete = true;
+
+						currentLevel.DespawnAllEntitiesExceptPlayer();
+						currentLevel.HasLevelCompleteQuery = false;
+						SaveGame();
+
+						ScreenManager.GetInstance().ChangeScreen(new ScreenLevelComplete(this, levelId, roomId), false);
+					}
+				}
+			}
+		}
+
 		public SnapshotGameplay GetSnapshot() {
 			return new SnapshotGameplay(
 				currentLevel.Player.GetSnapshot(),
@@ -180,9 +226,9 @@ namespace WizardPlatformer {
 			if (snapshot != null) {
 				this.levelId = snapshot.LevelId;
 				this.roomId = snapshot.RoomId;
-				this.LoadLevel(this.levelId, this.roomId, false);
-				this.currentLevel.RestoreSnapshot(snapshot.SnapshotLevel);
-				this.currentLevel.Player.RestoreSnapshot(snapshot.SnapshotPlayer);
+				this.LoadLevel(this.levelId, this.roomId, false, snapshot.SnapshotLevel, snapshot.SnapshotPlayer, true);
+				//this.currentLevel.RestoreSnapshot(snapshot.SnapshotLevel);
+				//this.currentLevel.Player.RestoreSnapshot(snapshot.SnapshotPlayer);
 			}
 		}
 
@@ -196,6 +242,10 @@ namespace WizardPlatformer {
 
 		public bool IsLevelLoaded {
 			get { return isLevelLoaded; }
+		}
+
+		public Level Level {
+			get { return currentLevel; }
 		}
 	}
 }

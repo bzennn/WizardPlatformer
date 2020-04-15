@@ -3,31 +3,22 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace WizardPlatformer.Logic.UI {
-	public class Cursor {
+	public class UIButton {
 		private Texture2D sprite;
 		private Vector2 cursorPosition;
 		private Color color;
 
 		private int tileSideSize;
 
-		private bool drawDebugInfo;
-		private Texture2D debugSprite;
-		private SpriteFont debugFont;
-
-		public Cursor(Color color) {
+		public UIButton(Color color) {
 			this.tileSideSize = Display.TileSideSize;
 			this.color = color;
 
-			this.drawDebugInfo = false;
 		}
 
 		public void LoadContent(ContentManager contentManager) {
 			sprite = contentManager.Load<Texture2D>("gui/cursor");
 
-			if (drawDebugInfo) {
-				debugSprite = contentManager.Load<Texture2D>("entity/debug_sprite");
-				debugFont = contentManager.Load<SpriteFont>("font/russo_one_12");
-			}
 		}
 
 		public void Update(GameTime gameTime) {
@@ -35,9 +26,6 @@ namespace WizardPlatformer.Logic.UI {
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
-			if (drawDebugInfo) {
-				DrawDebugInfo(spriteBatch, gameTime);
-			}
 			spriteBatch.Draw(
 				sprite,
 				cursorPosition,
@@ -51,11 +39,5 @@ namespace WizardPlatformer.Logic.UI {
 				);
 		}
 
-		protected virtual void DrawDebugInfo(SpriteBatch spriteBatch, GameTime gameTime) {
-			if (drawDebugInfo) {
-				spriteBatch.DrawString(debugFont,
-					"Cursor:\nPos = " + cursorPosition, cursorPosition - new Vector2(0, 50), Color.AntiqueWhite);
-			}
-		}
 	}
 }

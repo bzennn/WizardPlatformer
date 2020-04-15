@@ -27,6 +27,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			List<string> entities = new List<string>();
 			List<string> chestsLoot = new List<string>();
 			List<string> exits = new List<string>();
+			List<string> levelComplete = new List<string>();
 
 			if (!File.Exists(filePath)) {
 				throw new FileNotFoundException("Level not found! \nFile: \"" + filePath + "\" not exist!");
@@ -271,10 +272,47 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 							exits.Add(exit);
 						}
 					}
+				} else if (xPart.Name.Equals("level_complete")) {
+					foreach (XmlNode xExit in xPart) {
+						if (xExit.Attributes.Count != 4) {
+							throw levelFormatException;
+						} else {
+							XmlNode attribute = xExit.Attributes.GetNamedItem("levelId");
+							string exit = "";
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								exit += attribute.Value + ",";
+							}
+
+							attribute = xExit.Attributes.GetNamedItem("roomId");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								exit += attribute.Value + ",";
+							}
+
+							attribute = xExit.Attributes.GetNamedItem("x");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								exit += attribute.Value + ",";
+							}
+
+							attribute = xExit.Attributes.GetNamedItem("y");
+							if (attribute == null) {
+								throw levelFormatException;
+							} else {
+								exit += attribute.Value;
+							}
+
+							levelComplete.Add(exit);
+						}
+					}
 				}
 			}
 
-			return new XMLLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosX, playerPosY, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities, chestsLoot, exits);
+			return new XMLLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosX, playerPosY, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities, chestsLoot, exits, levelComplete);
 		}
 
 		private static UnmappedLevelParts PrepareRawLevel(XMLLevelParts levelParts) {
@@ -289,7 +327,8 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			List<int[]> entities = new List<int[]>(); 
 			List<int[]> movingPlatforms = new List<int[]>();
 			Dictionary<string, string[]> chestsLoot = new Dictionary<string, string[]>();
-			Dictionary<string, int[]> exits = new Dictionary<string, int[]>(); 
+			Dictionary<string, int[]> exits = new Dictionary<string, int[]>();
+			Dictionary<string, int[]> levelComplete = new Dictionary<string, int[]>();
 
 			int tmpValue = 0;
 			int tileSideSize = Display.TileSideSize;
@@ -459,12 +498,31 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 					chestsLoot.Add(x + "-" + y, lootTypes);
 				}
+
+				int[] levelCompleteData;
+				foreach (string exit in levelParts.LevelComplete) {
+					levelCompleteData = Array.ConvertAll(exit.Split(','), int.Parse);
+
+					if (levelCompleteData.Length != 4) {
+						throw levelFormatException;
+					} else {
+						if (levelCompleteData[2] < 0 || levelCompleteData[2] > Level.RoomSize[roomSize][0]) {
+							throw levelFormatException;
+						}
+
+						if (levelCompleteData[3] < 0 || levelCompleteData[3] > Level.RoomSize[roomSize][1]) {
+							throw levelFormatException;
+						}
+
+						levelComplete.Add((levelCompleteData[2] * tileSideSize) + "-" + (levelCompleteData[3] * tileSideSize), new int[] { levelCompleteData[0], levelCompleteData[1] });
+					}
+				}
 			} catch (Exception e) {
 				Exception levelE = new Exception("Level load error:\n" + e.Message);
 				ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
 			}
 
-			return new UnmappedLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosition, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities, chestsLoot, exits);
+			return new UnmappedLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosition, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities, chestsLoot, exits, levelComplete);
 		}
 	}
 }

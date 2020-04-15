@@ -35,6 +35,9 @@ namespace WizardPlatformer {
 
 		private int exitDeep;
 
+		private bool isAnimationOn;
+		private bool isControlOn;
+
 		public EntityPlayer(int health, int maxHealth, int mana, int maxMana, int stamina, int maxStamina, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
 			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
 
@@ -65,6 +68,9 @@ namespace WizardPlatformer {
 
 			this.exitDeep = 0;
 
+			this.isAnimationOn = true;
+			this.isControlOn = true;
+
 			this.drawDebugInfo = false;
 		}
 
@@ -80,21 +86,9 @@ namespace WizardPlatformer {
 
 			UpdateCoolDown(gameTime);
 			UpdateInput(gameTime);
-
-			if (this.health > 0) {
-				if (isJumping) {
-					Animator.Animate(2, 0, 3, false, frameTimeCounter, ref currentFrame);
-				} else {
-					if (this.currentVelocity.Y > 10e-4f) {
-						currentFrame = new Point(3, 2);
-					} else if (this.currentVelocity.X < 0 || this.currentVelocity.X > 10e-4f) {
-						Animator.Animate(1, 0, 6, true, frameTimeCounter, ref currentFrame);
-					} else {
-						Animator.Animate(0, 0, 2, true, frameTimeCounter, ref currentFrame);
-					}
-				}  
-			} else {
-				Animator.Animate(5, 0, 4, false, frameTimeCounter, ref currentFrame);
+			
+			if (isAnimationOn) {
+				UpdateAnimation();
 			}
 
 			if (this.IsAlive) {
@@ -128,19 +122,19 @@ namespace WizardPlatformer {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenMainMenu(), true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.A) && this.IsAlive) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.A) && this.IsAlive && isControlOn) {
 				this.AccelerateLeft(-maxAcceleration, false);
 			} else {
 				this.AccelerateLeft(-maxAcceleration, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.D) && this.IsAlive) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.D) && this.IsAlive && isControlOn) {
 				this.AccelerateRight(maxAcceleration, false);
 			} else {
 				this.AccelerateRight(maxAcceleration, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.Space) && this.IsAlive) {
+			if (InputManager.GetInstance().IsKeyDown(Keys.Space) && this.IsAlive && isControlOn) {
 				if ((isOnGround && InputManager.GetInstance().IsKeyPressed(Keys.Space)) || isJumping || !isGravityOn) {
 					this.AccelerateJump(-8.5f, 32, false);
 				}
@@ -148,13 +142,13 @@ namespace WizardPlatformer {
 				this.AccelerateJump(-8.5f, 32, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.S) && this.IsAlive) {
+			if (InputManager.GetInstance().IsKeyPressed(Keys.S) && this.IsAlive && isControlOn) {
 				this.FallThrough(false);
 			} else {
 				this.FallThrough(true);
 			}
 	
-			if (InputManager.GetInstance().IsMouseLeftButtonPressed() && this.IsAlive && coolDown == 0) {
+			if (InputManager.GetInstance().IsMouseLeftButtonPressed() && this.IsAlive && isControlOn && coolDown == 0) {
 				if (mana - rangeAttackCost >= 0) {
 					this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(2, (int)Position.X, (int)Position.Y, this.EntityID));
 					ConsumeMana(rangeAttackCost);
@@ -162,7 +156,7 @@ namespace WizardPlatformer {
 				}
 			}
 
-			if (InputManager.GetInstance().IsMouseRightButtonPressed() && this.IsAlive && coolDown == 0) {
+			if (InputManager.GetInstance().IsMouseRightButtonPressed() && this.IsAlive && isControlOn && coolDown == 0) {
 				if (stamina - meleeAttackCost >= 0) {
 					this.level.SpawnEntity(this.level.EntityCreator.CreateEntity(3, (int)Position.X, (int)Position.Y, this.EntityID));
 					ConsumeStamina(meleeAttackCost);
@@ -170,10 +164,12 @@ namespace WizardPlatformer {
 				}
 			}
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.OemTilde)) {
-				Vector2 mousePos = InputManager.GetInstance().GetMousePosition();
-				this.level.SpawnEntity(this.level.EntityCreator.CreateEntity("spider", (int)mousePos.X, (int)mousePos.Y));
-			}
+			// Debug
+			/*if (InputManager.GetInstance().IsKeyPressed(Keys.OemTilde)) {
+				//Vector2 mousePos = InputManager.GetInstance().GetMousePosition();
+				//this.level.SpawnEntity(this.level.EntityCreator.CreateEntity("spider", (int)mousePos.X, (int)mousePos.Y));
+				this.level.DespawnAllEntitiesExceptPlayer();
+			}*/
 		}
 
 		private void UpdateCoolDown(GameTime gameTime) {
@@ -242,6 +238,12 @@ namespace WizardPlatformer {
 					}
 				}
 			}
+
+			if (tile.Type == TileFunctional.FunctionType.LEVEL_COMPLETE) {
+				CompleteLevel();
+				this.level.HasLevelCompleteQuery = true;
+				this.level.SwitchLevel = new int[] { tile.LevelId, tile.RoomId, -1, -1 };
+			}
 		}
 
 		protected override bool HandleEntity(Entity entity) {
@@ -287,6 +289,30 @@ namespace WizardPlatformer {
 					UpgradeDamage(1);
 					break;
 			}	
+		}
+
+		private void UpdateAnimation() {
+			if (this.health > 0) {
+				if (isJumping) {
+					Animator.Animate(2, 0, 3, false, frameTimeCounter, ref currentFrame);
+				} else {
+					if (this.currentVelocity.Y > 10e-4f) {
+						currentFrame = new Point(3, 2);
+					} else if (this.currentVelocity.X < 0 || this.currentVelocity.X > 10e-4f) {
+						Animator.Animate(1, 0, 6, true, frameTimeCounter, ref currentFrame);
+					} else {
+						Animator.Animate(0, 0, 2, true, frameTimeCounter, ref currentFrame);
+					}
+				}
+			} else {
+				Animator.Animate(5, 0, 4, false, frameTimeCounter, ref currentFrame);
+			}
+		}
+
+		private void CompleteLevel() {
+			isAnimationOn = false;
+			isControlOn = false;
+			Animator.Animate(4, 0, 4, true, this.frameTimeCounter, ref this.currentFrame);
 		}
 
 		public void AddMana(int mana) {
