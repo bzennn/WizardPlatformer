@@ -28,6 +28,7 @@ namespace WizardPlatformer {
 		private bool isLevelLoaded;
 
 		private bool isLevelComplete;
+		private bool restorePreviousGame;
 
 		private HUD hud;
 
@@ -39,6 +40,15 @@ namespace WizardPlatformer {
 			this.saveOnStart = saveOnStart;
 			this.snapshotPlayer = snapshotPlayer;
 			this.isLevelComplete = false;
+		}
+
+		public ScreenGameplay(bool restorePreviousGame) {
+			this.levelId = 0;
+			this.roomId = 0;
+			this.saveOnStart = false;
+			this.snapshotPlayer = null;
+			this.isLevelComplete = false;
+			this.restorePreviousGame = true;
 		}
 
 		public override void Initialize() {
@@ -57,12 +67,16 @@ namespace WizardPlatformer {
 			if (saveOnStart) {
 				SaveGame();
 			}
+
+			if (restorePreviousGame) {
+				RestoreGame();
+			}
 		}
 
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.Enter) && !isLevelComplete) {
+			if (InputManager.GetInstance().IsKeyPressed(Keys.Escape) && !isLevelComplete) {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenPause(this), false);
 			}
 
@@ -227,8 +241,6 @@ namespace WizardPlatformer {
 				this.levelId = snapshot.LevelId;
 				this.roomId = snapshot.RoomId;
 				this.LoadLevel(this.levelId, this.roomId, false, snapshot.SnapshotLevel, snapshot.SnapshotPlayer, true);
-				//this.currentLevel.RestoreSnapshot(snapshot.SnapshotLevel);
-				//this.currentLevel.Player.RestoreSnapshot(snapshot.SnapshotPlayer);
 			}
 		}
 

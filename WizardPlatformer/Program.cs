@@ -9,7 +9,7 @@ namespace WizardPlatformer {
 		static void Main() {
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
 
-			using (var game = new WizardPlatformer())
+			using (var game = WizardPlatformer.GetInstance())
 				game.Run();
 		}
 	}

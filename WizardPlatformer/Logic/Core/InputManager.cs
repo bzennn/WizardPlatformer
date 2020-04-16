@@ -71,7 +71,30 @@ namespace WizardPlatformer {
 		}
 
 		public Vector2 GetMousePosition() {
-			return Display.ScreenToLevelPosition(currentMouseState.Position.ToVector2());
+			Vector2 mousePosition = Display.ScreenToLevelPosition(currentMouseState.Position.ToVector2());
+
+			return mousePosition;
+		}
+
+		public Vector2 GetMouseScreenPosition() {
+			Vector2 mousePosition = Display.ScreenToLevelPosition(currentMouseState.Position.ToVector2());
+
+			int mousePositionX = (int)mousePosition.X;
+			int mousePositionY = (int)mousePosition.Y;
+
+			if (mousePositionX < 0) {
+				mousePositionX = 0;
+			} else if (mousePositionX > (int)Display.BaseResolution.X) {
+				mousePositionX = (int)Display.BaseResolution.X;
+			}
+
+			if (mousePositionY < 0) {
+				mousePositionY = 0;
+			} else if (mousePositionY > (int)Display.BaseResolution.Y) {
+				mousePositionY = (int)Display.BaseResolution.Y;
+			}
+
+			return new Vector2(mousePositionX, mousePositionY);
 		}
 
 		public bool IsMouseLeftButtonPressed() {

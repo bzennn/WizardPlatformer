@@ -5,10 +5,12 @@ using WizardPlatformer.Logic.UI;
 
 namespace WizardPlatformer {
 	public class WizardPlatformer : Game {
-		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
+		private static WizardPlatformer instance;
 
-		UICursor cursor;
+		private GraphicsDeviceManager graphics;
+		private SpriteBatch spriteBatch;
+
+		private UICursor cursor;
 
 		public WizardPlatformer() {
 			graphics = new GraphicsDeviceManager(this);
@@ -17,10 +19,17 @@ namespace WizardPlatformer {
 			cursor = new UICursor(Color.Multiply(Color.AliceBlue, 10));
 		}
 
+		public static WizardPlatformer GetInstance() {
+			if (instance == null) {
+				instance = new WizardPlatformer();
+			}
+
+			return instance;
+		}
+
 		protected override void Initialize() {
 			Display.InitScaleMatrix(graphics, 1280, 720);
 			//Display.InitScaleMatrix(graphics, 1920, 1080);
-
 			IsMouseVisible = false;
 			graphics.IsFullScreen = false;
 			//graphics.IsFullScreen = true;
@@ -47,9 +56,6 @@ namespace WizardPlatformer {
 		}
 
 		protected override void Update(GameTime gameTime) {
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-				Exit();
-
 			InputManager.GetInstance().CurrentKeyboardState = Keyboard.GetState();
 			InputManager.GetInstance().CurrentMouseState =  Mouse.GetState();
 			

@@ -365,6 +365,18 @@
 /processorParam:TextureFormat=Color
 /build:gui/hud_sprite.png
 
+#begin gui/main_menu_background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:gui/main_menu_background.png
+
 #begin gui/pause_background.png
 /importer:TextureImporter
 /processor:TextureProcessor

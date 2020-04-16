@@ -56,6 +56,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>WizardPlatformer.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Logic\Core\Animator.cs" />
     <Compile Include="Logic\Core\RandomManager.cs" />

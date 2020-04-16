@@ -12,12 +12,12 @@ namespace WizardPlatformer {
 
 		public virtual void LoadContent(ContentManager contentManager) {
 			screenContent = new ContentManager(contentManager.ServiceProvider, "Content");
-			Display.GameMatrix = Display.ScreenScale;
+			//Display.GameMatrix = Display.ScreenScale;
 		}
 
 		public virtual void UnloadContent() {
 			screenContent.Unload();
-			Display.GameMatrix = Display.ScreenScale;
+			//Display.GameMatrix = Display.ScreenScale;
 		}
 
 		public virtual void Update(GameTime gameTime) { }
