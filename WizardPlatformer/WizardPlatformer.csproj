@@ -61,6 +61,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Logic\Core\Animator.cs" />
+    <Compile Include="Logic\Core\PCUniqueIdGenerator.cs" />
     <Compile Include="Logic\Core\RandomManager.cs" />
     <Compile Include="Logic\Entity\EntityCollectable.cs" />
     <Compile Include="Logic\Entity\EntityEnemy.cs" />
@@ -69,12 +70,13 @@
     <Compile Include="Logic\Level\LevelLoading\RoomIdentifier.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLEntityIdMapLoader.cs" />
     <Compile Include="Logic\Level\LevelLoading\XMLLevelListLoader.cs" />
-    <Compile Include="Logic\Save\BINSaveDeserializer.cs" />
-    <Compile Include="Logic\Save\BINSaveSerializer.cs" />
+    <Compile Include="Logic\Save\BINDeserializer.cs" />
+    <Compile Include="Logic\Save\BINSerializer.cs" />
     <Compile Include="Logic\Save\SaveManager.cs" />
     <Compile Include="Logic\Save\SnapshotBackground.cs" />
     <Compile Include="Logic\Save\SnapshotGameplay.cs" />
     <Compile Include="Logic\Save\SnapshotLevel.cs" />
+    <Compile Include="Logic\Save\SnapshotOptions.cs" />
     <Compile Include="Logic\Save\SnapshotPlayer.cs" />
     <Compile Include="Logic\Save\XMLSaveDeserializer.cs" />
     <Compile Include="Logic\Save\XMLSaveSerializer.cs" />

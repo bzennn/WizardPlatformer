@@ -23,7 +23,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				default:
 					return null;
 				case "player":
-					return new EntityPlayer(10, 10, 50, 100, 0, 50, 1, 5.0f, 0, true, 8, 20, 8 * scaleFactor, 4 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
+					return new EntityPlayer(2, 2, 50, 100, 0, 50, 1, 5.0f, 0, true, 8, 20, 8 * scaleFactor, 4 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level);
 				case "range_ice_arrow_attack":
 					return new EntityRangeAttack(3000, sourceEntityId, level.GetEntity(sourceEntityId).Damage, 7.0f, true, 4, 4, 11 * scaleFactor, 10 * scaleFactor, entityPosX, entityPosY, level.RoomSizeId, level, InputManager.GetInstance().GetMousePosition());
 				case "melee_melee_attack":

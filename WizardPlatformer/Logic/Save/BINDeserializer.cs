@@ -7,15 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WizardPlatformer.Logic.Save {
-	public static class BINSaveDeserializer {
+	public static class BINDeserializer {
 		private static BinaryFormatter formatter = new BinaryFormatter();
 
-		public static SnapshotGameplay Deserialize() {
-			using (FileStream fileStream = new FileStream("snapshot_gameplay.dat", FileMode.OpenOrCreate)) {
+		public static T Deserialize<T>(string filePath) where T : class {
+			using (FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate)) {
 				if (fileStream.Length > 0) {
-					SnapshotGameplay snapshot = (SnapshotGameplay)formatter.Deserialize(fileStream);
+					T deserializable = (T)formatter.Deserialize(fileStream);
 
-					return snapshot;
+					return deserializable;
 				}
 
 				return null;

@@ -95,6 +95,8 @@ namespace WizardPlatformer {
 				RegenMana(gameTime);
 				RegenStamina(gameTime);
 				UpdateInvulnerabilityTimer(gameTime);
+			} else {
+				this.level.IsPlayerDied = true;
 			}
 		}
 

@@ -24,6 +24,7 @@ namespace WizardPlatformer.Logic.Level {
 		private bool hasGameSaveQuery;
 		private bool hasGameRestoreQuery;
 		private bool hasLevelCompleteQuery;
+		private bool isPlayerDied;
 
 		private int levelId;
 		private int roomId;
@@ -124,7 +125,9 @@ namespace WizardPlatformer.Logic.Level {
 
 			UpdateTileLayer(gameTime, decoLayer, roomSizeId);
 			
-			UpdateCameraPosition();
+			if (!isPlayerDied) {
+				UpdateCameraPosition();
+			}
 
 			background.Update(gameTime, player.Position);
 		}
@@ -502,6 +505,11 @@ namespace WizardPlatformer.Logic.Level {
 		public bool HasGameRestoreQuery {
 			get { return hasGameRestoreQuery; }
 			set { hasGameRestoreQuery = value; }
+		}
+
+		public bool IsPlayerDied {
+			get { return isPlayerDied; }
+			set { isPlayerDied = value; }
 		}
 
 		public SnapshotLevel GetSnapshot() {

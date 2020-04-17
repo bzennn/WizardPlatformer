@@ -29,6 +29,7 @@ namespace WizardPlatformer {
 
 		private bool isLevelComplete;
 		private bool restorePreviousGame;
+		private bool isGameOver;
 
 		private HUD hud;
 
@@ -40,6 +41,7 @@ namespace WizardPlatformer {
 			this.saveOnStart = saveOnStart;
 			this.snapshotPlayer = snapshotPlayer;
 			this.isLevelComplete = false;
+			this.isGameOver = false;
 		}
 
 		public ScreenGameplay(bool restorePreviousGame) {
@@ -76,7 +78,7 @@ namespace WizardPlatformer {
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.Escape) && !isLevelComplete) {
+			if (InputManager.GetInstance().IsKeyPressed(Keys.Escape) && !isLevelComplete && !isGameOver) {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenPause(this), false);
 			}
 
@@ -85,6 +87,9 @@ namespace WizardPlatformer {
 			UpdateLevelRestoreQuery();
 			if (!isLevelComplete) {
 				UpdateLevelCompleteQuery();
+			}
+			if (!isGameOver) {
+				UpdateGameOver();
 			}
 
 			if (currentLevel != null) {
@@ -228,6 +233,17 @@ namespace WizardPlatformer {
 			}
 		}
 
+		private void UpdateGameOver() {
+			if (currentLevel != null) {
+				if (currentLevel.IsPlayerDied) {
+					currentLevel.IsPlayerDied = false;
+					isGameOver = true;
+
+					ScreenManager.GetInstance().ChangeScreen(new ScreenGameOver(this), false);
+				}
+			}
+		}
+
 		public SnapshotGameplay GetSnapshot() {
 			return new SnapshotGameplay(
 				currentLevel.Player.GetSnapshot(),
@@ -245,11 +261,11 @@ namespace WizardPlatformer {
 		}
 
 		public void SaveGame() {
-			BINSaveSerializer.Serialize(GetSnapshot());
+			BINSerializer.Serialize(GetSnapshot(), WizardPlatformer.GAMEPLAY_SAVE_PATH);
 		}
 
 		public void RestoreGame() {
-			RestoreSnapshot(BINSaveDeserializer.Deserialize());
+			RestoreSnapshot(BINDeserializer.Deserialize<SnapshotGameplay>(WizardPlatformer.GAMEPLAY_SAVE_PATH));
 		}
 
 		public bool IsLevelLoaded {

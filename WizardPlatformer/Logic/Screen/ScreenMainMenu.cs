@@ -6,6 +6,7 @@ using WizardPlatformer.Logic.UI;
 using WizardPlatformer.Logic.Level;
 using System.Collections.Generic;
 using System.IO;
+using WizardPlatformer.Logic.Save;
 
 namespace WizardPlatformer {
 	class ScreenMainMenu : Screen {
@@ -15,18 +16,30 @@ namespace WizardPlatformer {
 		private UIButton optionsButton;
 		private UIButton exitButton;
 
+		private UIButton fullscreenOptionButton;
+		private UIButton resolutionOptionButton;
+		private UIButton saveOptionButton;
+		private UIButton backToMainMenuButton;
+		private bool fullscreen;
+		private int resolutionId;
+		private SpriteFont fontSmall;
+
 		private Background background;
 		private List<UIButton> mainButtons;
 		private List<UIButton> optionButtons;
 
 		private bool hasPreviousSave;
+		private bool isOptionMenuOpen;
 
 		public ScreenMainMenu() {
 			this.screenCenter = Display.GetScreenCenter();
 			this.background = new Background(32, 18);
 			this.mainButtons = new List<UIButton>();
 			this.optionButtons = new List<UIButton>();
-			this.hasPreviousSave = File.Exists("snapshot_gameplay.dat");
+			this.hasPreviousSave = File.Exists(WizardPlatformer.GAMEPLAY_SAVE_PATH);
+			this.isOptionMenuOpen = false;
+			this.fullscreen = false;
+			this.resolutionId = 0;
 		}
 
 		public override void Initialize() {
@@ -37,7 +50,9 @@ namespace WizardPlatformer {
 			base.LoadContent(contentManager);
 
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
+			fontSmall = screenContent.Load<SpriteFont>("font/russo_one_20");
 
+			#region Main menu buttons
 			// 55 dots per button by y side
 			continueGameButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 70, "Continue Game");
 			continueGameButton.LoadContent(screenContent);
@@ -53,7 +68,6 @@ namespace WizardPlatformer {
 			optionsButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 180, "Options");
 			optionsButton.LoadContent(screenContent);
 			optionsButton.onClick += OpenOptions;
-			optionsButton.IsEnabled = false;
 			mainButtons.Add(optionsButton);
 
 			exitButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 235, "Exit Game");
@@ -61,32 +75,58 @@ namespace WizardPlatformer {
 			exitButton.onClick += GameExit;
 			mainButtons.Add(exitButton);
 
+			#endregion
+
+			#region Options menu buttons
+			
+			fullscreenOptionButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 70, "Fullscreen");
+			fullscreenOptionButton.LoadContent(screenContent);
+			fullscreenOptionButton.onClick += OnFullscreenOptionClick;
+			optionButtons.Add(fullscreenOptionButton);
+
+			resolutionOptionButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 125, "Resolution");
+			resolutionOptionButton.LoadContent(screenContent);
+			resolutionOptionButton.onClick += OnResolutionOptionClick;
+			optionButtons.Add(resolutionOptionButton);
+
+			saveOptionButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 180, "Save");
+			saveOptionButton.LoadContent(screenContent);
+			saveOptionButton.IsEnabled = false;
+			saveOptionButton.onClick += OnSaveOptionsClick;
+			optionButtons.Add(saveOptionButton);
+
+			backToMainMenuButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 235, "Back to menu");
+			backToMainMenuButton.LoadContent(screenContent);
+			backToMainMenuButton.onClick += OnBackToMenuClick;
+			optionButtons.Add(backToMainMenuButton);
+
+			#endregion
+
 			background.LoadContent(screenContent, "01110");
-
-			foreach (UIButton button in mainButtons) {
-				//button.UpdateButtonPosition();
-			}
-
-			foreach (UIButton button in optionButtons) {
-				button.UpdateButtonPosition();
-			}
 		}
 
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
 			// Debug
-			if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
+			/*if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
 				if (hasPreviousSave) {
 					ContinueGame();
 				} else {
 					StartNewGame();
 				}
-			}
+			}*/
 
-			foreach (UIButton button in mainButtons) {
-				button.Update(gameTime);
+			if (!isOptionMenuOpen) {
+				foreach (UIButton button in mainButtons) {
+					button.Update(gameTime);
+				}
+			} else {
+				foreach (UIButton button in optionButtons) {
+					button.Update(gameTime);
+				}
 			}
+			
 
 			background.Update(gameTime, InputManager.GetInstance().GetMouseScreenPosition());
 		}
@@ -97,8 +137,19 @@ namespace WizardPlatformer {
 			background.Draw(spriteBatch, gameTime);
 			spriteBatch.DrawString(font, "Main menu", Display.GetScreenCenter(), Color.White);
 
-			foreach (UIButton button in mainButtons) {
-				button.Draw(spriteBatch, gameTime);
+			if (!isOptionMenuOpen) {
+				foreach (UIButton button in mainButtons) {
+					button.Draw(spriteBatch, gameTime);
+				}
+			} else {
+				foreach (UIButton button in optionButtons) {
+					button.Draw(spriteBatch, gameTime);
+				}
+
+				Vector2 screenCenter = Display.GetScreenCenter();
+				Point currentResolution = WizardPlatformer.RESOLUTION[resolutionId];
+				spriteBatch.DrawString(fontSmall, ": " + (fullscreen ? "ON" : "OFF"), new Vector2(screenCenter.X + 76 * Display.DrawScale.X, screenCenter.Y + 75), Color.White);
+				spriteBatch.DrawString(fontSmall, ": " + (currentResolution.X + "x" + currentResolution.Y), new Vector2(screenCenter.X + 76 * Display.DrawScale.X, screenCenter.Y + 130), Color.White);
 			}
 		}
 
@@ -111,11 +162,41 @@ namespace WizardPlatformer {
 		}
 
 		public void OpenOptions() {
+			isOptionMenuOpen = true;
 
+			SnapshotOptions options = BINDeserializer.Deserialize<SnapshotOptions>(WizardPlatformer.OPTIONS_PATH);
+			if (options != null) {
+				fullscreen = options.Fullscreen;
+				resolutionId = options.Resolution;
+			}
 		}
 
 		public void GameExit() {
 			WizardPlatformer.GetInstance().Exit();
+		}
+
+		public void OnFullscreenOptionClick() {
+			fullscreen = !fullscreen;
+			saveOptionButton.IsEnabled = true;
+		}
+
+		public void OnResolutionOptionClick() {
+			if (resolutionId + 1 == WizardPlatformer.RESOLUTION.Count) {
+				resolutionId = 0;
+			} else {
+				resolutionId++;
+			}
+			saveOptionButton.IsEnabled = true;
+		}
+
+		public void OnSaveOptionsClick() {
+			SnapshotOptions options = new SnapshotOptions(fullscreen, resolutionId);
+			BINSerializer.Serialize(options, WizardPlatformer.OPTIONS_PATH);
+			saveOptionButton.IsEnabled = false;
+		}
+
+		public void OnBackToMenuClick() {
+			isOptionMenuOpen = false;
 		}
 	}
 }

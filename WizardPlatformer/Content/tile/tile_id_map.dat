@@ -126,9 +126,9 @@
   <tile id="124" map_value="air"/>
   <tile id="125" map_value="air"/>
   <tile id="126" map_value="air"/>
-  <tile id="127" map_value="air"/>
-  <tile id="128" map_value="air"/>
-  <tile id="129" map_value="air"/>
+  <tile id="127" map_value="destroyable"/>
+  <tile id="128" map_value="destroyable"/>
+  <tile id="129" map_value="destroyable"/>
   <tile id="130" map_value="air"/>
   <tile id="131" map_value="air"/>
   <tile id="132" map_value="air"/>
@@ -138,12 +138,12 @@
   <tile id="136" map_value="air"/>
   <tile id="137" map_value="air"/>
   <tile id="138" map_value="air"/>
-  <tile id="139" map_value="air"/>
-  <tile id="140" map_value="air"/>
-  <tile id="141" map_value="air"/>
-  <tile id="142" map_value="air"/>
-  <tile id="143" map_value="air"/>
-  <tile id="144" map_value="air"/>
+  <tile id="139" map_value="destroyable"/>
+  <tile id="140" map_value="destroyable"/>
+  <tile id="141" map_value="destroyable"/>
+  <tile id="142" map_value="destroyable"/>
+  <tile id="143" map_value="destroyable"/>
+  <tile id="144" map_value="destroyable"/>
   <tile id="145" map_value="solid"/>
   <tile id="146" map_value="solid"/>
   <tile id="147" map_value="solid"/>
@@ -153,9 +153,9 @@
   <tile id="151" map_value="solid"/>
   <tile id="152" map_value="solid"/>
   <tile id="153" map_value="solid"/>
-  <tile id="154" map_value="air"/>
-  <tile id="155" map_value="air"/>
-  <tile id="156" map_value="air"/>
+  <tile id="154" map_value="destroyable"/>
+  <tile id="155" map_value="destroyable"/>
+  <tile id="156" map_value="destroyable"/>
   <tile id="157" map_value="solid"/>
   <tile id="158" map_value="solid"/>
   <tile id="159" map_value="solid"/>
@@ -165,9 +165,9 @@
   <tile id="163" map_value="solid"/>
   <tile id="164" map_value="air"/>
   <tile id="165" map_value="solid"/>
-  <tile id="166" map_value="air"/>
-  <tile id="167" map_value="air"/>
-  <tile id="168" map_value="air"/>
+  <tile id="166" map_value="destroyable"/>
+  <tile id="167" map_value="destroyable"/>
+  <tile id="168" map_value="destroyable"/>
   <tile id="169" map_value="solid"/>
   <tile id="170" map_value="solid"/>
   <tile id="171" map_value="solid"/>
@@ -177,9 +177,9 @@
   <tile id="175" map_value="solid"/>
   <tile id="176" map_value="solid"/>
   <tile id="177" map_value="solid"/>
-  <tile id="178" map_value="air"/>
-  <tile id="179" map_value="air"/>
-  <tile id="180" map_value="air"/>
+  <tile id="178" map_value="destroyable"/>
+  <tile id="179" map_value="destroyable"/>
+  <tile id="180" map_value="destroyable"/>
   <tile id="181" map_value="solid"/>
   <tile id="182" map_value="solid"/>
   <tile id="183" map_value="solid"/>

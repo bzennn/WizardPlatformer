@@ -139,7 +139,7 @@ namespace WizardPlatformer {
 			if (nextLevelId != -1 && nextRoomId != -1) {
 				ScreenManager.GetInstance().ChangeScreen(new ScreenGameplay(nextLevelId, nextRoomId, true, snapshotPlayer), true);
 			} else {
-				ScreenManager.GetInstance().ChangeScreen(new ScreenGameEnd(), true);
+				ScreenManager.GetInstance().ChangeScreen(new ScreenGameEnd(level), true);
 			}
 		}
 

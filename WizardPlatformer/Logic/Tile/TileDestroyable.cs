@@ -42,10 +42,12 @@ namespace WizardPlatformer {
 		}
 
 		private void SpawnAllDrop() {
-			for (int i = 0; i < drop.Length; i++) {
-				for (int j = 0; j < GetDropQuantity(); j++) {
-					if (Roll()) {
-						SpawnDrop(drop[i]);
+			if (drop != null) {
+				for (int i = 0; i < drop.Length; i++) {
+					for (int j = 0; j < GetDropQuantity(); j++) {
+						if (Roll()) {
+							SpawnDrop(drop[i]);
+						}
 					}
 				}
 			}
