@@ -10,6 +10,7 @@ namespace WizardPlatformer.Logic.UI {
 		private int scaleFactor;
 
 		private Texture2D sprite;
+		private SpriteFont font;
 		private SpriteFont smallFont;
 
 		private bool drawDebugInfo;
@@ -49,6 +50,7 @@ namespace WizardPlatformer.Logic.UI {
 
 		public void LoadContent(ContentManager contentManager) {
 			sprite = contentManager.Load<Texture2D>("gui/hud_sprite");
+			font = contentManager.Load<SpriteFont>("font/russo_one_32");
 			smallFont = contentManager.Load<SpriteFont>("font/russo_one_20");
 
 			heart = new Rectangle(0, 24, 13, 12);
@@ -129,6 +131,7 @@ namespace WizardPlatformer.Logic.UI {
 			DrawCoins(spriteBatch, gameTime);
 			DrawManaBar(spriteBatch, gameTime);
 			DrawStaminaBar(spriteBatch, gameTime);
+			DrawLevelInfo(spriteBatch, gameTime);
 		}
 
 		private void DrawHearts(SpriteBatch spriteBatch, GameTime gameTime) {
@@ -179,6 +182,12 @@ namespace WizardPlatformer.Logic.UI {
 				SpriteEffects.None,
 				0.5f
 				);
+		}
+
+		private void DrawLevelInfo(SpriteBatch spriteBatch, GameTime gameTime) {
+			Vector2 zeroPosition = Display.GetZeroScreenPositionOnLevel();
+			Vector2 levelInfoPosition = new Vector2(zeroPosition.X + Display.BaseResolution.X - 200, zeroPosition.Y + 20);
+			spriteBatch.DrawString(font, "Level " + (player.LevelId + 1), levelInfoPosition, Color.White);
 		}
 	}
 }

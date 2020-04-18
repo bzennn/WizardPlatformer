@@ -13,16 +13,21 @@ namespace WizardPlatformer {
 		private Vector2 screenCenter;
 		private UIButton newGameButton;
 		private UIButton continueGameButton;
+		private UIButton controlsButton;
 		private UIButton optionsButton;
 		private UIButton exitButton;
 
 		private UIButton fullscreenOptionButton;
 		private UIButton resolutionOptionButton;
 		private UIButton saveOptionButton;
-		private UIButton backToMainMenuButton;
+		private UIButton closeOptionsButton;
 		private bool fullscreen;
 		private int resolutionId;
 		private SpriteFont fontSmall;
+
+		private UIButton closeControlsButton;
+		private Texture2D controlsBack;
+		private Texture2D controlsPic;
 
 		private Background background;
 		private List<UIButton> mainButtons;
@@ -30,6 +35,7 @@ namespace WizardPlatformer {
 
 		private bool hasPreviousSave;
 		private bool isOptionMenuOpen;
+		private bool isControlsOpen;
 
 		public ScreenMainMenu() {
 			this.screenCenter = Display.GetScreenCenter();
@@ -38,6 +44,7 @@ namespace WizardPlatformer {
 			this.optionButtons = new List<UIButton>();
 			this.hasPreviousSave = File.Exists(WizardPlatformer.GAMEPLAY_SAVE_PATH);
 			this.isOptionMenuOpen = false;
+			this.isControlsOpen = false;
 			this.fullscreen = false;
 			this.resolutionId = 0;
 		}
@@ -65,12 +72,17 @@ namespace WizardPlatformer {
 			newGameButton.onClick += StartNewGame;
 			mainButtons.Add(newGameButton);
 
-			optionsButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 180, "Options");
+			controlsButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 180, "Controls");
+			controlsButton.LoadContent(screenContent);
+			controlsButton.onClick += OpenControls;
+			mainButtons.Add(controlsButton);
+
+			optionsButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 235, "Options");
 			optionsButton.LoadContent(screenContent);
 			optionsButton.onClick += OpenOptions;
 			mainButtons.Add(optionsButton);
 
-			exitButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 235, "Exit Game");
+			exitButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 290, "Exit Game");
 			exitButton.LoadContent(screenContent);
 			exitButton.onClick += GameExit;
 			mainButtons.Add(exitButton);
@@ -95,10 +107,21 @@ namespace WizardPlatformer {
 			saveOptionButton.onClick += OnSaveOptionsClick;
 			optionButtons.Add(saveOptionButton);
 
-			backToMainMenuButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 235, "Back to menu");
-			backToMainMenuButton.LoadContent(screenContent);
-			backToMainMenuButton.onClick += OnBackToMenuClick;
-			optionButtons.Add(backToMainMenuButton);
+			closeOptionsButton = new UIButton((int)screenCenter.X + 10, (int)screenCenter.Y + 235, "Back to menu");
+			closeOptionsButton.LoadContent(screenContent);
+			closeOptionsButton.onClick += OnBackToMenuClick;
+			optionButtons.Add(closeOptionsButton);
+
+			#endregion
+
+			#region Controls menu buttons
+
+			closeControlsButton = new UIButton((int)screenCenter.X -100, (int)screenCenter.Y + 330, "Back to menu");
+			closeControlsButton.LoadContent(screenContent);
+			closeControlsButton.onClick += OnBackToMenuClick;
+
+			controlsBack = screenContent.Load<Texture2D>("gui/pause_background");
+			controlsPic = screenContent.Load<Texture2D>("gui/controls_hint");
 
 			#endregion
 
@@ -108,25 +131,17 @@ namespace WizardPlatformer {
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
-			// Debug
-			/*if (InputManager.GetInstance().IsKeyPressed(Keys.Enter)) {
-				if (hasPreviousSave) {
-					ContinueGame();
-				} else {
-					StartNewGame();
-				}
-			}*/
-
-			if (!isOptionMenuOpen) {
+			if (!isOptionMenuOpen && !isControlsOpen) {
 				foreach (UIButton button in mainButtons) {
 					button.Update(gameTime);
 				}
-			} else {
+			} else if (isOptionMenuOpen) {
 				foreach (UIButton button in optionButtons) {
 					button.Update(gameTime);
 				}
+			} else if (isControlsOpen) {
+				closeControlsButton.Update(gameTime);
 			}
-			
 
 			background.Update(gameTime, InputManager.GetInstance().GetMouseScreenPosition());
 		}
@@ -135,13 +150,15 @@ namespace WizardPlatformer {
 			base.Draw(spriteBatch, gameTime);
 
 			background.Draw(spriteBatch, gameTime);
-			spriteBatch.DrawString(font, "Main menu", Display.GetScreenCenter(), Color.White);
+			if (!isControlsOpen) {
+				spriteBatch.DrawString(font, "Main menu", Display.GetScreenCenter(), Color.White);
+			}
 
-			if (!isOptionMenuOpen) {
+			if (!isOptionMenuOpen && !isControlsOpen) {
 				foreach (UIButton button in mainButtons) {
 					button.Draw(spriteBatch, gameTime);
 				}
-			} else {
+			} else if (isOptionMenuOpen) {
 				foreach (UIButton button in optionButtons) {
 					button.Draw(spriteBatch, gameTime);
 				}
@@ -150,15 +167,41 @@ namespace WizardPlatformer {
 				Point currentResolution = WizardPlatformer.RESOLUTION[resolutionId];
 				spriteBatch.DrawString(fontSmall, ": " + (fullscreen ? "ON" : "OFF"), new Vector2(screenCenter.X + 76 * Display.DrawScale.X, screenCenter.Y + 75), Color.White);
 				spriteBatch.DrawString(fontSmall, ": " + (currentResolution.X + "x" + currentResolution.Y), new Vector2(screenCenter.X + 76 * Display.DrawScale.X, screenCenter.Y + 130), Color.White);
+			} else if (isControlsOpen) {
+				spriteBatch.Draw(
+				controlsBack,
+				Display.GetZeroScreenPositionOnLevel(),
+				null,
+				Color.White,
+				0.0f,
+				Vector2.Zero,
+				Display.DrawScale,
+				SpriteEffects.None,
+				0.0f);
+				spriteBatch.Draw(
+				controlsPic,
+				Display.GetZeroScreenPositionOnLevel(),
+				null,
+				Color.White,
+				0.0f,
+				Vector2.Zero,
+				Vector2.One,
+				SpriteEffects.None,
+				0.0f);
+				closeControlsButton.Draw(spriteBatch, gameTime);
 			}
 		}
 
 		public void StartNewGame() {
-			ScreenManager.GetInstance().ChangeScreen(new ScreenGameplay(0, 0, true, null), true);
+			ScreenManager.GetInstance().ChangeScreen(new ScreenGameplay(1, 2, true, null), true);
 		}
 
 		public void ContinueGame() {
 			ScreenManager.GetInstance().ChangeScreen(new ScreenGameplay(true), true);
+		}
+
+		public void OpenControls() {
+			isControlsOpen = true;
 		}
 
 		public void OpenOptions() {
@@ -197,6 +240,7 @@ namespace WizardPlatformer {
 
 		public void OnBackToMenuClick() {
 			isOptionMenuOpen = false;
+			isControlsOpen = false;
 		}
 	}
 }

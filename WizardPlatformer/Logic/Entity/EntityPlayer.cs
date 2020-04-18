@@ -120,31 +120,37 @@ namespace WizardPlatformer {
 		}
 
 		private void UpdateInput(GameTime gameTime) {
-			if (InputManager.GetInstance().IsKeyPressed(Keys.Back)) {
-				ScreenManager.GetInstance().ChangeScreen(new ScreenMainMenu(), true);
-			}
-
-			if (InputManager.GetInstance().IsKeyDown(Keys.A) && this.IsAlive && isControlOn) {
+			if ((InputManager.GetInstance().IsKeyDown(Keys.A) || 
+				InputManager.GetInstance().IsKeyDown(Keys.Left)) && 
+				this.IsAlive && isControlOn) {
 				this.AccelerateLeft(-maxAcceleration, false);
 			} else {
 				this.AccelerateLeft(-maxAcceleration, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.D) && this.IsAlive && isControlOn) {
+			if ((InputManager.GetInstance().IsKeyDown(Keys.D) || 
+				InputManager.GetInstance().IsKeyDown(Keys.Right)) && 
+				this.IsAlive && isControlOn) {
 				this.AccelerateRight(maxAcceleration, false);
 			} else {
 				this.AccelerateRight(maxAcceleration, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyDown(Keys.Space) && this.IsAlive && isControlOn) {
-				if ((isOnGround && InputManager.GetInstance().IsKeyPressed(Keys.Space)) || isJumping || !isGravityOn) {
+			if ((InputManager.GetInstance().IsKeyDown(Keys.Space) || 
+				InputManager.GetInstance().IsKeyDown(Keys.W) ||
+				InputManager.GetInstance().IsKeyDown(Keys.Up)) && this.IsAlive && isControlOn) {
+				if ((isOnGround && (InputManager.GetInstance().IsKeyPressed(Keys.Space) ||
+				InputManager.GetInstance().IsKeyPressed(Keys.W) ||
+				InputManager.GetInstance().IsKeyPressed(Keys.Up)) || 
+				isJumping || !isGravityOn)) {
 					this.AccelerateJump(-8.5f, 32, false);
 				}
 			} else {
 				this.AccelerateJump(-8.5f, 32, true);
 			}
 
-			if (InputManager.GetInstance().IsKeyPressed(Keys.S) && this.IsAlive && isControlOn) {
+			if ((InputManager.GetInstance().IsKeyPressed(Keys.S) || 
+				InputManager.GetInstance().IsKeyDown(Keys.Down)) && this.IsAlive && isControlOn) {
 				this.FallThrough(false);
 			} else {
 				this.FallThrough(true);
@@ -474,6 +480,14 @@ namespace WizardPlatformer {
 
 		public int Coins {
 			get { return coins; }
+		}
+
+		public int LevelId {
+			get { return this.level.LevelId; }
+		}
+
+		public int RoomId {
+			get { return this.level.RoomId; }
 		}
 	}
 }

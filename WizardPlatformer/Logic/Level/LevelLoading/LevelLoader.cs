@@ -17,8 +17,9 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 
 		public MappedLevelParts LoadLevel(int levelId, int roomId) {
 			UnmappedLevelParts unmappedLevelParts = XMLLevelLoader.XMLLoadUnmappedLevelParts(levelId, roomId);
-
-			return levelMapper.MapUnmappedLevelParts(unmappedLevelParts);
+			MappedLevelParts mappedLevelParts = levelMapper.MapUnmappedLevelParts(unmappedLevelParts);
+			
+			return mappedLevelParts;
 		}
 
 		public TileCreator GetTileCreator() {

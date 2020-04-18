@@ -46,8 +46,8 @@
   <tile id="44" map_value="platform"/>
   <tile id="45" map_value="platform"/>
   <tile id="46" map_value="collectable_heart"/>
-  <tile id="47" map_value="air"/>
-  <tile id="48" map_value="air"/>
+  <tile id="47" map_value="deco"/>
+  <tile id="48" map_value="deco"/>
   <tile id="49" map_value="solid"/>
   <tile id="50" map_value="solid"/>
   <tile id="51" map_value="solid"/>
@@ -58,8 +58,8 @@
   <tile id="56" map_value="moving_plat_gr"/>
   <tile id="57" map_value="rail_vert"/>
   <tile id="58" map_value="rail_hor"/>
-  <tile id="59" map_value="air"/>
-  <tile id="60" map_value="air"/>
+  <tile id="59" map_value="deco"/>
+  <tile id="60" map_value="deco"/>
   <tile id="61" map_value="solid"/>
   <tile id="62" map_value="solid"/>
   <tile id="63" map_value="solid"/>
@@ -70,8 +70,8 @@
   <tile id="68" map_value="rail_up_left"/>
   <tile id="69" map_value="rail_down_right"/>
   <tile id="70" map_value="rail_down_left"/>
-  <tile id="71" map_value="air"/>
-  <tile id="72" map_value="air"/>
+  <tile id="71" map_value="deco"/>
+  <tile id="72" map_value="deco"/>
   <tile id="73" map_value="chest"/>
   <tile id="74" map_value="chest"/>
   <tile id="75" map_value="chest"/>
@@ -82,20 +82,20 @@
   <tile id="80" map_value="destroyable"/>
   <tile id="81" map_value="destroyable"/>
   <tile id="82" map_value="destroyable"/>
-  <tile id="83" map_value="air"/>
-  <tile id="84" map_value="air"/>
+  <tile id="83" map_value="deco"/>
+  <tile id="84" map_value="deco"/>
   <tile id="85" map_value="destroyable_barrel"/>
-  <tile id="86" map_value="deco"/>
-  <tile id="87" map_value="deco"/>
-  <tile id="88" map_value="deco"/>
+  <tile id="86" map_value="torch"/>
+  <tile id="87" map_value="torch"/>
+  <tile id="88" map_value="torch"/>
   <tile id="89" map_value="checkpoint"/>
   <tile id="90" map_value="checkpoint_fire"/>
-  <tile id="91" map_value="air"/>
+  <tile id="91" map_value="deco"/>
   <tile id="92" map_value="destroyable"/>
   <tile id="93" map_value="destroyable"/>
   <tile id="94" map_value="destroyable"/>
-  <tile id="95" map_value="air"/>
-  <tile id="96" map_value="air"/>
+  <tile id="95" map_value="deco"/>
+  <tile id="96" map_value="deco"/>
   <tile id="97" map_value="deco"/>
   <tile id="98" map_value="deco"/>
   <tile id="99" map_value="deco"/>
@@ -106,38 +106,38 @@
   <tile id="104" map_value="destroyable"/>
   <tile id="105" map_value="destroyable"/>
   <tile id="106" map_value="destroyable"/>
-  <tile id="107" map_value="air"/>
-  <tile id="108" map_value="air"/>
+  <tile id="107" map_value="deco"/>
+  <tile id="108" map_value="deco"/>
   <tile id="109" map_value="deco"/>
   <tile id="110" map_value="deco"/>
   <tile id="111" map_value="deco"/>
   <tile id="112" map_value="deco"/>
   <tile id="113" map_value="deco"/>
-  <tile id="114" map_value="air"/>
-  <tile id="115" map_value="air"/>
+  <tile id="114" map_value="deco"/>
+  <tile id="115" map_value="deco"/>
   <tile id="116" map_value="deco"/>
   <tile id="117" map_value="deco"/>
   <tile id="118" map_value="deco"/>
-  <tile id="119" map_value="air"/>
-  <tile id="120" map_value="air"/>
+  <tile id="119" map_value="deco"/>
+  <tile id="120" map_value="deco"/>
   <tile id="121" map_value="deco"/>
   <tile id="122" map_value="deco"/>
   <tile id="123" map_value="deco"/>
   <tile id="124" map_value="air"/>
-  <tile id="125" map_value="air"/>
-  <tile id="126" map_value="air"/>
+  <tile id="125" map_value="deco"/>
+  <tile id="126" map_value="deco"/>
   <tile id="127" map_value="destroyable"/>
   <tile id="128" map_value="destroyable"/>
   <tile id="129" map_value="destroyable"/>
   <tile id="130" map_value="air"/>
-  <tile id="131" map_value="air"/>
-  <tile id="132" map_value="air"/>
+  <tile id="131" map_value="deco"/>
+  <tile id="132" map_value="deco"/>
   <tile id="133" map_value="deco"/>
   <tile id="134" map_value="deco"/>
   <tile id="135" map_value="deco"/>
   <tile id="136" map_value="air"/>
-  <tile id="137" map_value="air"/>
-  <tile id="138" map_value="air"/>
+  <tile id="137" map_value="deco"/>
+  <tile id="138" map_value="deco"/>
   <tile id="139" map_value="destroyable"/>
   <tile id="140" map_value="destroyable"/>
   <tile id="141" map_value="destroyable"/>
@@ -216,23 +216,23 @@
   <tile id="214" map_value="solid"/>
   <tile id="215" map_value="solid"/>
   <tile id="216" map_value="solid"/>
-  <tile id="217" map_value="air"/>
-  <tile id="218" map_value="air"/>
-  <tile id="219" map_value="air"/>
-  <tile id="220" map_value="air"/>
-  <tile id="221" map_value="air"/>
+  <tile id="217" map_value="solid"/>
+  <tile id="218" map_value="solid"/>
+  <tile id="219" map_value="solid"/>
+  <tile id="220" map_value="deco"/>
+  <tile id="221" map_value="deco"/>
   <tile id="222" map_value="air"/>
   <tile id="223" map_value="air"/>
   <tile id="224" map_value="air"/>
   <tile id="225" map_value="air"/>
   <tile id="226" map_value="air"/>
-  <tile id="227" map_value="air"/>
-  <tile id="228" map_value="air"/>
+  <tile id="227" map_value="deco"/>
+  <tile id="228" map_value="deco"/>
   <tile id="229" map_value="air"/>
   <tile id="230" map_value="air"/>
   <tile id="231" map_value="air"/>
-  <tile id="232" map_value="air"/>
-  <tile id="233" map_value="air"/>
+  <tile id="232" map_value="deco"/>
+  <tile id="233" map_value="deco"/>
   <tile id="234" map_value="air"/>
   <tile id="235" map_value="level_complete"/>
   <tile id="236" map_value="entrance"/>

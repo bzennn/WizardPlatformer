@@ -61,7 +61,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Logic\Core\Animator.cs" />
-    <Compile Include="Logic\Core\PCUniqueIdGenerator.cs" />
     <Compile Include="Logic\Core\RandomManager.cs" />
     <Compile Include="Logic\Entity\EntityCollectable.cs" />
     <Compile Include="Logic\Entity\EntityEnemy.cs" />
@@ -86,6 +85,7 @@
     <Compile Include="Logic\Screen\ScreenLoading.cs" />
     <Compile Include="Logic\Tile\TileCheckpointFire.cs" />
     <Compile Include="Logic\Tile\TileLiquid.cs" />
+    <Compile Include="Logic\Tile\TileTorch.cs" />
     <Compile Include="Logic\UI\UICursor.cs" />
     <Compile Include="Logic\Core\Geometry.cs" />
     <Compile Include="Logic\Core\InputManager.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="Logic\Entity\EntityRangeAttack.cs" />
     <Compile Include="Logic\Exceptions\LevelFormatException.cs" />
     <Compile Include="Logic\Exceptions\LevelMappingException.cs" />
-    <Compile Include="Logic\Exceptions\TileIdMapFormatException.cs" />
+    <Compile Include="Logic\Exceptions\IdMapFormatException.cs" />
     <Compile Include="Logic\Level\Background.cs" />
     <Compile Include="Logic\Level\Level.cs" />
     <Compile Include="Logic\Level\LevelLoading\LevelLoader.cs" />
@@ -189,10 +189,28 @@
     </None>
     <None Include="app.manifest" />
     <None Include="ClassDiagram.cd" />
-    <EmbeddedResource Include="Content\level\level_0_0.dat">
+    <EmbeddedResource Include="Content\tile\tile_id_map.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Content\tile\tile_id_map.dat">
+    <EmbeddedResource Include="Content\entity\entity_id_map.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\levels_list.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_1_0.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_1_1.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_1_2.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_1_3.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_0_0.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Content\level\level_0_1.dat">
@@ -201,16 +219,13 @@
     <EmbeddedResource Include="Content\level\level_0_2.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Content\level\level_0_3.dat">
+    <EmbeddedResource Include="Content\level\level_2_0.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Content\level\level_0_4.dat">
+    <EmbeddedResource Include="Content\level\level_2_1.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Content\entity\entity_id_map.dat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\level\levels_list.dat">
+    <EmbeddedResource Include="Content\level\level_2_2.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

@@ -30,7 +30,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			List<string> levelComplete = new List<string>();
 
 			if (!File.Exists(filePath)) {
-				throw new FileNotFoundException("Level not found! \nFile: \"" + filePath + "\" not exist!");
+				throw new FileNotFoundException("Level not found! File: \"" + filePath + "\" not exist!");
 			}
 
 			XmlDocument room = new XmlDocument();
@@ -324,7 +324,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			int[] layerBack = null;
 			int[] layerDeco = null;
 			int[] layerFunctional = null;
-			List<int[]> entities = new List<int[]>(); 
+			List<int[]> entities = new List<int[]>();
 			List<int[]> movingPlatforms = new List<int[]>();
 			Dictionary<string, string[]> chestsLoot = new Dictionary<string, string[]>();
 			Dictionary<string, int[]> exits = new Dictionary<string, int[]>();
@@ -333,193 +333,188 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			int tmpValue = 0;
 			int tileSideSize = Display.TileSideSize;
 
-			try {
-				backgroundId = levelParts.BackgroundId;
+			backgroundId = levelParts.BackgroundId;
 
-				if (!int.TryParse(levelParts.RoomSize, out roomSize)) {
+			if (!int.TryParse(levelParts.RoomSize, out roomSize)) {
+				throw levelFormatException;
+			}
+
+			if (roomSize < 0 || roomSize > Level.RoomSize.Count - 1) {
+				throw levelFormatException;
+			}
+
+			if (backgroundId.Length != 5) {
+				throw levelFormatException;
+			}
+
+			if (!int.TryParse(levelParts.SaveOnEntrance, out tmpValue)) {
+				throw levelFormatException;
+			}
+
+			if (tmpValue < 0 || tmpValue > 1) {
+				throw levelFormatException;
+			}
+			saveOnEntrance = (tmpValue == 1) ? true : false;
+
+			if (!int.TryParse(levelParts.PlayerPosX, out tmpValue)) {
+				throw levelFormatException;
+			}
+			playerPosition[0] = tmpValue;
+
+			if (!int.TryParse(levelParts.PlayerPosY, out tmpValue)) {
+				throw levelFormatException;
+			}
+			playerPosition[1] = tmpValue;
+
+			int roomTilesQuantity = Level.RoomSize[roomSize][0] * Level.RoomSize[roomSize][1];
+			if (levelParts.LayerBase.Length > 0) {
+				layerBase = Array.ConvertAll(levelParts.LayerBase.Split(','), int.Parse);
+			} else {
+				layerBase = new int[roomTilesQuantity];
+			}
+
+			if (levelParts.LayerBack.Length > 0) {
+				layerBack = Array.ConvertAll(levelParts.LayerBack.Split(','), int.Parse);
+			} else {
+				layerBack = new int[roomTilesQuantity];
+			}
+
+			if (levelParts.LayerDeco.Length > 0) {
+				layerDeco = Array.ConvertAll(levelParts.LayerDeco.Split(','), int.Parse);
+			} else {
+				layerDeco = new int[roomTilesQuantity];
+			}
+
+			if (levelParts.LayerFunctional.Length > 0) {
+				layerFunctional = Array.ConvertAll(levelParts.LayerFunctional.Split(','), int.Parse);
+			} else {
+				layerFunctional = new int[roomTilesQuantity];
+			}
+
+			if (layerBase.Length != roomTilesQuantity ||
+				layerBack.Length != roomTilesQuantity ||
+				layerDeco.Length != roomTilesQuantity ||
+				layerFunctional.Length != roomTilesQuantity) {
+				throw levelFormatException;
+			}
+
+			int[] platformData;
+			foreach (string platform in levelParts.MovingPlatforms) {
+				platformData = Array.ConvertAll(platform.Split(','), int.Parse);
+
+				if (platformData.Length != 5) {
 					throw levelFormatException;
-				}
-
-				if (roomSize < 0 || roomSize > Level.RoomSize.Count - 1) {
-					throw levelFormatException;
-				}
-
-				if (backgroundId.Length != 5) {
-					throw levelFormatException;
-				}
-
-				if (!int.TryParse(levelParts.SaveOnEntrance, out tmpValue)) {
-					throw levelFormatException;
-				}
-
-				if (tmpValue < 0 || tmpValue > 1) {
-					throw levelFormatException;
-				}
-				saveOnEntrance = (tmpValue == 1) ? true : false;
-
-				if (!int.TryParse(levelParts.PlayerPosX, out tmpValue)) {
-					throw levelFormatException;
-				}
-				playerPosition[0] = tmpValue;
-
-				if (!int.TryParse(levelParts.PlayerPosY, out tmpValue)) {
-					throw levelFormatException;
-				}
-				playerPosition[1] = tmpValue;
-
-				int roomTilesQuantity = Level.RoomSize[roomSize][0] * Level.RoomSize[roomSize][1];
-				if (levelParts.LayerBase.Length > 0) {
-					layerBase = Array.ConvertAll(levelParts.LayerBase.Split(','), int.Parse);
 				} else {
-					layerBase = new int[roomTilesQuantity];
-				}
+					if (platformData[0] < 0 || platformData[0] > 1) {
+						throw levelFormatException;
+					}
 
-				if (levelParts.LayerBack.Length > 0) {
-					layerBack = Array.ConvertAll(levelParts.LayerBack.Split(','), int.Parse);
+					if (platformData[1] < 0 || platformData[1] > 1) {
+						throw levelFormatException;
+					}
+
+					if (platformData[2] < 0 || platformData[2] > 1) {
+						throw levelFormatException;
+					}
+
+					if (platformData[3] < 0 || platformData[3] > Level.RoomSize[roomSize][0]) {
+						throw levelFormatException;
+					}
+
+					if (platformData[4] < 0 || platformData[4] > Level.RoomSize[roomSize][1]) {
+						throw levelFormatException;
+					}
+
+					movingPlatforms.Add(platformData);
+				}
+			}
+
+			int[] exitData;
+			foreach (string exit in levelParts.Exits) {
+				exitData = Array.ConvertAll(exit.Split(','), int.Parse);
+
+				if (exitData.Length != 4) {
+					throw levelFormatException;
 				} else {
-					layerBack = new int[roomTilesQuantity];
-				}
+					if (exitData[2] < 0 || exitData[2] > Level.RoomSize[roomSize][0]) {
+						throw levelFormatException;
+					}
 
-				if (levelParts.LayerDeco.Length > 0) {
-					layerDeco = Array.ConvertAll(levelParts.LayerDeco.Split(','), int.Parse);
+					if (exitData[3] < 0 || exitData[3] > Level.RoomSize[roomSize][1]) {
+						throw levelFormatException;
+					}
+
+					exits.Add((exitData[2] * tileSideSize) + "-" + (exitData[3] * tileSideSize), new int[] { exitData[0], exitData[1] });
+				}
+			}
+
+			int[] entityData;
+			foreach (string entity in levelParts.Entities) {
+				entityData = Array.ConvertAll(entity.Split(','), int.Parse);
+
+				if (entityData.Length != 3) {
+					throw levelFormatException;
 				} else {
-					layerDeco = new int[roomTilesQuantity];
-				}
+					if (entityData[1] < 0 || entityData[1] > Level.RoomSize[roomSize][0]) {
+						throw levelFormatException;
+					}
 
-				if (levelParts.LayerFunctional.Length > 0) {
-					layerFunctional = Array.ConvertAll(levelParts.LayerFunctional.Split(','), int.Parse);
-				} else {
-					layerFunctional = new int[roomTilesQuantity];
-				}
+					if (entityData[2] < 0 || entityData[2] > Level.RoomSize[roomSize][1]) {
+						throw levelFormatException;
+					}
 
-				if (layerBase.Length != roomTilesQuantity ||
-					layerBack.Length != roomTilesQuantity ||
-					layerDeco.Length != roomTilesQuantity ||
-					layerFunctional.Length != roomTilesQuantity) {
+					entities.Add(entityData);
+				}
+			}
+
+			string[] lootData;
+			foreach (string loot in levelParts.ChestsLoot) {
+				lootData = loot.Split(',');
+
+				int x = 0;
+				if (!int.TryParse(lootData[0], out x)) {
 					throw levelFormatException;
 				}
 
-				int[] platformData;
-				foreach (string platform in levelParts.MovingPlatforms) {
-					platformData = Array.ConvertAll(platform.Split(','), int.Parse);
-
-					if (platformData.Length != 5) {
-						throw levelFormatException;
-					} else {
-						if (platformData[0] < 0 || platformData[0] > 1) {
-							throw levelFormatException;
-						}
-
-						if (platformData[1] < 0 || platformData[1] > 1) {
-							throw levelFormatException;
-						}
-
-						if (platformData[2] < 0 || platformData[2] > 1) {
-							throw levelFormatException;
-						}
-
-						if (platformData[3] < 0 || platformData[3] > Level.RoomSize[roomSize][0]) {
-							throw levelFormatException;
-						}
-
-						if (platformData[4] < 0 || platformData[4] > Level.RoomSize[roomSize][1]) {
-							throw levelFormatException;
-						}
-
-						movingPlatforms.Add(platformData);
-					}
+				int y = 0;
+				if (!int.TryParse(lootData[1], out y)) {
+					throw levelFormatException;
 				}
 
-				int[] exitData;
-				foreach (string exit in levelParts.Exits) {
-					exitData = Array.ConvertAll(exit.Split(','), int.Parse);
-
-					if (exitData.Length != 4) {
-						throw levelFormatException;
-					} else {
-						if (exitData[2] < 0 || exitData[2] > Level.RoomSize[roomSize][0]) {
-							throw levelFormatException;
-						}
-
-						if (exitData[3] < 0 || exitData[3] > Level.RoomSize[roomSize][1]) {
-							throw levelFormatException;
-						}
-
-						exits.Add((exitData[2] * tileSideSize) + "-" + (exitData[3] * tileSideSize), new int[] { exitData[0], exitData[1] });
-					}
+				int quantity = 0;
+				if (!int.TryParse(lootData[2], out quantity)) {
+					throw levelFormatException;
 				}
 
-				int[] entityData;
-				foreach (string entity in levelParts.Entities) {
-					entityData = Array.ConvertAll(entity.Split(','), int.Parse);
-
-					if (entityData.Length != 3) {
-						throw levelFormatException;
-					} else {
-						if (entityData[1] < 0 || entityData[1] > Level.RoomSize[roomSize][0]) {
-							throw levelFormatException;
-						}
-
-						if (entityData[2] < 0 || entityData[2] > Level.RoomSize[roomSize][1]) {
-							throw levelFormatException;
-						}
-
-						entities.Add(entityData);
-					}
+				if (lootData.Length != 3 + quantity) {
+					throw levelFormatException;
 				}
 
-				string[] lootData;
-				foreach (string loot in levelParts.ChestsLoot) {
-					lootData = loot.Split(',');
-
-					int x = 0;
-					if (!int.TryParse(lootData[0], out x)) {
-						throw levelFormatException;
-					}
-
-					int y = 0;
-					if (!int.TryParse(lootData[1], out y)) {
-						throw levelFormatException;
-					}
-
-					int quantity = 0;
-					if (!int.TryParse(lootData[2], out quantity)) {
-						throw levelFormatException;
-					}
-
-					if (lootData.Length != 3 + quantity) {
-						throw levelFormatException;
-					}
-
-					string[] lootTypes = new string[quantity];
-					for (int i = 0; i < quantity; i++) {
-						lootTypes[i] = lootData[i + 3];
-					}
-
-					chestsLoot.Add(x + "-" + y, lootTypes);
+				string[] lootTypes = new string[quantity];
+				for (int i = 0; i < quantity; i++) {
+					lootTypes[i] = lootData[i + 3];
 				}
 
-				int[] levelCompleteData;
-				foreach (string exit in levelParts.LevelComplete) {
-					levelCompleteData = Array.ConvertAll(exit.Split(','), int.Parse);
+				chestsLoot.Add(x + "-" + y, lootTypes);
+			}
 
-					if (levelCompleteData.Length != 4) {
+			int[] levelCompleteData;
+			foreach (string exit in levelParts.LevelComplete) {
+				levelCompleteData = Array.ConvertAll(exit.Split(','), int.Parse);
+
+				if (levelCompleteData.Length != 4) {
+					throw levelFormatException;
+				} else {
+					if (levelCompleteData[2] < 0 || levelCompleteData[2] > Level.RoomSize[roomSize][0]) {
 						throw levelFormatException;
-					} else {
-						if (levelCompleteData[2] < 0 || levelCompleteData[2] > Level.RoomSize[roomSize][0]) {
-							throw levelFormatException;
-						}
-
-						if (levelCompleteData[3] < 0 || levelCompleteData[3] > Level.RoomSize[roomSize][1]) {
-							throw levelFormatException;
-						}
-
-						levelComplete.Add((levelCompleteData[2] * tileSideSize) + "-" + (levelCompleteData[3] * tileSideSize), new int[] { levelCompleteData[0], levelCompleteData[1] });
 					}
+
+					if (levelCompleteData[3] < 0 || levelCompleteData[3] > Level.RoomSize[roomSize][1]) {
+						throw levelFormatException;
+					}
+
+					levelComplete.Add((levelCompleteData[2] * tileSideSize) + "-" + (levelCompleteData[3] * tileSideSize), new int[] { levelCompleteData[0], levelCompleteData[1] });
 				}
-			} catch (Exception e) {
-				Exception levelE = new Exception("Level load error:\n" + e.Message);
-				ScreenManager.GetInstance().ChangeScreen(new ScreenError(levelE), true);
 			}
 
 			return new UnmappedLevelParts(backgroundId, roomSize, saveOnEntrance, playerPosition, layerBase, layerBack, layerDeco, layerFunctional, movingPlatforms, entities, chestsLoot, exits, levelComplete);

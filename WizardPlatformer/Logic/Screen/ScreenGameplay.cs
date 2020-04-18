@@ -64,14 +64,14 @@ namespace WizardPlatformer {
 			font = screenContent.Load<SpriteFont>("font/russo_one_32");
 			levelsList = XMLLevelListLoader.LoadLevelsList();
 
-			LoadLevel(levelId, roomId, false, null, snapshotPlayer, false);
-
-			if (saveOnStart) {
-				SaveGame();
-			}
-
 			if (restorePreviousGame) {
 				RestoreGame();
+			} else {
+				LoadLevel(levelId, roomId, false, null, snapshotPlayer, false);
+
+				if (saveOnStart) {
+					SaveGame();
+				}
 			}
 		}
 

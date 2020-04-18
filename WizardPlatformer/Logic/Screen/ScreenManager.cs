@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System;
+using WizardPlatformer.Logic.Exceptions;
 
 namespace WizardPlatformer {
 	public class ScreenManager {
@@ -56,11 +57,23 @@ namespace WizardPlatformer {
 		}
 
 		public void Update(GameTime gameTime) {
-			screenStack.Peek().Update(gameTime);
+			try {
+				screenStack.Peek().Update(gameTime);
+			} catch (Exception e) {
+				ShowErrorScreen(e);
+			}
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
-			screenStack.Peek().Draw(spriteBatch, gameTime);
+			try {
+				screenStack.Peek().Draw(spriteBatch, gameTime);
+			} catch (Exception e) {
+				ShowErrorScreen(e);
+			}
+		}
+
+		public void ShowErrorScreen(Exception e) {
+			ScreenManager.GetInstance().ChangeScreen(new ScreenError(e), true);
 		}
 	}
 }

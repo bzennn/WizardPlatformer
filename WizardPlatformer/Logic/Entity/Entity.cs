@@ -519,6 +519,9 @@ namespace WizardPlatformer {
 
 			if (EntityPosition.Y + heatBox.Height > level.RoomHeigth * Display.TileSideSize + heatBox.Height) {
 				EntityPosition = new Vector2(EntityPosition.X, level.RoomHeigth * Display.TileSideSize + heatBox.Height);
+			}
+
+			if (EntityPosition.Y + heatBox.Height > level.RoomHeigth * Display.TileSideSize) {
 				isCollides = true;
 				isCollidesEdge = true;
 			}

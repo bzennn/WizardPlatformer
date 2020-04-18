@@ -11,8 +11,9 @@ namespace WizardPlatformer {
 	public class WizardPlatformer : Game {
 		private static WizardPlatformer instance;
 
-		public static readonly string GAMEPLAY_SAVE_PATH = "save_" + PCUniqueIdGenerator.GetMacAddressHash() + ".dat";
-		public static readonly string OPTIONS_PATH = "options_" + PCUniqueIdGenerator.GetMacAddressHash() + ".dat";
+		public static readonly string DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/WizardPlatformer/";
+		public static readonly string GAMEPLAY_SAVE_PATH = DIRECTORY + "save.dat";
+		public static readonly string OPTIONS_PATH = DIRECTORY + "options.dat";
 		public static readonly Dictionary<int, Point> RESOLUTION = new Dictionary<int, Point>() {
 			{ 0, new Point(640, 360) },
 			{ 1, new Point(960, 540) },
@@ -46,6 +47,9 @@ namespace WizardPlatformer {
 		}
 
 		private void LoadOptions() {
+			if (!Directory.Exists(DIRECTORY)) {
+				Directory.CreateDirectory(DIRECTORY);
+			}
 			if (!File.Exists(OPTIONS_PATH)) {
 				SnapshotOptions options = new SnapshotOptions(false, 0);
 				BINSerializer.Serialize(options, OPTIONS_PATH);
