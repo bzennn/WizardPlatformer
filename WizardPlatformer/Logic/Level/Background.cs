@@ -39,6 +39,8 @@ namespace WizardPlatformer.Logic.Level {
 		private float cloudsVelocity;
 		private bool isCloudsOn;
 
+		private int size;
+
 		public Background(int roomWidth, int roomHeigth) {
 			this.background = new Texture2D[7];
 			this.backgroundPositions = new Vector2[7];
@@ -97,6 +99,8 @@ namespace WizardPlatformer.Logic.Level {
 			if (roomHeigth > 18) {
 				velocityCoefficientMaxY = 0.3f;
 			}
+
+			size = int.Parse(backgroundId[4].ToString());
 		}
 
 		public void Update(GameTime gameTime, Vector2 playerPosition) {
@@ -169,10 +173,19 @@ namespace WizardPlatformer.Logic.Level {
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime) {
 			for (int i = 0; i < background.Length; i++) {
+				Vector2 drawPosition = backgroundPositions[i];
+				if (i != 0 && i != 1 && i != 4) {
+					if (roomHeigth > 36) {
+						drawPosition = new Vector2(backgroundPositions[i].X, backgroundPositions[i].Y - size * (background.Length - i) * 100);
+					} else {
+						drawPosition = new Vector2(backgroundPositions[i].X, backgroundPositions[i].Y - size * 400);
+					}
+				}
+				
 				if (background[i] != null) {
 					spriteBatch.Draw(
 					background[i],
-					backgroundPositions[i],
+					drawPosition,
 					null,
 					Color.White,
 					0.0f,

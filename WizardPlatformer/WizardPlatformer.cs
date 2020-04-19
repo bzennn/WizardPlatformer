@@ -25,6 +25,8 @@ namespace WizardPlatformer {
 			{ 7, new Point(3200, 1800) },
 			{ 8, new Point(3840, 2160) }
 		};
+		public static readonly Point TILESET_SIZE = new Point(12, 30);
+
 
 		private GraphicsDeviceManager graphics;
 		private SpriteBatch spriteBatch;

@@ -17,7 +17,6 @@ namespace WizardPlatformer {
 		private EntityCreator entityCreator;
 
 		private Texture2D tileSet;
-		private Point tileSetSize = new Point(12, 20);
 
 		private List<RoomIdentifier> levelsList;
 		private int levelId;
@@ -150,7 +149,7 @@ namespace WizardPlatformer {
 				currentLevel = new Level(levelId, roomId, null, null);
 			}
 			
-			levelLoader = new LevelLoader(tileSet, tileSetSize, currentLevel);
+			levelLoader = new LevelLoader(tileSet, WizardPlatformer.TILESET_SIZE, currentLevel);
 			currentLevel.AddLevelLoader(levelLoader);
 			currentLevel.LoadContent(screenContent);
 

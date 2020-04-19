@@ -221,16 +221,16 @@
   <tile id="219" map_value="solid"/>
   <tile id="220" map_value="deco"/>
   <tile id="221" map_value="deco"/>
-  <tile id="222" map_value="air"/>
-  <tile id="223" map_value="air"/>
-  <tile id="224" map_value="air"/>
+  <tile id="222" map_value="solid"/>
+  <tile id="223" map_value="solid"/>
+  <tile id="224" map_value="solid"/>
   <tile id="225" map_value="air"/>
   <tile id="226" map_value="air"/>
   <tile id="227" map_value="deco"/>
   <tile id="228" map_value="deco"/>
-  <tile id="229" map_value="air"/>
-  <tile id="230" map_value="air"/>
-  <tile id="231" map_value="air"/>
+  <tile id="229" map_value="falling_platform"/>
+  <tile id="230" map_value="falling_platform"/>
+  <tile id="231" map_value="falling_platform"/>
   <tile id="232" map_value="deco"/>
   <tile id="233" map_value="deco"/>
   <tile id="234" map_value="air"/>
@@ -240,4 +240,124 @@
   <tile id="238" map_value="exit"/>
   <tile id="239" map_value="death"/>
   <tile id="240" map_value="debug"/>
+  <tile id="241" map_value="solid"/>
+  <tile id="242" map_value="solid"/>
+  <tile id="243" map_value="solid"/>
+  <tile id="244" map_value="solid"/>
+  <tile id="245" map_value="solid"/>
+  <tile id="246" map_value="solid"/>
+  <tile id="247" map_value="solid"/>
+  <tile id="248" map_value="solid"/>
+  <tile id="249" map_value="solid"/>
+  <tile id="250" map_value="deco"/>
+  <tile id="251" map_value="deco"/>
+  <tile id="252" map_value="deco"/>
+  <tile id="253" map_value="solid"/>
+  <tile id="254" map_value="solid"/>
+  <tile id="255" map_value="solid"/>
+  <tile id="256" map_value="solid"/>
+  <tile id="257" map_value="solid"/>
+  <tile id="258" map_value="solid"/>
+  <tile id="259" map_value="solid"/>
+  <tile id="260" map_value="solid"/>
+  <tile id="261" map_value="solid"/>
+  <tile id="262" map_value="deco"/>
+  <tile id="263" map_value="deco"/>
+  <tile id="264" map_value="deco"/>
+  <tile id="265" map_value="solid"/>
+  <tile id="266" map_value="solid"/>
+  <tile id="267" map_value="solid"/>
+  <tile id="268" map_value="solid"/>
+  <tile id="269" map_value="solid"/>
+  <tile id="270" map_value="solid"/>
+  <tile id="271" map_value="solid"/>
+  <tile id="272" map_value="solid"/>
+  <tile id="273" map_value="solid"/>
+  <tile id="274" map_value="deco"/>
+  <tile id="275" map_value="deco"/>
+  <tile id="276" map_value="deco"/>
+  <tile id="277" map_value="solid"/>
+  <tile id="278" map_value="solid"/>
+  <tile id="279" map_value="solid"/>
+  <tile id="280" map_value="solid"/>
+  <tile id="281" map_value="solid"/>
+  <tile id="282" map_value="solid"/>
+  <tile id="283" map_value="solid"/>
+  <tile id="284" map_value="solid"/>
+  <tile id="285" map_value="solid"/>
+  <tile id="286" map_value="solid"/>
+  <tile id="287" map_value="solid"/>
+  <tile id="288" map_value="solid"/>
+  <tile id="289" map_value="solid"/>
+  <tile id="290" map_value="solid"/>
+  <tile id="291" map_value="solid"/>
+  <tile id="292" map_value="solid"/>
+  <tile id="293" map_value="solid"/>
+  <tile id="294" map_value="solid"/>
+  <tile id="295" map_value="solid"/>
+  <tile id="296" map_value="air"/>
+  <tile id="297" map_value="solid"/>
+  <tile id="298" map_value="solid"/>
+  <tile id="299" map_value="solid"/>
+  <tile id="300" map_value="solid"/>
+  <tile id="301" map_value="solid"/>
+  <tile id="302" map_value="solid"/>
+  <tile id="303" map_value="solid"/>
+  <tile id="304" map_value="solid"/>
+  <tile id="305" map_value="solid"/>
+  <tile id="306" map_value="solid"/>
+  <tile id="307" map_value="solid"/>
+  <tile id="308" map_value="solid"/>
+  <tile id="309" map_value="solid"/>
+  <tile id="310" map_value="solid"/>
+  <tile id="311" map_value="solid"/>
+  <tile id="312" map_value="solid"/>
+  <tile id="313" map_value="air"/>
+  <tile id="314" map_value="air"/>
+  <tile id="315" map_value="air"/>
+  <tile id="316" map_value="air"/>
+  <tile id="317" map_value="air"/>
+  <tile id="318" map_value="air"/>
+  <tile id="319" map_value="air"/>
+  <tile id="320" map_value="air"/>
+  <tile id="321" map_value="air"/>
+  <tile id="322" map_value="air"/>
+  <tile id="323" map_value="deco"/>
+  <tile id="324" map_value="deco"/>
+  <tile id="325" map_value="air"/>
+  <tile id="326" map_value="air"/>
+  <tile id="327" map_value="air"/>
+  <tile id="328" map_value="air"/>
+  <tile id="329" map_value="air"/>
+  <tile id="330" map_value="air"/>
+  <tile id="331" map_value="air"/>
+  <tile id="332" map_value="air"/>
+  <tile id="333" map_value="air"/>
+  <tile id="334" map_value="air"/>
+  <tile id="335" map_value="deco"/>
+  <tile id="336" map_value="deco"/>
+  <tile id="337" map_value="air"/>
+  <tile id="338" map_value="air"/>
+  <tile id="339" map_value="air"/>
+  <tile id="340" map_value="air"/>
+  <tile id="341" map_value="air"/>
+  <tile id="342" map_value="air"/>
+  <tile id="343" map_value="air"/>
+  <tile id="344" map_value="air"/>
+  <tile id="345" map_value="air"/>
+  <tile id="346" map_value="air"/>
+  <tile id="347" map_value="air"/>
+  <tile id="348" map_value="air"/>
+  <tile id="349" map_value="air"/>
+  <tile id="350" map_value="air"/>
+  <tile id="351" map_value="air"/>
+  <tile id="352" map_value="air"/>
+  <tile id="353" map_value="air"/>
+  <tile id="354" map_value="air"/>
+  <tile id="355" map_value="air"/>
+  <tile id="356" map_value="air"/>
+  <tile id="357" map_value="air"/>
+  <tile id="358" map_value="air"/>
+  <tile id="359" map_value="air"/>
+  <tile id="360" map_value="air"/>
 </id_map>

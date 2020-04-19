@@ -15,5 +15,7 @@
     <room id="0"></room>
     <room id="1"></room>
     <room id="2"></room>
+    <room id="3"></room>
+    <room id="4"></room>
   </level>
 </levels_list>

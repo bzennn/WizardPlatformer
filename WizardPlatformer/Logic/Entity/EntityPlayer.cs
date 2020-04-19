@@ -16,11 +16,13 @@ namespace WizardPlatformer {
 		private int maxMana;
 		private int manaRegenCounter;
 		private int manaRegenSpeed;
+		private int manaRegenCount;
 
 		private int stamina;
 		private int maxStamina;
 		private int staminaRegenCounter;
 		private int staminaRegenSpeed;
+		private int staminaRegenCount;
 
 		private int coins;
 
@@ -49,11 +51,13 @@ namespace WizardPlatformer {
 			this.maxMana = maxMana;
 			this.manaRegenCounter = 0;
 			this.manaRegenSpeed = 100;
+			this.manaRegenCount = maxMana / 100;
 
 			this.stamina = stamina;
 			this.maxStamina = maxStamina;
 			this.staminaRegenCounter = 0;
 			this.staminaRegenSpeed = 10;
+			this.staminaRegenCount = 1;
 
 			this.coins = coins;
 
@@ -380,7 +384,7 @@ namespace WizardPlatformer {
 
 			if (manaRegenCounter > manaRegenSpeed) {
 				manaRegenCounter = 0;
-				AddMana(1);
+				AddMana(manaRegenCount);
 			}
 		}
 
@@ -389,7 +393,7 @@ namespace WizardPlatformer {
 
 			if (staminaRegenCounter > staminaRegenSpeed) {
 				staminaRegenCounter = 0;
-				AddStamina(1);
+				AddStamina(staminaRegenCount);
 			}
 		}
 

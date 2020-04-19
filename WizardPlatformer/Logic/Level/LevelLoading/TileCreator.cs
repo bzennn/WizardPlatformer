@@ -130,6 +130,8 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					return new TileFunctional(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, TileFunctional.FunctionType.DEADLY, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 				case "torch":
 					return new TileTorch(tileSet, tilePosOnTexture, Tile.CollisionType.PASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
+				case "falling_platform":
+					return new TileFallingPlatform(tileSet, tilePosOnTexture, Tile.CollisionType.PLATFORM, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY, level);
 				case "debug":
 					return new Tile(tileSet, tilePosOnTexture, Tile.CollisionType.IMPASSABLE, Tile.PassType.REGULAR, calcTileSideSize, calcTileSideSize, 0, 0, tilePosX, tilePosY);
 			}

@@ -84,6 +84,7 @@
     <Compile Include="Logic\Screen\ScreenLevelComplete.cs" />
     <Compile Include="Logic\Screen\ScreenLoading.cs" />
     <Compile Include="Logic\Tile\TileCheckpointFire.cs" />
+    <Compile Include="Logic\Tile\TileFallingPlatform.cs" />
     <Compile Include="Logic\Tile\TileLiquid.cs" />
     <Compile Include="Logic\Tile\TileTorch.cs" />
     <Compile Include="Logic\UI\UICursor.cs" />
@@ -226,6 +227,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Content\level\level_2_2.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_2_3.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\level\level_2_4.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

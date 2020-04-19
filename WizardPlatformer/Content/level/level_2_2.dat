@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <level>
-	<room backgroundId="01110" size="2" saveOnEntrance="0" playerPosX="768" playerPosY="0">
+	<room backgroundId="10011" size="2" saveOnEntrance="0" playerPosX="768" playerPosY="0">
 		<layer id="base">
 			<data>17,17,17,17,18,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,16,17,17,17,17,17,
 17,17,17,17,18,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,16,17,17,17,17,17,
