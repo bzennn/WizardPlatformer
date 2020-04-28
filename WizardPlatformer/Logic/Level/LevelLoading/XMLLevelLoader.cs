@@ -115,7 +115,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					}
 				} else if (xPart.Name.Equals("moving_platforms")) {
 					foreach (XmlNode xPlatform in xPart) {
-						if (xPlatform.Attributes.Count != 5) {
+						if (xPlatform.Attributes.Count < 5) {
 							throw levelFormatException;
 						} else {
 							XmlNode attribute = xPlatform.Attributes.GetNamedItem("type");
@@ -152,6 +152,11 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 								throw levelFormatException;
 							} else {
 								platform += attribute.Value;
+							}
+
+							attribute = xPlatform.Attributes.GetNamedItem("activate_by_entity");
+							if (attribute != null) {
+								platform += "," + attribute.Value;
 							}
 
 							movingPlatforms.Add(platform);
@@ -402,7 +407,7 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 			foreach (string platform in levelParts.MovingPlatforms) {
 				platformData = Array.ConvertAll(platform.Split(','), int.Parse);
 
-				if (platformData.Length != 5) {
+				if (platformData.Length < 5) {
 					throw levelFormatException;
 				} else {
 					if (platformData[0] < 0 || platformData[0] > 1) {

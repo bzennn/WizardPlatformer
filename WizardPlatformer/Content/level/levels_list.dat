@@ -18,4 +18,22 @@
     <room id="3"></room>
     <room id="4"></room>
   </level>
+  <level id="3">
+    <room id="0"></room>
+    <room id="1"></room>
+    <room id="2"></room>
+    <room id="3"></room>
+    <room id="4"></room>
+    <room id="5"></room>
+  </level>
+  <level id="4">
+    <room id="0"></room>
+    <room id="1"></room>
+    <room id="2"></room>
+    <room id="3"></room>
+    <room id="4"></room>
+    <room id="5"></room>
+    <room id="6"></room>
+    <room id="7"></room>
+  </level>
 </levels_list>

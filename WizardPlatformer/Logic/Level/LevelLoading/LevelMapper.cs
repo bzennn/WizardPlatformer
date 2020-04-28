@@ -97,6 +97,12 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 					}
 				}
 
+				if (platformData.Length == 6) {
+					if (platformData[5] != 0) {
+						platform.ActivationByEntity = true;
+					}
+				}
+
 				movingPlatforms.Add(platform);
 			}
 

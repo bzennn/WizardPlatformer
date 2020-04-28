@@ -77,23 +77,11 @@ namespace WizardPlatformer {
 		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, float opacity = 1) {
 			UpdateFallingDrawParameters(gameTime);
 			base.Draw(spriteBatch, gameTime, fallingPlatOpacity);
-
-			/*if (isVisible || visibleTimer != 0) {
-				base.Draw(spriteBatch, gameTime, opacity);
-			} else {
-				
-			}*/
 		}
 
 		private void UpdateEntityOnPLatform() {
 			foreach (Entity entity in level.EntitiesList) {
-				if (entity is EntityLiving) {
-					/*if (entity.HeatBox.Bottom == this.HeatBox.Top && 
-						entity.Position.X >= this.HeatBox.Left &&
-						entity.Position.X <= this.HeatBox.Right) {
-						isEntityOnPlatform = true;
-					}*/
-					
+				if (entity is EntityLiving) {			
 					if (entity.HeatBox.Intersects(intersectionHeatbox) &&
 						entity.HeatBox.Bottom <= this.HeatBox.Top) {
 						isEntityOnPlatform = true;

@@ -22,6 +22,8 @@ namespace WizardPlatformer {
 		private Tile rightTile;
 
 		private bool isMoving;
+		private bool isEntityOnPlatform;
+		Rectangle intersectionHeatbox;
 
 		public TileMovingPlatform(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, float velocityCoefficient, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY)
 			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
@@ -40,6 +42,9 @@ namespace WizardPlatformer {
 			this.rightTile = null;
 
 			this.isMoving = true;
+			this.isEntityOnPlatform = false;
+			UpdateIntersectionHeatbox();
+
 			this.drawDebugInfo = false;
 		}
 
@@ -48,6 +53,12 @@ namespace WizardPlatformer {
 
 			if (isMoving) {
 				UpdateMoving();
+			} else {
+				UpdateEntityOnPLatform();
+			}
+
+			if (isEntityOnPlatform) {
+				Activate();
 			}
 		}
 
@@ -133,9 +144,12 @@ namespace WizardPlatformer {
 			set { velocityCoefficient = value; }
 		}
 
-		public bool IsMoving {
+		public bool ActivationByEntity {
 			get { return isMoving; }
-			set { isMoving = value; }
+			set { 
+				isMoving = !value;
+				UpdateMoving();	
+			}
 		}
 
 		public Vector2 Velocity {
@@ -151,6 +165,8 @@ namespace WizardPlatformer {
 			rightTile.Collision = CollisionType.IMPASSABLE;
 			rightTile.TilePosition = new Vector2(this.TilePosition.X + rightTile.HeatBox.Width , this.TilePosition.Y);
 			this.HeatBox = new Rectangle(HeatBox.X, HeatBox.Y, HeatBox.Width + rightTile.HeatBox.Width, HeatBox.Height);
+
+			UpdateIntersectionHeatbox();
 		}
 
 		public void SetLeftTile(Tile tile) {
@@ -159,6 +175,30 @@ namespace WizardPlatformer {
 			leftTile.TilePosition = new Vector2(this.TilePosition.X - leftTile.HeatBox.Width, this.TilePosition.Y);
 			this.HeatBox = new Rectangle(HeatBox.X, HeatBox.Y, HeatBox.Width + leftTile.HeatBox.Width, HeatBox.Height);
 			this.HeatBoxOffset = new Vector2(leftTile.HeatBox.Width, 0);
+
+			UpdateIntersectionHeatbox();
+		}
+
+		private void UpdateEntityOnPLatform() {
+			foreach (Entity entity in level.EntitiesList) {
+				if (entity is EntityLiving) {
+					if (entity.HeatBox.Intersects(intersectionHeatbox) &&
+						entity.HeatBox.Bottom <= this.HeatBox.Top) {
+						isEntityOnPlatform = true;
+					}
+				}
+			}
+		}
+
+		private void UpdateIntersectionHeatbox() {
+			this.intersectionHeatbox = new Rectangle(this.HeatBox.X - (int)this.HeatBoxOffset.X, this.HeatBox.Y - (int)this.HeatBoxOffset.Y - 1, this.HeatBox.Width, this.HeatBox.Height + 1);
+		}
+
+		private void Activate() {
+			if (!isMoving) {
+				isMoving = true;
+				isEntityOnPlatform = false;
+			}
 		}
 	}
 }

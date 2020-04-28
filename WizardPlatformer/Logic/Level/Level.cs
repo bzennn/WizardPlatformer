@@ -50,7 +50,7 @@ namespace WizardPlatformer.Logic.Level {
 		private List<Entity> entities;
 		private List<KeyValuePair<Tile, Entity>> entitiesSchedule;
 		private List<Tile> tileEntities;
-		private TileCheckpoint checkpoint;
+		private List<TileCheckpoint> checkpoints;
 
 		#endregion
 
@@ -64,7 +64,7 @@ namespace WizardPlatformer.Logic.Level {
 			this.entities = new List<Entity>();
 			this.entitiesSchedule = new List<KeyValuePair<Tile, Entity>>();
 			this.tileEntities = new List<Tile>();
-			this.checkpoint = null;
+			this.checkpoints = new List<TileCheckpoint>();
 
 			this.isTriggerOn = false;
 			this.currentOpacity = 1.0f;
@@ -85,7 +85,7 @@ namespace WizardPlatformer.Logic.Level {
 			background = new Background(roomWidth, roomHeigth);
 			background.LoadContent(levelContentManager, mappedLevelParts.BackgoundId);
 
-			checkpoint = FindCheckpoint();
+			checkpoints = FindCheckpoints();
 
 			foreach (Entity entity in mappedLevelParts.Entities) {
 				if (entity != null) {
@@ -101,6 +101,11 @@ namespace WizardPlatformer.Logic.Level {
 			}
 
 			player = (EntityPlayer)EntityCreator.CreateEntity(1, (int)mappedLevelParts.PlayerPosition.X, (int)mappedLevelParts.PlayerPosition.Y);
+			if (player.Position.X > roomWidth * tileSideSize - Display.BaseResolution.X / 2) {
+				for (int i = 0; i < player.Position.X; i++) {
+					background.Update(null, new Vector2(i, player.Position.Y));
+				}
+			}
 			SpawnEntity(player);
 
 			LoadEntitiesContent(levelContentManager);
@@ -245,14 +250,15 @@ namespace WizardPlatformer.Logic.Level {
 			get { return tileEntities; }
 		}
 
-		private TileCheckpoint FindCheckpoint() {
+		private List<TileCheckpoint> FindCheckpoints() {
+			List<TileCheckpoint> checkpoints = new List<TileCheckpoint>();
 			foreach (Tile tile in baseLayer) {
-				if (tile is TileCheckpoint) {
-					return (TileCheckpoint)tile;
+				if (tile is TileCheckpoint checkpoint) {
+					checkpoints.Add(checkpoint);
 				}
 			}
 
-			return null;
+			return checkpoints;
 		}
 
 		#endregion
@@ -529,7 +535,12 @@ namespace WizardPlatformer.Logic.Level {
 				}
 			}
 
-			bool isCheckpointActivated = checkpoint != null ? checkpoint.IsActivated : false;
+			List<bool> isCheckpointActivated = new List<bool>();
+			foreach (TileCheckpoint checkpoint in checkpoints) {
+				if (checkpoint != null) {
+					isCheckpointActivated.Add(checkpoint.IsActivated);
+				}
+			}
 
 			return new SnapshotLevel(
 				baseLayeMask,
@@ -549,8 +560,12 @@ namespace WizardPlatformer.Logic.Level {
 					}
 				}
 
-				if (checkpoint != null) {
-					checkpoint.IsActivated = snapshot.IsCheckpointActivated;
+				if (snapshot.IsCheckpointActivated.Count == checkpoints.Count) {
+					for (int i = 0; i < checkpoints.Count; i++) {
+						if (checkpoints[i] != null) {
+							checkpoints[i].IsActivated = snapshot.IsCheckpointActivated[i];
+						}
+					}
 				}
 
 				background.RestoreSnapshot(snapshot.SnapshotBackground);

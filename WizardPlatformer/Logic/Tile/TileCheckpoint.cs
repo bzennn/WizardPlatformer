@@ -36,7 +36,7 @@ namespace WizardPlatformer {
 			base.Update(gameTime);
 
 			UpdateActivation();
-			UpdateActivatedChackpoint();
+			UpdateActivatedCheckpoint();
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, float opacity = 1.0f) {
@@ -77,7 +77,7 @@ namespace WizardPlatformer {
 			level.HasGameSaveQuery = true;
 		}
 
-		private void UpdateActivatedChackpoint() {
+		private void UpdateActivatedCheckpoint() {
 			if (isActivated) {
 				Animator.Animate(1, 0, 3, true, this.frameTimeCounter, ref this.fireFrame);
 			}
