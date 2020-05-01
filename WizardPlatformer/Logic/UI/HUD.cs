@@ -13,9 +13,6 @@ namespace WizardPlatformer.Logic.UI {
 		private SpriteFont font;
 		private SpriteFont smallFont;
 
-		private bool drawDebugInfo;
-		private Texture2D debugSprite;
-
 		private Rectangle heart;
 		private Rectangle heartHalf;
 		private Rectangle heartDead;

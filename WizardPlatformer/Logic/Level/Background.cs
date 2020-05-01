@@ -40,6 +40,7 @@ namespace WizardPlatformer.Logic.Level {
 		private bool isCloudsOn;
 
 		private int size;
+		private string backgroundId;
 
 		public Background(int roomWidth, int roomHeigth) {
 			this.background = new Texture2D[7];
@@ -101,6 +102,7 @@ namespace WizardPlatformer.Logic.Level {
 			}
 
 			size = int.Parse(backgroundId[4].ToString());
+			this.backgroundId = backgroundId;
 		}
 
 		public void Update(GameTime gameTime, Vector2 playerPosition) {
@@ -233,7 +235,8 @@ namespace WizardPlatformer.Logic.Level {
 				offsetR2,
 				offsetR3,
 				velocityCoefficientX,
-				velocityCoefficientY);
+				velocityCoefficientY,
+				backgroundId);
 		}
 
 		public void RestoreSnapshot(SnapshotBackground snapshot) {

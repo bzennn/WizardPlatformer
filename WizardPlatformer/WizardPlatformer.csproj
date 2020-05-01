@@ -82,7 +82,6 @@
     <Compile Include="Logic\Screen\ScreenGameEnd.cs" />
     <Compile Include="Logic\Screen\ScreenGameOver.cs" />
     <Compile Include="Logic\Screen\ScreenLevelComplete.cs" />
-    <Compile Include="Logic\Screen\ScreenLoading.cs" />
     <Compile Include="Logic\Tile\TileCheckpointFire.cs" />
     <Compile Include="Logic\Tile\TileFallingPlatform.cs" />
     <Compile Include="Logic\Tile\TileLiquid.cs" />

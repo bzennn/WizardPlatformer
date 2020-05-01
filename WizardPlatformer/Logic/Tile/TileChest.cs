@@ -98,7 +98,7 @@ namespace WizardPlatformer {
 						maxDropQuantity -= currentDropQuantity;
 						currentDrop++;
 					} else {
-						if (currentDrop < drop.Length && drop[currentDrop] != null) {
+						if (currentDrop < drop.Length) {
 							if (Roll()) {
 								SpawnDrop(drop[currentDrop]);
 							}
@@ -117,7 +117,6 @@ namespace WizardPlatformer {
 				} else {
 					isEmpty = true;
 				}
-
 			}
 		}
 
@@ -165,6 +164,10 @@ namespace WizardPlatformer {
 
 		public bool IsClosed {
 			get { return isClosed; }
+		}
+
+		public bool IsEmpty {
+			get { return isEmpty; }
 		}
 	}
 }

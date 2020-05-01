@@ -21,7 +21,9 @@ namespace WizardPlatformer.Logic.Save {
 		private float velocityCoefficientX;
 		private float velocityCoefficientY;
 
-		public SnapshotBackground(float currentPositionOffsetX, float currentPositionOffsetY, float offsetL1, float offsetL2, float offsetL3, float offsetR1, float offsetR2, float offsetR3, float velocityCoefficientX, float velocityCoefficientY) {
+		private string backgroundId;
+
+		public SnapshotBackground(float currentPositionOffsetX, float currentPositionOffsetY, float offsetL1, float offsetL2, float offsetL3, float offsetR1, float offsetR2, float offsetR3, float velocityCoefficientX, float velocityCoefficientY, string backgroundId) {
 			this.currentPositionOffsetX = currentPositionOffsetX;
 			this.currentPositionOffsetY = currentPositionOffsetY;
 			this.offsetL1 = offsetL1;
@@ -32,6 +34,7 @@ namespace WizardPlatformer.Logic.Save {
 			this.offsetR3 = offsetR3;
 			this.velocityCoefficientX = velocityCoefficientX;
 			this.velocityCoefficientY = velocityCoefficientY;
+			this.backgroundId = backgroundId;
 		}
 
 		public float CurrentPositionOffsetX {
@@ -72,6 +75,10 @@ namespace WizardPlatformer.Logic.Save {
 
 		public float VelocityCoefficientY {
 			get { return velocityCoefficientY; }
+		}
+
+		public string BackgroundId {
+			get { return backgroundId; }
 		}
 	}
 }

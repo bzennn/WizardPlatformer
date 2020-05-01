@@ -20,6 +20,10 @@ namespace WizardPlatformer.Logic.Level.LevelLoading {
 				   roomId == id.roomId;
 		}
 
+		public override int GetHashCode() {
+			return base.GetHashCode();
+		}
+
 		public int LevelId {
 			get { return levelId; }
 		}

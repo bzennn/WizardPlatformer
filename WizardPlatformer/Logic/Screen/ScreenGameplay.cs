@@ -14,8 +14,6 @@ namespace WizardPlatformer {
 		#region Fields
 
 		private LevelLoader levelLoader;
-		private EntityCreator entityCreator;
-
 		private Texture2D tileSet;
 
 		private List<RoomIdentifier> levelsList;

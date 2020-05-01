@@ -125,7 +125,12 @@ namespace WizardPlatformer {
 
 			#endregion
 
-			background.LoadContent(screenContent, "01110");
+			if (hasPreviousSave) {
+				string backgroundId = BINDeserializer.Deserialize<SnapshotGameplay>(WizardPlatformer.GAMEPLAY_SAVE_PATH).SnapshotLevel.SnapshotBackground.BackgroundId;
+				background.LoadContent(screenContent, backgroundId);
+			} else {
+				background.LoadContent(screenContent, "01110");
+			}
 		}
 
 		public override void Update(GameTime gameTime) {

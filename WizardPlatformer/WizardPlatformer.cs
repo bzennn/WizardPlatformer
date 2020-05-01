@@ -18,12 +18,13 @@ namespace WizardPlatformer {
 			{ 0, new Point(640, 360) },
 			{ 1, new Point(960, 540) },
 			{ 2, new Point(1280, 720) },
-			{ 3, new Point(1366, 768) },
-			{ 4, new Point(1600, 900) },
-			{ 5, new Point(1920, 1080) },
-			{ 6, new Point(2560, 1440) },
-			{ 7, new Point(3200, 1800) },
-			{ 8, new Point(3840, 2160) }
+			{ 3, new Point(1360, 768) },
+			{ 4, new Point(1366, 768) },
+			{ 5, new Point(1600, 900) },
+			{ 6, new Point(1920, 1080) },
+			{ 7, new Point(2560, 1440) },
+			{ 8, new Point(3200, 1800) },
+			{ 9, new Point(3840, 2160) }
 		};
 		public static readonly Point TILESET_SIZE = new Point(12, 30);
 
