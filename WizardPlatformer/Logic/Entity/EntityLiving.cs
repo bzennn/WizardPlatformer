@@ -7,8 +7,8 @@ using WizardPlatformer.Logic.Level;
 
 namespace WizardPlatformer {
 	public class EntityLiving : Entity {
-		public EntityLiving(int health, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
-			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
+		public EntityLiving(int health, int damage, float velocity, bool emulatePhysics, int hitBoxWidth, int hitBoxHeight, int hitBoxSpritePosX, int hitBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
+			: base(health, damage, velocity, emulatePhysics, hitBoxWidth, hitBoxHeight, hitBoxSpritePosX, hitBoxSpritePosY, posX, posY, roomSizeId, level) {
 		}
 
 		public virtual void ConsumeHealth(int health) {

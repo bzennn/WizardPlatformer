@@ -17,8 +17,8 @@ namespace WizardPlatformer {
 		private Level level;
 		private EntityCreator entityCreator;
 
-		public TileDestroyable(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, TileCollectable.CollectableType[] drop, int maxDropQuantity, int dropChance, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY, Level level)
-			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
+		public TileDestroyable(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, TileCollectable.CollectableType[] drop, int maxDropQuantity, int dropChance, int hitBoxWidth, int hitBoxHeigth, int hitBoxPosX, int hitBoxPosY, int posX, int posY, Level level)
+			: base(texture, spritePos, collision, pass, hitBoxWidth, hitBoxHeigth, hitBoxPosX, hitBoxPosY, posX, posY) {
 
 			this.drop = drop;
 			this.maxDropQuantity = maxDropQuantity;
@@ -54,7 +54,7 @@ namespace WizardPlatformer {
 		} 
 
 		private void SpawnDrop(TileCollectable.CollectableType dropType) {
-			Vector2 centerPosition = this.HeatBox.Center.ToVector2();
+			Vector2 centerPosition = this.HitBox.Center.ToVector2();
 
 			switch(dropType) {
 				default:

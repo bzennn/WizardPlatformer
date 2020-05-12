@@ -198,7 +198,7 @@ namespace WizardPlatformer {
 		}
 
 		public void StartNewGame() {
-			ScreenManager.GetInstance().ChangeScreen(new ScreenGameplay(0, 0, true, null), true);
+			ScreenManager.GetInstance().ChangeScreen(new ScreenGameplay(2, 0, true, null), true);
 		}
 
 		public void ContinueGame() {

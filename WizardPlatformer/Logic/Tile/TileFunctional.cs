@@ -20,8 +20,8 @@ namespace WizardPlatformer {
 		private int switchLevelId;
 		private int swithcRoomId;
 
-		public TileFunctional(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, FunctionType type, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY) 
-			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
+		public TileFunctional(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, FunctionType type, int hitBoxWidth, int hitBoxHeigth, int hitBoxPosX, int hitBoxPosY, int posX, int posY) 
+			: base(texture, spritePos, collision, pass, hitBoxWidth, hitBoxHeigth, hitBoxPosX, hitBoxPosY, posX, posY) {
 
 			this.type = type;
 			this.switchLevelId = 0;

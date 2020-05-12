@@ -12,8 +12,8 @@ namespace WizardPlatformer {
 		private int currentTaskID;
 		private bool taskComplete;
 
-		public EntityEnemy(int health, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) 
-			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
+		public EntityEnemy(int health, int damage, float velocity, bool emulatePhysics, int hitBoxWidth, int hitBoxHeight, int hitBoxSpritePosX, int hitBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) 
+			: base(health, damage, velocity, emulatePhysics, hitBoxWidth, hitBoxHeight, hitBoxSpritePosX, hitBoxSpritePosY, posX, posY, roomSizeId, level) {
 
 			this.AITasks = new List<Func<bool>>();
 			this.currentTaskID = 0;

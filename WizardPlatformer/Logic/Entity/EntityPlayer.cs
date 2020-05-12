@@ -40,8 +40,8 @@ namespace WizardPlatformer {
 		private bool isAnimationOn;
 		private bool isControlOn;
 
-		public EntityPlayer(int health, int maxHealth, int mana, int maxMana, int stamina, int maxStamina, int damage, float velocity, int coins, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
-			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
+		public EntityPlayer(int health, int maxHealth, int mana, int maxMana, int stamina, int maxStamina, int damage, float velocity, int coins, bool emulatePhysics, int hitBoxWidth, int hitBoxHeight, int hitBoxSpritePosX, int hitBoxSpritePosY, int posX, int posY, int roomSizeId, Level level)
+			: base(health, damage, velocity, emulatePhysics, hitBoxWidth, hitBoxHeight, hitBoxSpritePosX, hitBoxSpritePosY, posX, posY, roomSizeId, level) {
 
 			playerID = this.id;
 
@@ -110,7 +110,7 @@ namespace WizardPlatformer {
 			if (drawDebugInfo) {
 				spriteBatch.DrawString(debugFont, "Coins = " + coins +
 					"\nPosition = " + Position + 
-					"\nExit deep = " + exitDeep, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
+					"\nExit deep = " + exitDeep, hitBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
 
 				float angle = Geometry.GetAngleBetweenVectors(this.EntityPosition, InputManager.GetInstance().GetMousePosition());
 				float angleCos = (float)Math.Cos(angle);
@@ -216,8 +216,8 @@ namespace WizardPlatformer {
 
 			if (tile is TileCheckpointFire) {
 				TileCheckpointFire checkpoint_fire = (TileCheckpointFire)tile;
-				int x = checkpoint_fire.HeatBox.X;
-				int y = checkpoint_fire.HeatBox.Bottom + 1;
+				int x = checkpoint_fire.HitBox.X;
+				int y = checkpoint_fire.HitBox.Bottom + 1;
 
 				Tile tileCheckpoint = level.GetTile(x, y);
 				if (tileCheckpoint is TileCheckpoint) {

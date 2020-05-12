@@ -5,14 +5,14 @@ using System;
 
 namespace WizardPlatformer {
 	public static class Geometry {
-		public static Vector2 GetCollisionDepth(Rectangle heatBoxA, Rectangle heatBoxB) {
-			Vector2 centerA = heatBoxA.Center.ToVector2();
-			Vector2 centerB = heatBoxB.Center.ToVector2();
+		public static Vector2 GetCollisionDepth(Rectangle hitBoxA, Rectangle hitBoxB) {
+			Vector2 centerA = hitBoxA.Center.ToVector2();
+			Vector2 centerB = hitBoxB.Center.ToVector2();
           
             float offsetX = centerA.X - centerB.X;
             float offsetY = centerA.Y - centerB.Y;
-            float minOffsetX = (heatBoxA.Width / 2) + (heatBoxB.Width / 2);
-            float minOffsetY = (heatBoxA.Height / 2) + (heatBoxB.Height / 2);
+            float minOffsetX = (hitBoxA.Width / 2) + (hitBoxB.Width / 2);
+            float minOffsetY = (hitBoxA.Height / 2) + (hitBoxB.Height / 2);
 
             if (Math.Abs(offsetX) >= minOffsetX || Math.Abs(offsetY) >= minOffsetY) {
                 return Vector2.Zero;

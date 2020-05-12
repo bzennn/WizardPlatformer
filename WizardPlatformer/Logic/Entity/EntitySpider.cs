@@ -15,8 +15,8 @@ namespace WizardPlatformer {
 		private int maxIdleTime;
 		private bool idleTaskStarted;
 
-		public EntitySpider(int health, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) 
-			: base(health, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
+		public EntitySpider(int health, int damage, float velocity, bool emulatePhysics, int hitBoxWidth, int hitBoxHeight, int hitBoxSpritePosX, int hitBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) 
+			: base(health, damage, velocity, emulatePhysics, hitBoxWidth, hitBoxHeight, hitBoxSpritePosX, hitBoxSpritePosY, posX, posY, roomSizeId, level) {
 
 			this.moveDirection = false;
 			this.moveTimer = 0;
@@ -117,8 +117,8 @@ namespace WizardPlatformer {
 		}
 
 		private bool IsAbyssNext() {
-			Tile tileLeft = this.level.GetTile(this.HeatBox.Left - 10, this.HeatBox.Bottom + 1);
-			Tile tileRight = this.level.GetTile(this.HeatBox.Right + 10, this.HeatBox.Bottom + 1);
+			Tile tileLeft = this.level.GetTile(this.HitBox.Left - 10, this.HitBox.Bottom + 1);
+			Tile tileRight = this.level.GetTile(this.HitBox.Right + 10, this.HitBox.Bottom + 1);
 			
 			if (tileLeft == null || tileLeft.Collision == Tile.CollisionType.PASSABLE) {
 				abyssCheckTimer = 150;

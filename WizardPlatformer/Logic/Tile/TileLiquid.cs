@@ -15,8 +15,8 @@ namespace WizardPlatformer {
 
 		private LiquidType liquidType;
 
-		public TileLiquid(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, LiquidType liquidType, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY) 
-			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
+		public TileLiquid(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, LiquidType liquidType, int hitBoxWidth, int hitBoxHeigth, int hitBoxPosX, int hitBoxPosY, int posX, int posY) 
+			: base(texture, spritePos, collision, pass, hitBoxWidth, hitBoxHeigth, hitBoxPosX, hitBoxPosY, posX, posY) {
 
 			this.liquidType = liquidType;
 		}

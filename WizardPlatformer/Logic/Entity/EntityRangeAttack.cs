@@ -13,8 +13,8 @@ namespace WizardPlatformer {
 
 		private bool isStartAnimationEnd;
 
-		public EntityRangeAttack(int TTL, int sourceId, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level, Vector2 directionVector)
-			: base(TTL, sourceId, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level, directionVector) {
+		public EntityRangeAttack(int TTL, int sourceId, int damage, float velocity, bool emulatePhysics, int hitBoxWidth, int hitBoxHeight, int hitBoxSpritePosX, int hitBoxSpritePosY, int posX, int posY, int roomSizeId, Level level, Vector2 directionVector)
+			: base(TTL, sourceId, damage, velocity, emulatePhysics, hitBoxWidth, hitBoxHeight, hitBoxSpritePosX, hitBoxSpritePosY, posX, posY, roomSizeId, level, directionVector) {
 
 			this.isRotatable = true;
 			this.isSpriteFlipping = false;

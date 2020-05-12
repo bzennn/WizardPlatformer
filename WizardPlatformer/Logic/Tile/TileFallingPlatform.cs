@@ -25,10 +25,10 @@ namespace WizardPlatformer {
 		private Vector2 savedSpritePos;
 		private int fallingTimer;
 		private int fallingMaxTime;
-		Rectangle intersectionHeatbox;
+		Rectangle intersectionHitBox;
 
-		public TileFallingPlatform(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY, Level level) 
-			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
+		public TileFallingPlatform(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, int hitBoxWidth, int hitBoxHeigth, int hitBoxPosX, int hitBoxPosY, int posX, int posY, Level level) 
+			: base(texture, spritePos, collision, pass, hitBoxWidth, hitBoxHeigth, hitBoxPosX, hitBoxPosY, posX, posY) {
 
 			this.level = level;
 
@@ -47,7 +47,7 @@ namespace WizardPlatformer {
 			this.fallingTimer = 0;
 			this.fallingMaxTime = 20;
 
-			this.intersectionHeatbox = new Rectangle(this.HeatBox.X, this.HeatBox.Y - 1, this.HeatBox.Width, this.HeatBox.Height + 1);
+			this.intersectionHitBox = new Rectangle(this.HitBox.X, this.HitBox.Y - 1, this.HitBox.Width, this.HitBox.Height + 1);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -82,8 +82,8 @@ namespace WizardPlatformer {
 		private void UpdateEntityOnPLatform() {
 			foreach (Entity entity in level.EntitiesList) {
 				if (entity is EntityLiving) {			
-					if (entity.HeatBox.Intersects(intersectionHeatbox) &&
-						entity.HeatBox.Bottom <= this.HeatBox.Top) {
+					if (entity.HitBox.Intersects(intersectionHitBox) &&
+						entity.HitBox.Bottom <= this.HitBox.Top) {
 						isEntityOnPlatform = true;
 					}
 				}
@@ -101,8 +101,8 @@ namespace WizardPlatformer {
 		}
 
 		private void BreakNeighbours() {
-			Tile tileL = this.level.GetTile(this.HeatBox.Left - 1, this.HeatBox.Top);
-			Tile tileR = this.level.GetTile(this.HeatBox.Right + 1, this.HeatBox.Top);
+			Tile tileL = this.level.GetTile(this.HitBox.Left - 1, this.HitBox.Top);
+			Tile tileR = this.level.GetTile(this.HitBox.Right + 1, this.HitBox.Top);
 
 			if (tileL is TileFallingPlatform lP) {
 				if (!lP.IsFalling) {

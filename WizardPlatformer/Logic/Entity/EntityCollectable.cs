@@ -14,8 +14,8 @@ namespace WizardPlatformer {
 		private int startDurationMove;
 		private int startMoveDirection;
 
-		public EntityCollectable(int TTL, TileCollectable.CollectableType collectableForm, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) 
-			: base(0, 0, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
+		public EntityCollectable(int TTL, TileCollectable.CollectableType collectableForm, float velocity, bool emulatePhysics, int hitBoxWidth, int hitBoxHeight, int hitBoxSpritePosX, int hitBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) 
+			: base(0, 0, velocity, emulatePhysics, hitBoxWidth, hitBoxHeight, hitBoxSpritePosX, hitBoxSpritePosY, posX, posY, roomSizeId, level) {
 
 			this.TTL = TTL;
 			this.collectableForm = collectableForm;

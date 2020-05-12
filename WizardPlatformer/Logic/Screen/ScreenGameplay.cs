@@ -128,8 +128,8 @@ namespace WizardPlatformer {
 			if (currentLevel != null) {
 				int prevLevelId = currentLevel.LevelId;
 				int prevRoomId = currentLevel.RoomId;
-				int playerXPos = (int)currentLevel.Player.HeatBox.X;
-				int playerYPos = (int)currentLevel.Player.HeatBox.Y;
+				int playerXPos = (int)currentLevel.Player.HitBox.X;
+				int playerYPos = (int)currentLevel.Player.HitBox.Y;
 
 				if ((prevLevelId == levelId && prevRoomId != roomId) ||
 					(prevLevelId != levelId && prevRoomId == roomId)) {

@@ -14,8 +14,8 @@ namespace WizardPlatformer {
 		protected int TTL;
 		protected float directionAngle;
 
-		public EntityAttack(int TTL, int sourceId, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level, Vector2 directionVector)
-			: base(0, damage, velocity, emulatePhysics, heatBoxWidth, heatBoxHeight, heatBoxSpritePosX, heatBoxSpritePosY, posX, posY, roomSizeId, level) {
+		public EntityAttack(int TTL, int sourceId, int damage, float velocity, bool emulatePhysics, int hitBoxWidth, int hitBoxHeight, int hitBoxSpritePosX, int hitBoxSpritePosY, int posX, int posY, int roomSizeId, Level level, Vector2 directionVector)
+			: base(0, damage, velocity, emulatePhysics, hitBoxWidth, hitBoxHeight, hitBoxSpritePosX, hitBoxSpritePosY, posX, posY, roomSizeId, level) {
 
 			this.sourceId = sourceId;
 
@@ -66,7 +66,7 @@ namespace WizardPlatformer {
 			if (drawDebugInfo) {
 				spriteBatch.DrawString(debugFont, "AngleCos = " + Math.Cos(this.spriteRotation) +
 					"\nAngleSin = " + Math.Sin(this.spriteRotation) +
-					"\nVelocity = " + this.currentVelocity, heatBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
+					"\nVelocity = " + this.currentVelocity, hitBox.Location.ToVector2() + new Vector2(60, 0), Color.AntiqueWhite);
 			}
 		}
 

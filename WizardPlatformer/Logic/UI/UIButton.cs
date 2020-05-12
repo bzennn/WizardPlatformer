@@ -9,7 +9,7 @@ namespace WizardPlatformer.Logic.UI {
 		private int xPosition;
 		private int yPosition;
 		private Vector2 buttonPosition;
-		private Rectangle buttonHeatbox;
+		private Rectangle buttonHitBox;
 		private int scaleFactor;
 
 		private Rectangle buttonUnfocusedSpriteRectangle;
@@ -35,7 +35,7 @@ namespace WizardPlatformer.Logic.UI {
 			this.buttonFocusedSpriteRectangle = new Rectangle(0, 12, 72, 12);
 			this.buttonDisabledSpriteRectangle = new Rectangle(0, 24, 72, 12);
 			this.buttonPosition = new Vector2(xPosition, yPosition);
-			this.buttonHeatbox = new Rectangle((int)buttonPosition.X, (int)buttonPosition.Y, 72 * scaleFactor, 12 * scaleFactor);
+			this.buttonHitBox = new Rectangle((int)buttonPosition.X, (int)buttonPosition.Y, 72 * scaleFactor, 12 * scaleFactor);
 
 			this.isButtonFocused = false;
 			this.text = text;
@@ -52,7 +52,7 @@ namespace WizardPlatformer.Logic.UI {
 
 			//UpdateButtonPosition();
 
-			if (buttonHeatbox.Contains(mousePosition.ToPoint()) && isEnabled) {
+			if (buttonHitBox.Contains(mousePosition.ToPoint()) && isEnabled) {
 				if (InputManager.GetInstance().IsMouseLeftButtonReleased()) {
 					onClick();
 				}
@@ -98,7 +98,7 @@ namespace WizardPlatformer.Logic.UI {
 			buttonPosition = new Vector2(screenZero.X + xPosition, screenZero.Y + yPosition);
 			//buttonPosition = Display.ScreenToLevelPosition(new Vector2(xPosition, yPosition));
 			//
-			buttonHeatbox = new Rectangle((int)buttonPosition.X, (int)buttonPosition.Y, 72 * scaleFactor, 12 * scaleFactor);
+			buttonHitBox = new Rectangle((int)buttonPosition.X, (int)buttonPosition.Y, 72 * scaleFactor, 12 * scaleFactor);
 		}
 
 		public string Text {

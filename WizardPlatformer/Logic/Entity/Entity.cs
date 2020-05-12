@@ -21,7 +21,7 @@ namespace WizardPlatformer {
 		protected Level level;
 		protected Tile[] surroundingTiles;
 
-		protected Rectangle heatBox;
+		protected Rectangle hitBox;
 		protected Vector2 entityPosition;
 		private float previousEntityBottom;
 
@@ -69,7 +69,7 @@ namespace WizardPlatformer {
 
 		#endregion
 
-		public Entity(int health, int damage, float velocity, bool emulatePhysics, int heatBoxWidth, int heatBoxHeight, int heatBoxSpritePosX, int heatBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) {
+		public Entity(int health, int damage, float velocity, bool emulatePhysics, int hitBoxWidth, int hitBoxHeight, int hitBoxSpritePosX, int hitBoxSpritePosY, int posX, int posY, int roomSizeId, Level level) {
 			this.scaleFactor = (int)Display.DrawScale.X; // Only on top of the constructor!!
 
 			this.id = ID++;
@@ -82,9 +82,9 @@ namespace WizardPlatformer {
 			this.level = level;
 			this.surroundingTiles = new Tile[10];
 
-			this.heatBox = new Rectangle(posX, posY, heatBoxWidth * scaleFactor, heatBoxHeight * scaleFactor);
+			this.hitBox = new Rectangle(posX, posY, hitBoxWidth * scaleFactor, hitBoxHeight * scaleFactor);
 			this.entityPosition = new Vector2(posX, posY);
-			this.previousEntityBottom = heatBox.Bottom;
+			this.previousEntityBottom = hitBox.Bottom;
 
 			this.maxVelocity = new Vector2(velocity, 9.8f);
 			this.maxAcceleration = 0.15f;
@@ -107,8 +107,8 @@ namespace WizardPlatformer {
 			this.isCollidesEdge = false;
 
 			this.spriteFlip = SpriteEffects.None;
-			this.spritePosition = new Vector2(posX - heatBoxSpritePosX, posY - heatBoxSpritePosY);
-			this.spriteOffset = new Vector2(heatBoxSpritePosX, heatBoxSpritePosY);
+			this.spritePosition = new Vector2(posX - hitBoxSpritePosX, posY - hitBoxSpritePosY);
+			this.spriteOffset = new Vector2(hitBoxSpritePosX, hitBoxSpritePosY);
 			this.isRotatable = false;
 			this.spriteRotation = 0.0f;
 			this.spriteRotationOrigin = Vector2.Zero;
@@ -169,7 +169,7 @@ namespace WizardPlatformer {
 				spriteBatch.Draw(
 				debugSprite,
 				entityPosition,
-				new Rectangle(0, 0, heatBox.Width / scaleFactor, heatBox.Height / scaleFactor),
+				new Rectangle(0, 0, hitBox.Width / scaleFactor, hitBox.Height / scaleFactor),
 				Color.White,
 				0.0f,
 				Vector2.Zero,
@@ -178,9 +178,9 @@ namespace WizardPlatformer {
 				0.5f
 				);
 
-				spriteBatch.DrawString(debugFont, "Entity (ID = " + id + "):\nX= " + heatBox.Left + " " + heatBox.Right +
+				spriteBatch.DrawString(debugFont, "Entity (ID = " + id + "):\nX= " + hitBox.Left + " " + hitBox.Right +
 					"\nHP = " + health +
-					"\nY = " + heatBox.Top + " " + heatBox.Bottom +
+					"\nY = " + hitBox.Top + " " + hitBox.Bottom +
 					"\nVel = " + currentVelocity +
 					"\nAcc = " + currentAcceleration +
 					"\nIsFallingThrough = " + isFallingThrough, entityPosition - new Vector2(0, 140), Color.AntiqueWhite);
@@ -243,23 +243,23 @@ namespace WizardPlatformer {
 		}
 
 		public Vector2 Position {
-			get { return heatBox.Center.ToVector2(); }
+			get { return hitBox.Center.ToVector2(); }
 		}
 
 		public Vector2 Velocity {
 			get { return currentVelocity; }
 		}
 
-		public Rectangle HeatBox {
-			get { return heatBox; }
+		public Rectangle HitBox {
+			get { return hitBox; }
 		}
 
 		protected Vector2 EntityPosition {
 			get { return entityPosition; }
 			set {
 				entityPosition = value;
-				heatBox.X = (int)entityPosition.X;
-				heatBox.Y = (int)entityPosition.Y;
+				hitBox.X = (int)entityPosition.X;
+				hitBox.Y = (int)entityPosition.Y;
 				UpdateSpritePosition();
 			}
 		}
@@ -280,8 +280,8 @@ namespace WizardPlatformer {
 				}
 			}
 
-			Tile bottomTileL = level.GetTile(heatBox.Left + heatBox.Width / 2 - 10, heatBox.Bottom);
-			Tile bottomTileR = level.GetTile(heatBox.Left + heatBox.Width / 2 + 10, heatBox.Bottom);
+			Tile bottomTileL = level.GetTile(hitBox.Left + hitBox.Width / 2 - 10, hitBox.Bottom);
+			Tile bottomTileR = level.GetTile(hitBox.Left + hitBox.Width / 2 + 10, hitBox.Bottom);
 			if ((bottomTileL == null || bottomTileL.Collision == Tile.CollisionType.PASSABLE) &&
 				(bottomTileR == null || bottomTileR.Collision == Tile.CollisionType.PASSABLE) &&
 				!(movingPlatform is TileMovingPlatform)) {
@@ -289,8 +289,8 @@ namespace WizardPlatformer {
 			}
 
 			if (movingPlatform is TileMovingPlatform) {
-				if (heatBox.Right < movingPlatform.HeatBox.Left ||
-					heatBox.Left > movingPlatform.HeatBox.Right) {
+				if (hitBox.Right < movingPlatform.HitBox.Left ||
+					hitBox.Left > movingPlatform.HitBox.Right) {
 					isOnGround = false;
 				} else if (!isJumping && isOnGround) {
 					EntityPosition += (movingPlatform as TileMovingPlatform).Velocity;
@@ -409,8 +409,8 @@ namespace WizardPlatformer {
 		}
 
 		protected void AccelerateJump(float startVelocity, int maxJumpTime, bool clearAcceleration) {
-			Tile topTileL = level.GetTile(heatBox.Left + heatBox.Width / 2 - 10, heatBox.Top - 1);
-			Tile topTileR = level.GetTile(heatBox.Left + heatBox.Width / 2 + 10, heatBox.Top - 1);
+			Tile topTileL = level.GetTile(hitBox.Left + hitBox.Width / 2 - 10, hitBox.Top - 1);
+			Tile topTileR = level.GetTile(hitBox.Left + hitBox.Width / 2 + 10, hitBox.Top - 1);
 			TileMovingPlatform movingPlatform = this.movingPlatform as TileMovingPlatform;
 
 			bool isTopTileLImpassable = (topTileL != null) && (topTileL.Collision == Tile.CollisionType.IMPASSABLE);
@@ -418,7 +418,7 @@ namespace WizardPlatformer {
 
 			if ((currentVelocity.Y < 0 && clearAcceleration) || movingTime.Y >= maxJumpTime ||
 				(isTopTileLImpassable || isTopTileRImpassable) ||
-				(movingPlatform != null && heatBox.Top <= movingPlatform.HeatBox.Bottom && heatBox.Top >= movingPlatform.HeatBox.Top)) {
+				(movingPlatform != null && hitBox.Top <= movingPlatform.HitBox.Bottom && hitBox.Top >= movingPlatform.HitBox.Top)) {
 				currentAcceleration.Y = 0;
 				currentVelocity.Y = 0;
 
@@ -453,8 +453,8 @@ namespace WizardPlatformer {
 			}
 
 			if (!destroy) {
-				Tile bottomTileL = level.GetTile(heatBox.Left + heatBox.Width / 2 - 10, heatBox.Bottom + 1);
-				Tile bottomTileR = level.GetTile(heatBox.Left + heatBox.Width / 2 + 10, heatBox.Bottom + 1);
+				Tile bottomTileL = level.GetTile(hitBox.Left + hitBox.Width / 2 - 10, hitBox.Bottom + 1);
+				Tile bottomTileR = level.GetTile(hitBox.Left + hitBox.Width / 2 + 10, hitBox.Bottom + 1);
 
 				bool isBottomTileLImpassable = (bottomTileL != null) && (bottomTileL.Collision == Tile.CollisionType.IMPASSABLE);
 				bool isBottomTileRImpassable = (bottomTileR != null) && (bottomTileR.Collision == Tile.CollisionType.IMPASSABLE);
@@ -476,14 +476,14 @@ namespace WizardPlatformer {
 			Tile[] surroundingTiles = new Tile[10];
 
 			surroundingTiles[0] = level.GetTile(entityPosition.X, entityPosition.Y, layer);
-			surroundingTiles[1] = level.GetTile(entityPosition.X, entityPosition.Y + heatBox.Height / 2, layer);
-			surroundingTiles[2] = level.GetTile(entityPosition.X, entityPosition.Y + heatBox.Height, layer);
-			surroundingTiles[3] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y, layer);
-			surroundingTiles[4] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y + heatBox.Height / 2, layer);
-			surroundingTiles[5] = level.GetTile(entityPosition.X + heatBox.Width / 2, entityPosition.Y + heatBox.Height, layer);
-			surroundingTiles[7] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y, layer);
-			surroundingTiles[8] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y + heatBox.Height / 2, layer);
-			surroundingTiles[9] = level.GetTile(entityPosition.X + heatBox.Width, entityPosition.Y + heatBox.Height, layer);
+			surroundingTiles[1] = level.GetTile(entityPosition.X, entityPosition.Y + hitBox.Height / 2, layer);
+			surroundingTiles[2] = level.GetTile(entityPosition.X, entityPosition.Y + hitBox.Height, layer);
+			surroundingTiles[3] = level.GetTile(entityPosition.X + hitBox.Width / 2, entityPosition.Y, layer);
+			surroundingTiles[4] = level.GetTile(entityPosition.X + hitBox.Width / 2, entityPosition.Y + hitBox.Height / 2, layer);
+			surroundingTiles[5] = level.GetTile(entityPosition.X + hitBox.Width / 2, entityPosition.Y + hitBox.Height, layer);
+			surroundingTiles[7] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y, layer);
+			surroundingTiles[8] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y + hitBox.Height / 2, layer);
+			surroundingTiles[9] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y + hitBox.Height, layer);
 
 			return surroundingTiles;
 		}
@@ -511,17 +511,17 @@ namespace WizardPlatformer {
 				isCollidesEdge = true;
 			}
 
-			if (EntityPosition.X + heatBox.Width > level.RoomWidth * Display.TileSideSize) {
-				EntityPosition = new Vector2(level.RoomWidth * Display.TileSideSize - heatBox.Width, EntityPosition.Y);
+			if (EntityPosition.X + hitBox.Width > level.RoomWidth * Display.TileSideSize) {
+				EntityPosition = new Vector2(level.RoomWidth * Display.TileSideSize - hitBox.Width, EntityPosition.Y);
 				isCollides = true;
 				isCollidesEdge = true;
 			}
 
-			if (EntityPosition.Y + heatBox.Height > level.RoomHeigth * Display.TileSideSize + heatBox.Height) {
-				EntityPosition = new Vector2(EntityPosition.X, level.RoomHeigth * Display.TileSideSize + heatBox.Height);
+			if (EntityPosition.Y + hitBox.Height > level.RoomHeigth * Display.TileSideSize + hitBox.Height) {
+				EntityPosition = new Vector2(EntityPosition.X, level.RoomHeigth * Display.TileSideSize + hitBox.Height);
 			}
 
-			if (EntityPosition.Y + heatBox.Height > level.RoomHeigth * Display.TileSideSize) {
+			if (EntityPosition.Y + hitBox.Height > level.RoomHeigth * Display.TileSideSize) {
 				isCollides = true;
 				isCollidesEdge = true;
 			}
@@ -533,7 +533,7 @@ namespace WizardPlatformer {
 			for (int i = 0; i < surroundingTiles.Length; i++) {
 				if (surroundingTiles[i] != null && surroundingTiles[i].Collision != Tile.CollisionType.PASSABLE &&
 					!(surroundingTiles[i].Collision == Tile.CollisionType.PLATFORM && isFallingThrough)) {
-					Vector2 collisionDepth = Geometry.GetCollisionDepth(heatBox, surroundingTiles[i].HeatBox);
+					Vector2 collisionDepth = Geometry.GetCollisionDepth(hitBox, surroundingTiles[i].HitBox);
 
 					if (collisionDepth != Vector2.Zero) {
 						float collisionDepthX = Math.Abs(collisionDepth.X);
@@ -544,12 +544,12 @@ namespace WizardPlatformer {
 
 						if (collisionDepthY < collisionDepthX || surroundingTiles[i].Collision == Tile.CollisionType.PLATFORM) {
 
-							if (previousEntityBottom <= surroundingTiles[i].HeatBox.Top) {
+							if (previousEntityBottom <= surroundingTiles[i].HitBox.Top) {
 								isOnGround = true;
 							}
 
 							if (surroundingTiles[i].Collision == Tile.CollisionType.IMPASSABLE ||
-								(previousEntityBottom <= surroundingTiles[i].HeatBox.Top)) {
+								(previousEntityBottom <= surroundingTiles[i].HitBox.Top)) {
 
 								EntityPosition = new Vector2(EntityPosition.X, EntityPosition.Y + collisionDepth.Y);
 
@@ -563,7 +563,7 @@ namespace WizardPlatformer {
 					}
 				}
 			}
-			previousEntityBottom = heatBox.Bottom;
+			previousEntityBottom = hitBox.Bottom;
 		}
 
 		#endregion
@@ -591,7 +591,7 @@ namespace WizardPlatformer {
 			surroundingTiles = GetSurrondingTiles();
 
 			foreach (Tile tile in surroundingTiles) {
-				if (tile != null && heatBox.Intersects(tile.HeatBox)) {
+				if (tile != null && hitBox.Intersects(tile.HitBox)) {
 					HandleExtraTile(tile);
 					break;
 				}
@@ -621,7 +621,7 @@ namespace WizardPlatformer {
 
 		private void HandleEntities() {
 			foreach (Entity entity in level.EntitiesList) {
-				if (entity != null && entity.HeatBox.Intersects(this.HeatBox)) {
+				if (entity != null && entity.HitBox.Intersects(this.HitBox)) {
 					if (HandleEntity(entity)) {
 						break;
 					}

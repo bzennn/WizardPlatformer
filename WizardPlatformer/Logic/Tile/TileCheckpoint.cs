@@ -18,8 +18,8 @@ namespace WizardPlatformer {
 		private bool isActivating;
 		private bool isActivated;
 
-		public TileCheckpoint(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, int heatBoxWidth, int heatBoxHeigth, int heatBoxPosX, int heatBoxPosY, int posX, int posY, Level level)
-			: base(texture, spritePos, collision, pass, heatBoxWidth, heatBoxHeigth, heatBoxPosX, heatBoxPosY, posX, posY) {
+		public TileCheckpoint(Texture2D texture, Point spritePos, CollisionType collision, PassType pass, int hitBoxWidth, int hitBoxHeigth, int hitBoxPosX, int hitBoxPosY, int posX, int posY, Level level)
+			: base(texture, spritePos, collision, pass, hitBoxWidth, hitBoxHeigth, hitBoxPosX, hitBoxPosY, posX, posY) {
 			this.tileSideSize = Display.CalcTileSideSize;
 
 			this.level = level;
@@ -43,7 +43,7 @@ namespace WizardPlatformer {
 			base.Draw(spriteBatch, gameTime, opacity);
 
 			if (isActivating || isActivated) {
-				Vector2 spritePosition = new Vector2(TilePosition.X, TilePosition.Y - HeatBox.Height * 2);
+				Vector2 spritePosition = new Vector2(TilePosition.X, TilePosition.Y - HitBox.Height * 2);
 				Rectangle frameRectangle = new Rectangle(0 + fireFrame.X * tileSideSize, 96 + fireFrame.Y * tileSideSize * 2, tileSideSize, tileSideSize * 2);
 
 				spriteBatch.Draw(

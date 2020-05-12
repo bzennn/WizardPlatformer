@@ -77,7 +77,6 @@ namespace WizardPlatformer {
 		}
 
 		public Vector2 GetMouseScreenPosition() {
-			//Vector2 mousePosition = Display.ScreenToLevelPosition(currentMouseState.Position.ToVector2());
 			Vector2 mousePosition = currentMouseState.Position.ToVector2();
 
 			int mousePositionX = (int)mousePosition.X;
