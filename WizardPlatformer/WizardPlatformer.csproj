@@ -59,6 +59,9 @@
   <PropertyGroup>
     <StartupObject>WizardPlatformer.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Logic\Core\Animator.cs" />
     <Compile Include="Logic\Core\RandomManager.cs" />
@@ -71,14 +74,11 @@
     <Compile Include="Logic\Level\LevelLoading\XMLLevelListLoader.cs" />
     <Compile Include="Logic\Save\BINDeserializer.cs" />
     <Compile Include="Logic\Save\BINSerializer.cs" />
-    <Compile Include="Logic\Save\SaveManager.cs" />
     <Compile Include="Logic\Save\SnapshotBackground.cs" />
     <Compile Include="Logic\Save\SnapshotGameplay.cs" />
     <Compile Include="Logic\Save\SnapshotLevel.cs" />
     <Compile Include="Logic\Save\SnapshotOptions.cs" />
     <Compile Include="Logic\Save\SnapshotPlayer.cs" />
-    <Compile Include="Logic\Save\XMLSaveDeserializer.cs" />
-    <Compile Include="Logic\Save\XMLSaveSerializer.cs" />
     <Compile Include="Logic\Screen\ScreenGameEnd.cs" />
     <Compile Include="Logic\Screen\ScreenGameOver.cs" />
     <Compile Include="Logic\Screen\ScreenLevelComplete.cs" />
@@ -188,7 +188,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.manifest" />
-    <None Include="ClassDiagram.cd" />
     <EmbeddedResource Include="Content\tile\tile_id_map.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -284,18 +283,44 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Content\tile\background\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Content\background\back_0\clouds.png" />
+    <Content Include="Content\background\back_0\moon.png" />
+    <Content Include="Content\background\back_0\size_0\l_0.png" />
+    <Content Include="Content\background\back_0\size_0\l_1.png" />
+    <Content Include="Content\background\back_0\size_0\l_2.png" />
+    <Content Include="Content\background\back_0\size_0\sky_mountains_0.png" />
+    <Content Include="Content\background\back_0\size_0\sky_mountains_1.png" />
+    <Content Include="Content\background\back_0\size_0\sky_mountains_2.png" />
+    <Content Include="Content\background\back_0\sky_0.png" />
+    <Content Include="Content\background\back_0\sky_1.png" />
+    <Content Include="Content\background\back_0\sky_2.png" />
+    <Content Include="Content\background\back_0\sun.png" />
+    <Content Include="Content\background\back_1\clouds.png" />
+    <Content Include="Content\background\back_1\size_1\l_0.png" />
+    <Content Include="Content\background\back_1\size_1\l_1.png" />
+    <Content Include="Content\background\back_1\size_1\l_2.png" />
+    <Content Include="Content\background\back_1\size_1\sky_mountains_0.png" />
+    <Content Include="Content\background\back_1\sky_0.png" />
+    <Content Include="Content\background\back_2\clouds.png" />
+    <Content Include="Content\background\back_2\size_1\l_0.png" />
+    <Content Include="Content\background\back_2\size_1\l_1.png" />
+    <Content Include="Content\background\back_2\size_1\l_2.png" />
+    <Content Include="Content\background\back_2\size_1\sky_mountains_0.png" />
+    <Content Include="Content\background\back_2\sky_0.png" />
     <Content Include="Content\entity\coin_sprite.png" />
+    <Content Include="Content\entity\damage_upgrade_sprite.png" />
     <Content Include="Content\entity\debug_sprite.png" />
     <Content Include="Content\entity\health_sprite.png" />
     <Content Include="Content\entity\heart_sprite.png" />
     <Content Include="Content\entity\ice_arrow_sprite.png" />
     <Content Include="Content\entity\mana_sprite.png" />
+    <Content Include="Content\entity\mana_upgrade_sprite.png" />
     <Content Include="Content\entity\melee_attack_sprite.png" />
+    <Content Include="Content\entity\spider_sprite.png" />
     <Content Include="Content\entity\stamina_sprite.png" />
+    <Content Include="Content\entity\stamina_upgrade_sprite.png" />
     <Content Include="Content\entity\wizard_sprite.png" />
     <Content Include="Content\tile\tileset_export.png" />
     <Content Include="Icon.ico" />

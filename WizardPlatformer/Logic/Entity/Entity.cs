@@ -473,7 +473,7 @@ namespace WizardPlatformer {
 		#region Collision Resolve and Detection
 
 		protected Tile[] GetSurrondingTiles(string layer = "base") {
-			Tile[] surroundingTiles = new Tile[10];
+			Tile[] surroundingTiles = new Tile[9];
 
 			surroundingTiles[0] = level.GetTile(entityPosition.X, entityPosition.Y, layer);
 			surroundingTiles[1] = level.GetTile(entityPosition.X, entityPosition.Y + hitBox.Height / 2, layer);
@@ -481,9 +481,9 @@ namespace WizardPlatformer {
 			surroundingTiles[3] = level.GetTile(entityPosition.X + hitBox.Width / 2, entityPosition.Y, layer);
 			surroundingTiles[4] = level.GetTile(entityPosition.X + hitBox.Width / 2, entityPosition.Y + hitBox.Height / 2, layer);
 			surroundingTiles[5] = level.GetTile(entityPosition.X + hitBox.Width / 2, entityPosition.Y + hitBox.Height, layer);
-			surroundingTiles[7] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y, layer);
-			surroundingTiles[8] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y + hitBox.Height / 2, layer);
-			surroundingTiles[9] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y + hitBox.Height, layer);
+			surroundingTiles[6] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y, layer);
+			surroundingTiles[7] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y + hitBox.Height / 2, layer);
+			surroundingTiles[8] = level.GetTile(entityPosition.X + hitBox.Width, entityPosition.Y + hitBox.Height, layer);
 
 			return surroundingTiles;
 		}
@@ -549,7 +549,7 @@ namespace WizardPlatformer {
 							}
 
 							if (surroundingTiles[i].Collision == Tile.CollisionType.IMPASSABLE ||
-								(previousEntityBottom <= surroundingTiles[i].HitBox.Top)) {
+								(previousEntityBottom < surroundingTiles[i].HitBox.Top)) {
 
 								EntityPosition = new Vector2(EntityPosition.X, EntityPosition.Y + collisionDepth.Y);
 
